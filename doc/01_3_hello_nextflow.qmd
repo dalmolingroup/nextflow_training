@@ -1,0 +1,8 @@
+# Componentes de um Workflow
+
+## Channels
+
+Na maioria dos casos de uso realistas pipelines, queremos processar múltiplos valores (varios arquivos fastq, por exemplo), então precisamos de uma maneira mais sofisticada de lidar com entradas.
+
+É para isso que servem os canais do Nextflow. Canais são filas projetadas para lidar com entradas eficientemente e transportá-las de uma etapa para outra em fluxos de trabalho de múltiplas etapas, ao mesmo tempo que fornecem paralelismo integrado e muitos benefícios adicionais.
+

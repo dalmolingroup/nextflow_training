@@ -1,0 +1,27 @@
+# Hello Nextflow
+
+Historia do nextflow, quem é seqera e nf-core
+
+porque o nextflow é bom (conteiners, resume, comunidade etc...)
+
+## Defina o diretório de trabalho
+
+No primeiro momento este curso, trabalharemos no diretório hello-nextflow/.
+
+Mude de diretório executando este comando no terminal:
+
+```{r}
+cd hello-nextflow/
+```
+
+Você pode configurar o VSCode para focar neste diretório, de modo que apenas os arquivos relevantes apareçam na barra lateral do explorador de arquivos:
+
+```{r}
+code .
+```
+
+Explore os materiais fornecidos:
+
+```{r}
+tree . -L 2
+```
