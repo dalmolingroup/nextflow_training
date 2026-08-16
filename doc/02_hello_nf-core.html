@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>5&nbsp; Hello nf-core – Treinamento em Nextflow</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./01_3_hello_nextflow.html" rel="prev">
+<link href="./content/images/dalmolin_icon.svg" rel="icon" type="image/svg+xml">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-5a1953863e1f72ef3b996ef827f01ca7.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bb62276ab45c84d9efd712f51ff97b5a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-d132114d4b10ad95e4942235b6d008bb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-146eb0c6646dbe20be96f61bd013ac73.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-d132114d4b10ad95e4942235b6d008bb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02_hello_nf-core.html">Hello nf-core</a></li><li class="breadcrumb-item"><a href="./02_hello_nf-core.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hello nf-core</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Treinamento em Nextflow</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/dalmolingroup/nextflow_training" title="Código fonte" class="quarto-navigation-tool px-1" aria-label="Código fonte"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo escuro"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo de leitor">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Procurar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Treinamento Nextflow</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Hello Nextflow</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_1_hello_nextflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Hello Nextflow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_2_hello_nextflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Como um pipeline em Nextflow é estruturado?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_3_hello_nextflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Componentes de um Workflow</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Hello nf-core</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_hello_nf-core.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hello nf-core</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Índice</h2>
+   
+  <ul>
+  <li><a href="#o-que-é-nf-core" id="toc-o-que-é-nf-core" class="nav-link active" data-scroll-target="#o-que-é-nf-core"><span class="header-section-number">5.1</span> O que é nf-core</a></li>
+  <li><a href="#configurar-o-diretório-de-trabalho" id="toc-configurar-o-diretório-de-trabalho" class="nav-link" data-scroll-target="#configurar-o-diretório-de-trabalho"><span class="header-section-number">5.2</span> Configurar o diretório de trabalho</a></li>
+  <li><a href="#recuperar-o-código-do-pipeline-demo" id="toc-recuperar-o-código-do-pipeline-demo" class="nav-link" data-scroll-target="#recuperar-o-código-do-pipeline-demo"><span class="header-section-number">5.3</span> Recuperar o código do pipeline Demo</a></li>
+  <li><a href="#estrutura-de-um-pipeline-nf-core" id="toc-estrutura-de-um-pipeline-nf-core" class="nav-link" data-scroll-target="#estrutura-de-um-pipeline-nf-core"><span class="header-section-number">5.4</span> Estrutura de um pipeline nf-core</a></li>
+  <li><a href="#examinar-o-perfil-de-teste" id="toc-examinar-o-perfil-de-teste" class="nav-link" data-scroll-target="#examinar-o-perfil-de-teste"><span class="header-section-number">5.5</span> Examinar o perfil de teste</a></li>
+  <li><a href="#examinar-o-workflow-do-pipeline" id="toc-examinar-o-workflow-do-pipeline" class="nav-link" data-scroll-target="#examinar-o-workflow-do-pipeline"><span class="header-section-number">5.6</span> Examinar o workflow do pipeline</a></li>
+  <li><a href="#executar-o-pipeline" id="toc-executar-o-pipeline" class="nav-link" data-scroll-target="#executar-o-pipeline"><span class="header-section-number">5.7</span> Executar o pipeline</a></li>
+  <li><a href="#configurar-a-execução-do-pipeline" id="toc-configurar-a-execução-do-pipeline" class="nav-link" data-scroll-target="#configurar-a-execução-do-pipeline"><span class="header-section-number">6</span> Configurar a execução do pipeline</a>
+  <ul class="collapse">
+  <li><a href="#parâmetros-do-pipeline" id="toc-parâmetros-do-pipeline" class="nav-link" data-scroll-target="#parâmetros-do-pipeline"><span class="header-section-number">6.1</span> Parâmetros do pipeline</a>
+  <ul class="collapse">
+  <li><a href="#listar-todos-os-parâmetros-com---help" id="toc-listar-todos-os-parâmetros-com---help" class="nav-link" data-scroll-target="#listar-todos-os-parâmetros-com---help"><span class="header-section-number">6.1.1</span> Listar todos os parâmetros com <code>--help</code></a></li>
+  <li><a href="#definir-valores-de-parâmetros" id="toc-definir-valores-de-parâmetros" class="nav-link" data-scroll-target="#definir-valores-de-parâmetros"><span class="header-section-number">6.1.2</span> Definir valores de parâmetros</a></li>
+  </ul></li>
+  <li><a href="#validação-automática-de-parâmetros" id="toc-validação-automática-de-parâmetros" class="nav-link" data-scroll-target="#validação-automática-de-parâmetros"><span class="header-section-number">6.2</span> Validação automática de parâmetros</a></li>
+  <li><a href="#configuração-propriamente-dita" id="toc-configuração-propriamente-dita" class="nav-link" data-scroll-target="#configuração-propriamente-dita"><span class="header-section-number">6.3</span> Configuração propriamente dita</a></li>
+  <li><a href="#personalizar-recursos-e-argumentos-com--c" id="toc-personalizar-recursos-e-argumentos-com--c" class="nav-link" data-scroll-target="#personalizar-recursos-e-argumentos-com--c"><span class="header-section-number">6.4</span> Personalizar recursos e argumentos com <code>-c</code></a></li>
+  <li><a href="#ext.args-o-padrão-chave-para-customização" id="toc-ext.args-o-padrão-chave-para-customização" class="nav-link" data-scroll-target="#ext.args-o-padrão-chave-para-customização"><span class="header-section-number">6.5</span> <code>ext.args</code> — o padrão-chave para customização</a></li>
+  <li><a href="#exercício-1-customizar-ext.args" id="toc-exercício-1-customizar-ext.args" class="nav-link" data-scroll-target="#exercício-1-customizar-ext.args"><span class="header-section-number">6.6</span> Exercício 1 — Customizar <code>ext.args</code></a></li>
+  </ul></li>
+  <li><a href="#validação-de-entradas" id="toc-validação-de-entradas" class="nav-link" data-scroll-target="#validação-de-entradas"><span class="header-section-number">7</span> Validação de entradas</a>
+  <ul class="collapse">
+  <li><a href="#dois-níveis-de-validação" id="toc-dois-níveis-de-validação" class="nav-link" data-scroll-target="#dois-níveis-de-validação"><span class="header-section-number">7.1</span> Dois níveis de validação</a></li>
+  <li><a href="#validação-de-parâmetros" id="toc-validação-de-parâmetros" class="nav-link" data-scroll-target="#validação-de-parâmetros"><span class="header-section-number">7.2</span> Validação de parâmetros</a></li>
+  <li><a href="#validação-de-samplesheet" id="toc-validação-de-samplesheet" class="nav-link" data-scroll-target="#validação-de-samplesheet"><span class="header-section-number">7.3</span> Validação de samplesheet</a></li>
+  <li><a href="#demonstração-samplesheet-quebrada" id="toc-demonstração-samplesheet-quebrada" class="nav-link" data-scroll-target="#demonstração-samplesheet-quebrada"><span class="header-section-number">7.4</span> Demonstração — samplesheet quebrada</a></li>
+  <li><a href="#quando-algo-falha-na-validação" id="toc-quando-algo-falha-na-validação" class="nav-link" data-scroll-target="#quando-algo-falha-na-validação"><span class="header-section-number">7.5</span> Quando algo falha na validação</a></li>
+  <li><a href="#exercício-2-debugando-uma-samplesheet" id="toc-exercício-2-debugando-uma-samplesheet" class="nav-link" data-scroll-target="#exercício-2-debugando-uma-samplesheet"><span class="header-section-number">7.6</span> Exercício 2 — Debugando uma samplesheet</a></li>
+  </ul></li>
+  <li><a href="#usando-módulos-nf-core" id="toc-usando-módulos-nf-core" class="nav-link" data-scroll-target="#usando-módulos-nf-core"><span class="header-section-number">8</span> Usando módulos nf-core</a>
+  <ul class="collapse">
+  <li><a href="#buscar-módulos-disponíveis" id="toc-buscar-módulos-disponíveis" class="nav-link" data-scroll-target="#buscar-módulos-disponíveis"><span class="header-section-number">8.1</span> Buscar módulos disponíveis</a></li>
+  <li><a href="#instalar-um-módulo-num-pipeline" id="toc-instalar-um-módulo-num-pipeline" class="nav-link" data-scroll-target="#instalar-um-módulo-num-pipeline"><span class="header-section-number">8.2</span> Instalar um módulo num pipeline</a></li>
+  <li><a href="#estrutura-do-módulo-instalado" id="toc-estrutura-do-módulo-instalado" class="nav-link" data-scroll-target="#estrutura-do-módulo-instalado"><span class="header-section-number">8.3</span> Estrutura do módulo instalado</a></li>
+  <li><a href="#importar-e-usar" id="toc-importar-e-usar" class="nav-link" data-scroll-target="#importar-e-usar"><span class="header-section-number">8.4</span> Importar e usar</a></li>
+  <li><a href="#atualizar-e-desinstalar" id="toc-atualizar-e-desinstalar" class="nav-link" data-scroll-target="#atualizar-e-desinstalar"><span class="header-section-number">8.5</span> Atualizar e desinstalar</a></li>
+  <li><a href="#personalização-o-padrão-ext.args-de-novo" id="toc-personalização-o-padrão-ext.args-de-novo" class="nav-link" data-scroll-target="#personalização-o-padrão-ext.args-de-novo"><span class="header-section-number">8.6</span> Personalização — o padrão <code>ext.args</code> de novo</a></li>
+  <li><a href="#exercício-3-adicionando-um-módulo-nf-core" id="toc-exercício-3-adicionando-um-módulo-nf-core" class="nav-link" data-scroll-target="#exercício-3-adicionando-um-módulo-nf-core"><span class="header-section-number">8.7</span> Exercício 3 — Adicionando um módulo nf-core</a></li>
+  </ul></li>
+  <li><a href="#próximos-passos" id="toc-próximos-passos" class="nav-link" data-scroll-target="#próximos-passos"><span class="header-section-number">9</span> Próximos passos</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02_hello_nf-core.html">Hello nf-core</a></li><li class="breadcrumb-item"><a href="./02_hello_nf-core.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hello nf-core</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hello nf-core</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="o-que-é-nf-core" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="o-que-é-nf-core"><span class="header-section-number">5.1</span> O que é nf-core</h2>
+<p>nf-core é uma comunidade global que desenvolve e mantém pipelines Nextflow <strong>curados, revisados por pares e prontos para produção</strong>. Todos seguem o mesmo template, então uma vez que você aprende a estrutura, sabe navegar em qualquer pipeline da coleção.</p>
+<p>O que a comunidade entrega:</p>
+<ul>
+<li><strong>Pipelines</strong> (<a href="https://nf-co.re/pipelines">nf-co.re/pipelines</a>) — mais de 100, cobrindo genômica, transcriptômica, proteômica, metagenômica, etc.</li>
+<li><strong>Módulos reutilizáveis</strong> (<a href="https://nf-co.re/modules">nf-co.re/modules</a>) — processos wrapping ferramentas comuns (FASTQC, samtools, GATK…) que qualquer pipeline pode instalar.</li>
+<li><strong>Configurações institucionais</strong> (<a href="https://nf-co.re/configs">nf-co.re/configs</a>) — perfis prontos para HPCs de dezenas de universidades.</li>
+<li><strong>Ferramenta CLI <code>nf-core</code></strong> — para criar, testar e instalar pipelines/módulos.</li>
+</ul>
+<p>O ganho prático para quem faz bioinformática: você não escreve pipelines do zero, você <strong>usa</strong> e <strong>customiza</strong> o que a comunidade já validou.</p>
+</section>
+<section id="configurar-o-diretório-de-trabalho" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="configurar-o-diretório-de-trabalho"><span class="header-section-number">5.2</span> Configurar o diretório de trabalho</h2>
+<p>Mude de diretório agora executando este comando no terminal:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> hello_nfcore</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Nesta primeira parte do curso de treinamento Hello nf-core, mostramos como encontrar e experimentar um pipeline do nf-core, configurar e personalizar sua execução para suas necessidades, e entender como a validação de entrada protege contra erros comuns.</p>
+<p>Vamos usar um pipeline chamado <a href="https://nf-co.re/demo/1.2.0/">nf-core/demo</a> que é mantido pelo projeto nf-core como parte de seu inventário de pipelines para fins de demonstração e treinamento.</p>
+<p>Certifique-se de que seu diretório de trabalho esteja definido como hello-nf-core/</p>
+</section>
+<section id="recuperar-o-código-do-pipeline-demo" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="recuperar-o-código-do-pipeline-demo"><span class="header-section-number">5.3</span> Recuperar o código do pipeline Demo</h2>
+<p>Depois de determinarmos que o pipeline parece ser adequado para nossos propósitos, vamos experimentá-lo. Felizmente, o Nextflow facilita a recuperação de pipelines de repositórios formatados corretamente sem precisar baixar nada manualmente.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> pull nf-core/demo</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Você pode fazer isso com qualquer pipeline Nextflow que esteja configurado adequadamente no GitHub, não apenas pipelines do nf-core. No entanto, o nf-core é a maior coleção de código aberto de pipelines Nextflow.</p>
+<p>Para facilitar a navegação pelo código-fonte do pipeline, crie um link simbólico apontando para a cópia do pipeline que foi baixada:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> pipelines/nf-core</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-s</span> <span class="st">"</span><span class="va">$(</span><span class="bu">echo</span> <span class="va">$NXF_HOME</span>/assets/.repos/nf-core/demo/clones/<span class="pp">*</span>/<span class="va">)</span><span class="st">"</span> pipelines/nf-core/demo</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="estrutura-de-um-pipeline-nf-core" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="estrutura-de-um-pipeline-nf-core"><span class="header-section-number">5.4</span> Estrutura de um pipeline nf-core</h2>
+<p>Todo pipeline nf-core segue o mesmo layout. Aprender esse mapa uma vez te economiza tempo em qualquer pipeline da coleção.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-L</span> 1 pipelines/nf-core/demo</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>pipelines/nf-core/demo
+├── main.nf                # ponto de entrada — quem você chama com `nextflow run`
+├── workflows/             # workflows principais (a lógica de alto nível)
+├── subworkflows/          # blocos reutilizáveis (locais e nf-core)
+├── modules/               # processos individuais
+│   ├── local/             #   → escritos pelo pipeline
+│   └── nf-core/           #   → instalados do repositório nf-core/modules
+├── conf/                  # todos os arquivos de configuração
+│   ├── base.config        #   → labels de recurso (process_low/medium/high)
+│   ├── modules.config     #   → ext.args e publishDir por processo  ★ AQUI VOCÊ CUSTOMIZA
+│   ├── test.config        #   → perfil de teste
+│   └── ...
+├── assets/                # samplesheets exemplo + schemas de entrada
+├── docs/                  # documentação
+├── nextflow.config        # config raiz (carrega tudo em conf/)
+└── nextflow_schema.json   # schema dos parâmetros (alimenta --help)</code></pre>
+<p>Os três lugares onde você mais vai olhar no dia-a-dia:</p>
+<ul>
+<li><strong><code>conf/modules.config</code></strong> — para descobrir quais <code>ext.args</code> já existem e como sobrescrevê-los</li>
+<li><strong><code>nextflow_schema.json</code></strong> — para entender parâmetros aceitos (ou use <code>--help</code>)</li>
+<li><strong><code>assets/schema_input.json</code></strong> — para saber exatamente o que sua samplesheet precisa ter</li>
+</ul>
+</section>
+<section id="examinar-o-perfil-de-teste" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="examinar-o-perfil-de-teste"><span class="header-section-number">5.5</span> Examinar o perfil de teste</h2>
+<p>É uma boa prática verificar o que o perfil de teste de um pipeline especifica antes de executá-lo. O perfil test para nf-core/demo está no arquivo de configuração conf/test.config. Você pode encontrá-lo localmente dentro do código-fonte do pipeline que o nextflow pull baixou.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> pipelines/nf-core/demo/conf/test.config</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="examinar-o-workflow-do-pipeline" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="examinar-o-workflow-do-pipeline"><span class="header-section-number">5.6</span> Examinar o workflow do pipeline</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> pipelines/nf-core/demo/main.nf</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="executar-o-pipeline" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="executar-o-pipeline"><span class="header-section-number">5.7</span> Executar o pipeline</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/demo <span class="at">-profile</span> docker,test <span class="at">--outdir</span> demo-results</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="configurar-a-execução-do-pipeline" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Configurar a execução do pipeline</h1>
+<p>O nf-core distingue dois níveis de configuração:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Nível</th>
+<th>O que é</th>
+<th>Como definir</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Parâmetros do pipeline</strong> (<code>params</code>)</td>
+<td>Entradas, flags de análise, comportamento de ferramentas</td>
+<td><code>--param</code>, <code>-params-file file.yml</code>, bloco <code>params</code> no config</td>
+</tr>
+<tr class="even">
+<td><strong>Configuração</strong> propriamente dita</td>
+<td>Como o pipeline é executado — executor, recursos, engine de contêiner</td>
+<td><code>nextflow.config</code>, <code>-c custom.config</code>, <code>-profile</code></td>
+</tr>
+</tbody>
+</table>
+<section id="parâmetros-do-pipeline" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="parâmetros-do-pipeline"><span class="header-section-number">6.1</span> Parâmetros do pipeline</h2>
+<section id="listar-todos-os-parâmetros-com---help" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="listar-todos-os-parâmetros-com---help"><span class="header-section-number">6.1.1</span> Listar todos os parâmetros com <code>--help</code></h3>
+<p>Todo pipeline nf-core expõe seus parâmetros com uma flag <code>--help</code>, alimentada pelo <code>nextflow_schema.json</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/demo <span class="at">--help</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A saída agrupa os parâmetros por categoria (Input/output, Reference genome, etc.) com tipo, descrição e valor padrão.</p>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Use <code>nextflow run nf-core/demo --help --show_hidden</code> para ver parâmetros ocultos, como <code>--publish_dir_mode</code>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="definir-valores-de-parâmetros" class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored" data-anchor-id="definir-valores-de-parâmetros"><span class="header-section-number">6.1.2</span> Definir valores de parâmetros</h3>
+<p>Três formas equivalentes:</p>
+<p><strong>1. Linha de comando</strong> (rápido, um valor por vez):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/demo <span class="at">-profile</span> docker,test <span class="at">--outdir</span> demo-results <span class="at">--skip_trim</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>2. Arquivo de parâmetros com <code>-params-file</code></strong> (recomendado):</p>
+<p><code>my_params.yml</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skip_trim</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/demo <span class="at">-profile</span> docker,test <span class="at">--outdir</span> demo-results <span class="at">-params-file</span> my_params.yml</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>3. Arquivo de configuração personalizado com <code>-c</code></strong> — funciona, mas para <code>params</code> prefira as opções 1 e 2 (precedência é mais previsível).</p>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>Booleans na linha de comando</strong>: a partir do Nextflow 26.04, valores da CLI são tratados como strings. Passar <code>--skip_trim</code> puro pode falhar validação. Para booleans, use <code>-params-file</code>.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="validação-automática-de-parâmetros" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="validação-automática-de-parâmetros"><span class="header-section-number">6.2</span> Validação automática de parâmetros</h2>
+<p>O nf-schema valida parâmetros contra o <code>nextflow_schema.json</code> <strong>antes</strong> de executar qualquer processo — falha rápida:</p>
+<p><strong>Parâmetro inexistente</strong> (só warning, mas alerta typos):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/demo <span class="at">-profile</span> docker,test <span class="at">--outdir</span> demo <span class="at">--outDir</span> demo</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># WARN: --outDir: invalid</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Valor de tipo errado</strong> (falha imediata):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/demo <span class="at">-profile</span> docker,test <span class="at">--outdir</span> demo <span class="at">--skip_trim</span> yes</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ERROR: --skip_trim (yes): Value is [string] but should be [boolean]</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Isso economiza horas de execução perdidas por erros de digitação ou tipo.</p>
+</section>
+<section id="configuração-propriamente-dita" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="configuração-propriamente-dita"><span class="header-section-number">6.3</span> Configuração propriamente dita</h2>
+<p>Os arquivos de config do pipeline ficam em <code>pipelines/nf-core/demo/conf/</code>. Os mais importantes:</p>
+<ul>
+<li><strong><code>base.config</code></strong>: define labels de recurso (<code>process_low</code>, <code>process_medium</code>, <code>process_high</code>) — CPUs/memória/tempo por categoria de processo.</li>
+<li><strong><code>modules.config</code></strong>: define <code>ext.args</code> (argumentos extras por ferramenta) e configurações de <code>publishDir</code> por processo.</li>
+<li><strong><code>test.config</code></strong>: perfil de teste com dataset mínimo (ativado por <code>-profile test</code>).</li>
+</ul>
+<p><strong>Regra de ouro</strong>: nunca edite esses arquivos diretamente. Crie um <code>custom.config</code> e passe com <code>-c</code> — os valores dele sobrescrevem os padrões.</p>
+</section>
+<section id="personalizar-recursos-e-argumentos-com--c" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="personalizar-recursos-e-argumentos-com--c"><span class="header-section-number">6.4</span> Personalizar recursos e argumentos com <code>-c</code></h2>
+<p><code>custom.config</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>process <span class="op">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    withName<span class="op">:</span> <span class="st">'FASTQC'</span> <span class="op">{</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>        cpus   <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        memory <span class="op">=</span> <span class="fl">4.</span>GB</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    withName<span class="op">:</span> <span class="st">'SEQTK_TRIM'</span> <span class="op">{</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        ext<span class="op">.</span>args <span class="op">=</span> <span class="st">'-b 5'</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Primeiro bloco: reduz recursos alocados ao FASTQC.</li>
+<li>Segundo bloco: passa a flag extra <code>-b 5</code> ao <code>seqtk trimfq</code> (corta 5 bases do início de cada read).</li>
+</ul>
+<p>Executar:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/demo <span class="at">-profile</span> docker,test <span class="at">--outdir</span> demo-results-custom <span class="at">-c</span> custom.config</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Para confirmar que a flag entrou, procure o hash de SEQTK_TRIM na saída e inspecione o comando:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> work/17/428668<span class="pp">*</span>/.command.sh</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="ext.args-o-padrão-chave-para-customização" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="ext.args-o-padrão-chave-para-customização"><span class="header-section-number">6.5</span> <code>ext.args</code> — o padrão-chave para customização</h2>
+<p>Toda ferramenta CLI tem dezenas de flags. Os módulos nf-core não expõem todas como parâmetros; em vez disso, deixam um “gancho” chamado <code>ext.args</code> que é passado direto para a ferramenta.</p>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><code>ext.args</code> <strong>substitui</strong> o valor padrão do módulo, não adiciona. Se <code>FASTQC</code> já tem <code>ext.args = '--quiet'</code> em <code>conf/modules.config</code> e você define <code>ext.args = '--kmers 8'</code>, o <code>--quiet</code> <strong>desaparece</strong>. Para manter ambos: <code>ext.args = '--quiet --kmers 8'</code>.</p>
+</div>
+</div>
+</div>
+<p>Sempre inspecione <code>conf/modules.config</code> antes de sobrescrever:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-A5</span> <span class="st">"withName: FASTQC"</span> pipelines/nf-core/demo/conf/modules.config</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="exercício-1-customizar-ext.args" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="exercício-1-customizar-ext.args"><span class="header-section-number">6.6</span> Exercício 1 — Customizar <code>ext.args</code></h2>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Enunciado
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Modifique o pipeline <code>nf-core/demo</code> para que o <code>FASTQC</code> rode com a flag extra <code>--kmers 8</code>, <strong>sem perder</strong> o <code>--quiet</code> que já está configurado.</p>
+<p>Depois de rodar, prove que a flag entrou inspecionando o <code>.command.sh</code> do processo FASTQC.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Dica</span>Resposta
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Crie <code>custom.config</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>process <span class="op">{</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    withName<span class="op">:</span> <span class="st">'FASTQC'</span> <span class="op">{</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>        ext<span class="op">.</span>args <span class="op">=</span> <span class="st">'--quiet --kmers 8'</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Rode:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/demo <span class="at">-profile</span> docker,test <span class="at">--outdir</span> demo-ex1 <span class="at">-c</span> custom.config</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Encontre o hash do FASTQC na saída (ex: <code>[ca/5b0f3e]</code>) e inspecione:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> work/ca/5b0f3e<span class="pp">*</span>/.command.sh</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>A linha do <code>fastqc</code> deve conter <code>--quiet --kmers 8</code>.</p>
+<p><strong>Ponto-chave</strong>: se você tivesse escrito só <code>ext.args = '--kmers 8'</code>, o <code>--quiet</code> teria sumido — <code>ext.args</code> substitui, não soma.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="validação-de-entradas" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Validação de entradas</h1>
+<p>Sem validação, você pode esperar horas até um pipeline falhar num arquivo inexistente. O nf-core resolve isso com o plugin <strong>nf-schema</strong>, que valida <strong>antes</strong> de qualquer processo rodar.</p>
+<section id="dois-níveis-de-validação" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="dois-níveis-de-validação"><span class="header-section-number">7.1</span> Dois níveis de validação</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Arquivo</th>
+<th>O que valida</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>nextflow_schema.json</code></td>
+<td>Parâmetros do pipeline (<code>--input</code>, <code>--outdir</code>, <code>--skip_trim</code>, …)</td>
+</tr>
+<tr class="even">
+<td><code>assets/schema_input.json</code></td>
+<td>Estrutura da samplesheet (colunas, tipos, arquivos existentes)</td>
+</tr>
+</tbody>
+</table>
+<p>Ambos usam o padrão <a href="https://json-schema.org/">JSON Schema</a>.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>A validação de samplesheet checa a <strong>estrutura</strong> (colunas certas, arquivos existem, extensão correta), não o <strong>conteúdo</strong> dos arquivos (integridade do FASTQ, por exemplo).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="validação-de-parâmetros" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="validação-de-parâmetros"><span class="header-section-number">7.2</span> Validação de parâmetros</h2>
+<p>O <code>nf-core/demo</code> exibe todos os parâmetros e suas restrições via <code>--help</code>. Cada campo do schema define tipo, formato e regras.</p>
+<p>Exemplo de erro por tipo errado:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/demo <span class="at">-profile</span> docker,test <span class="at">--outdir</span> demo <span class="at">--skip_trim</span> yes</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>ERROR ~ Validation of pipeline parameters failed!
+* --skip_trim (yes): Value is [string] but should be [boolean]</code></pre>
+<p>O pipeline <strong>para antes</strong> de rodar qualquer processo.</p>
+</section>
+<section id="validação-de-samplesheet" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="validação-de-samplesheet"><span class="header-section-number">7.3</span> Validação de samplesheet</h2>
+<p>O schema <code>assets/schema_input.json</code> define para cada coluna: nome, tipo, obrigatoriedade, padrão (regex), se o arquivo precisa existir e a mensagem de erro amigável.</p>
+<p>Exemplo real do <code>nf-core/demo</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"object"</span><span class="fu">,</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"properties"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"sample"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"string"</span><span class="fu">,</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"pattern"</span><span class="fu">:</span> <span class="st">"^</span><span class="ch">\\</span><span class="st">S+$"</span><span class="fu">,</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"errorMessage"</span><span class="fu">:</span> <span class="st">"Sample name must be provided and cannot contain spaces"</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">},</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"fastq_1"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"type"</span><span class="fu">:</span> <span class="st">"string"</span><span class="fu">,</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"format"</span><span class="fu">:</span> <span class="st">"file-path"</span><span class="fu">,</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"exists"</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"pattern"</span><span class="fu">:</span> <span class="st">"^([</span><span class="ch">\\</span><span class="st">S</span><span class="ch">\\</span><span class="st">s]*</span><span class="ch">\\</span><span class="st">/)?[^</span><span class="ch">\\</span><span class="st">s</span><span class="ch">\\</span><span class="st">/]+</span><span class="ch">\\</span><span class="st">.f(ast)?q</span><span class="ch">\\</span><span class="st">.gz$"</span><span class="fu">,</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>            <span class="dt">"errorMessage"</span><span class="fu">:</span> <span class="st">"FastQ file for reads 1 must be provided..."</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">},</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">"fastq_2"</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">"..."</span><span class="fu">:</span> <span class="st">"..."</span> <span class="fu">}</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"required"</span><span class="fu">:</span> <span class="ot">[</span><span class="st">"sample"</span><span class="ot">,</span> <span class="st">"fastq_1"</span><span class="ot">]</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>fastq_1</code> é obrigatório; <code>fastq_2</code> é opcional (suporta single-end).</p>
+</section>
+<section id="demonstração-samplesheet-quebrada" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="demonstração-samplesheet-quebrada"><span class="header-section-number">7.4</span> Demonstração — samplesheet quebrada</h2>
+<p><code>malformed_samplesheet.csv</code>:</p>
+<pre class="csv"><code>sample,fastq_2
+SAMPLE1,/not/a/real/file.fastq.gz</code></pre>
+<p>Este arquivo tem dois problemas: falta a coluna <code>fastq_1</code> e o caminho em <code>fastq_2</code> não existe.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/demo <span class="at">-profile</span> docker,test <span class="at">--outdir</span> demo <span class="at">--input</span> malformed_samplesheet.csv</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>ERROR ~ Validation of pipeline parameters failed!
+
+* --input (malformed_samplesheet.csv): Validation of file failed:
+    -&gt; Entry 1: Error for field 'fastq_2' (/not/a/real/file.fastq.gz): the file
+       or directory does not exist
+    -&gt; Entry 1: Missing required field(s): fastq_1</code></pre>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>O nf-schema reporta <strong>todos os erros de uma vez</strong>, não só o primeiro. Você corrige tudo em uma iteração.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="quando-algo-falha-na-validação" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="quando-algo-falha-na-validação"><span class="header-section-number">7.5</span> Quando algo falha na validação</h2>
+<p>Fluxo de debug:</p>
+<ol type="1">
+<li>Ler a mensagem — quase sempre diz exatamente qual campo/valor está errado.</li>
+<li>Se for parâmetro: consultar <code>nextflow run &lt;pipeline&gt; --help</code> para ver tipo/formato esperado.</li>
+<li>Se for samplesheet: abrir <code>assets/schema_input.json</code> do pipeline para ver o schema exato.</li>
+<li>Corrigir e reexecutar — não precisa <code>-resume</code>, nada foi computado ainda.</li>
+</ol>
+</section>
+<section id="exercício-2-debugando-uma-samplesheet" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="exercício-2-debugando-uma-samplesheet"><span class="header-section-number">7.6</span> Exercício 2 — Debugando uma samplesheet</h2>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Enunciado
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Crie uma samplesheet <code>bad_sheet.csv</code> que quebre a validação de <strong>três formas diferentes ao mesmo tempo</strong>:</p>
+<ol type="1">
+<li>Uma coluna obrigatória faltando</li>
+<li>Um caminho de arquivo com extensão inválida</li>
+<li>Um nome de amostra com espaço em branco</li>
+</ol>
+<p>Rode o pipeline e observe que os três erros aparecem numa mesma execução.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Dica</span>Resposta
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><code>bad_sheet.csv</code>:</p>
+<pre class="csv"><code>sample,fastq_2
+SAMPLE UM,/tmp/reads.txt</code></pre>
+<p>Problemas:</p>
+<ol type="1">
+<li>Falta a coluna <code>fastq_1</code> (obrigatória — <code>required: ["sample", "fastq_1"]</code>)</li>
+<li><code>.txt</code> não bate com o padrão <code>.f(ast)?q\.gz$</code></li>
+<li><code>SAMPLE UM</code> tem espaço — falha no padrão <code>^\S+$</code></li>
+</ol>
+<p>Rode:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/demo <span class="at">-profile</span> docker,test <span class="at">--outdir</span> demo-ex2 <span class="at">--input</span> bad_sheet.csv</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>O nf-schema reporta os três erros de uma vez — você corrige tudo numa iteração só, sem ter que rodar três vezes.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="usando-módulos-nf-core" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Usando módulos nf-core</h1>
+<p>Todo pipeline nf-core é composto por <strong>módulos</strong> — processos que envolvem uma ferramenta específica (FASTQC, samtools, GATK…). Muitos são compartilhados entre pipelines através do repositório <a href="https://nf-co.re/modules">nf-core/modules</a>.</p>
+<p>Isso significa que, ao customizar ou construir um pipeline, você raramente precisa escrever um processo do zero: instale o módulo pronto e use.</p>
+<section id="buscar-módulos-disponíveis" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="buscar-módulos-disponíveis"><span class="header-section-number">8.1</span> Buscar módulos disponíveis</h2>
+<p>Pelo site: <a href="https://nf-co.re/modules">nf-co.re/modules</a> — busca com filtro e página de doc para cada módulo (inputs, outputs, exemplo de uso).</p>
+<p>Pela linha de comando (requer <code>nf-core tools</code> instalado):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nf-core</span> modules list remote                        <span class="co"># lista todos</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="ex">nf-core</span> modules list remote <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-i</span> samtools     <span class="co"># filtra</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="ex">nf-core</span> modules info samtools/view                 <span class="co"># detalhes de um módulo</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Convenção de nomes: o <code>/</code> na URL vira <code>_</code> em alguns contextos. <code>samtools/view</code> = pacote samtools, comando view. Módulos com um único comando principal têm nome curto: <code>fastqc</code>, <code>multiqc</code>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="instalar-um-módulo-num-pipeline" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="instalar-um-módulo-num-pipeline"><span class="header-section-number">8.2</span> Instalar um módulo num pipeline</h2>
+<p>Dentro do diretório raiz de um pipeline nf-core:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nf-core</span> modules install samtools/view</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Isso faz três coisas:</p>
+<ol type="1">
+<li>Baixa os arquivos do módulo para <code>modules/nf-core/samtools/view/</code>.</li>
+<li>Registra o módulo em <code>modules.json</code> (com SHA para reprodutibilidade).</li>
+<li>Devolve a linha de <code>include</code> pronta para colar no workflow.</li>
+</ol>
+</section>
+<section id="estrutura-do-módulo-instalado" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="estrutura-do-módulo-instalado"><span class="header-section-number">8.3</span> Estrutura do módulo instalado</h2>
+<pre><code>modules/nf-core/samtools/view/
+├── main.nf              # o processo em si
+├── meta.yml             # descrição, inputs, outputs
+├── environment.yml      # dependências conda
+└── tests/               # testes automatizados</code></pre>
+</section>
+<section id="importar-e-usar" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="importar-e-usar"><span class="header-section-number">8.4</span> Importar e usar</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>include <span class="op">{</span> SAMTOOLS_VIEW <span class="op">}</span> from <span class="st">'../modules/nf-core/samtools/view/main'</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Convenção: nomes de módulos importados ficam em <strong>MAIÚSCULAS</strong>.</p>
+</section>
+<section id="atualizar-e-desinstalar" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="atualizar-e-desinstalar"><span class="header-section-number">8.5</span> Atualizar e desinstalar</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nf-core</span> modules update samtools/view     <span class="co"># atualiza para versão mais recente</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="ex">nf-core</span> modules uninstall samtools/view  <span class="co"># remove</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="personalização-o-padrão-ext.args-de-novo" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="personalização-o-padrão-ext.args-de-novo"><span class="header-section-number">8.6</span> Personalização — o padrão <code>ext.args</code> de novo</h2>
+<p>Como todo módulo nf-core respeita <code>ext.args</code>, você quase nunca precisa <strong>editar</strong> o código do módulo. Basta passar os argumentos extras via <code>custom.config</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>process <span class="op">{</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    withName<span class="op">:</span> <span class="st">'SAMTOOLS_VIEW'</span> <span class="op">{</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>        ext<span class="op">.</span>args <span class="op">=</span> <span class="st">'-b -q 30 -f 2'</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Se precisar de algo que <code>ext.args</code> não cobre (mudar a lógica do processo, adicionar um output), aí sim vale editar. Mas antes, <strong>cheque se o módulo aceita a customização por argumento</strong> — quase sempre aceita.</p>
+</section>
+<section id="exercício-3-adicionando-um-módulo-nf-core" class="level2" data-number="8.7">
+<h2 data-number="8.7" class="anchored" data-anchor-id="exercício-3-adicionando-um-módulo-nf-core"><span class="header-section-number">8.7</span> Exercício 3 — Adicionando um módulo nf-core</h2>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Enunciado
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Suponha que você precisa adicionar <code>samtools/faidx</code> a um pipeline hipotético para indexar um FASTA.</p>
+<p>Responda:</p>
+<ol type="a">
+<li>Como você descobre se o módulo existe e o que ele espera de entrada?</li>
+<li>Qual comando instala o módulo no diretório do pipeline?</li>
+<li>Escreva a linha <code>include</code> para importá-lo no workflow.</li>
+<li>Se você quisesse passar a flag extra <code>--fai-idx-name</code> ao <code>samtools faidx</code>, qual seria o bloco <code>custom.config</code>?</li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Dica</span>Resposta
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>a)</strong> Pelo CLI:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nf-core</span> modules info samtools/faidx</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>ou pelo site: <a href="https://nf-co.re/modules/samtools/faidx">nf-co.re/modules/samtools/faidx</a>. Ambos mostram inputs/outputs esperados.</p>
+<p><strong>b)</strong> Dentro da raiz do pipeline:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nf-core</span> modules install samtools/faidx</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Isso cria <code>modules/nf-core/samtools/faidx/</code> e registra em <code>modules.json</code>.</p>
+<p><strong>c)</strong> No arquivo de workflow:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>include <span class="op">{</span> SAMTOOLS_FAIDX <span class="op">}</span> from <span class="st">'../modules/nf-core/samtools/faidx/main'</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>d)</strong> No <code>custom.config</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>process <span class="op">{</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    withName<span class="op">:</span> <span class="st">'SAMTOOLS_FAIDX'</span> <span class="op">{</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>        ext<span class="op">.</span>args <span class="op">=</span> <span class="st">'--fai-idx-name custom.fai'</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Sem editar o módulo. Mesmo padrão para qualquer ferramenta nf-core.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="próximos-passos" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Próximos passos</h1>
+<p>Você viu tudo com o <code>nf-core/demo</code>, mas o padrão é o mesmo para qualquer pipeline da coleção. O que muda entre eles é o número de parâmetros, o volume de dados e o tempo de execução — mas o mecanismo de customização (<code>-profile</code>, <code>-params-file</code>, <code>-c</code> com <code>ext.args</code>) é idêntico.</p>
+<p>Pipelines populares para começar a explorar:</p>
+<ul>
+<li><strong><a href="https://nf-co.re/rnaseq">nf-core/rnaseq</a></strong> — quantificação de expressão gênica a partir de RNA-seq</li>
+<li><strong><a href="https://nf-co.re/sarek">nf-core/sarek</a></strong> — chamada de variantes germinativas e somáticas (WGS/WES)</li>
+<li><strong><a href="https://nf-co.re/ampliseq">nf-core/ampliseq</a></strong> — análise de amplicons (16S, ITS)</li>
+<li><strong><a href="https://nf-co.re/atacseq">nf-core/atacseq</a></strong> — ATAC-seq</li>
+<li><strong><a href="https://nf-co.re/mag">nf-core/mag</a></strong> — metagenômica assembly</li>
+</ul>
+<p>Fluxo recomendado para adotar um pipeline novo:</p>
+<ol type="1">
+<li>Ler a aba <strong>Introduction</strong> e o <strong>subway map</strong> no site</li>
+<li>Ler a aba <strong>Parameters</strong> e escolher os obrigatórios</li>
+<li>Rodar o <code>-profile test</code> para confirmar que o ambiente funciona</li>
+<li>Preparar a samplesheet no formato do <code>assets/schema_input.json</code></li>
+<li>Rodar com seus dados reais + <code>custom.config</code> para ajustar recursos/<code>ext.args</code></li>
+</ol>
+<p>Comunidade: <a href="https://nf-co.re/join/slack">nf-core Slack</a> para tirar dúvidas — muito ativa e receptiva.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiada");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiada");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/dalmolingroup\.github\.io\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./01_3_hello_nextflow.html" class="pagination-link" aria-label="Componentes de um Workflow">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Componentes de um Workflow</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Treinamento em Nextflow é um curso adaptado de <a href="https://training.nextflow.io/latest/pt/">training nextflow</a> por membros do <a href="https://dalmolingroup.imd.ufrn.br/">Dalmolin Group</a>.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
