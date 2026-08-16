@@ -1,0 +1,28 @@
+# Hello nf-core
+
+## O que é nf-core
+
+nf-core é uma comunidade global que desenvolve e mantém pipelines Nextflow **curados, revisados por pares e prontos para produção**. Todos seguem o mesmo template, então uma vez que você aprende a estrutura, sabe navegar em qualquer pipeline da coleção.
+
+O que a comunidade entrega:
+
+- **Pipelines** ([nf-co.re/pipelines](https://nf-co.re/pipelines)) — mais de 100, cobrindo genômica, transcriptômica, proteômica, metagenômica, etc.
+- **Módulos reutilizáveis** ([nf-co.re/modules](https://nf-co.re/modules)) — processos wrapping ferramentas comuns (FASTQC, samtools, GATK...) que qualquer pipeline pode instalar.
+- **Configurações institucionais** ([nf-co.re/configs](https://nf-co.re/configs)) — perfis prontos para HPCs de dezenas de universidades.
+- **Ferramenta CLI `nf-core`** — para criar, testar e instalar pipelines/módulos.
+
+O ganho prático para quem faz bioinformática: você não escreve pipelines do zero, você **usa** e **customiza** o que a comunidade já validou.
+
+## Configurar o diretório de trabalho
+
+Mude de diretório agora executando este comando no terminal:
+
+```bash
+cd hello_nfcore
+```
+
+Nesta primeira parte do curso de treinamento Hello nf-core, mostramos como encontrar e experimentar um pipeline do nf-core, configurar e personalizar sua execução para suas necessidades, e entender como a validação de entrada protege contra erros comuns.
+
+Vamos usar um pipeline chamado [nf-core/demo](https://nf-co.re/demo/1.2.0/) que é mantido pelo projeto nf-core como parte de seu inventário de pipelines para fins de demonstração e treinamento.
+
+Certifique-se de que seu diretório de trabalho esteja definido como hello-nf-core/
