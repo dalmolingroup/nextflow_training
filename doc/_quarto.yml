@@ -15,7 +15,9 @@ book:
         - 01_3_hello_nextflow.qmd
     - part: "Hello nf-core"
       chapters:
-        - 02_hello_nf-core.qmd
+        - 02_1_hello_nf-core.qmd
+        - 02_2_hello_nf-core.qmd
+
   reader-mode: true
   favicon: content/images/dalmolin_icon.svg
   site-url: https://dalmolingroup.github.io/
