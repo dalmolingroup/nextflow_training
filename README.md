@@ -79,19 +79,6 @@ nf-core --version
 
 Use o [GitHub Codespace](https://codespaces.new/nextflow-io/training?quickstart=1) mantido pela Seqera — já vem com tudo pronto, incluindo VS Code no navegador.
 
----
-
-## 🚀 Como executar o material
-
-Clone o repositório e abra o site local do curso:
-
-```bash
-git clone git@github.com:dalmolingroup/nextflow_training.git
-cd nextflow_training/doc
-quarto preview
-```
-
-Ou acesse diretamente a versão publicada em: **<https://dalmolingroup.github.io/nextflow_training/>**
 
 ---
 
