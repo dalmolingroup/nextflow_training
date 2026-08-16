@@ -8,7 +8,7 @@
 | **Público-alvo** | Alunos de graduação e pós-graduação, pesquisadores e profissionais de bioinformática. |
 | **Nível** | **Iniciante/Intermediário** |
 | **Tempo estimado** | 300 minutos (5 horas) |
-| **Material do curso** | [📖 Acesse o site do curso](https://dalmolingroup.github.io/nextflow_training/) |
+| **Material do curso** | [](https://dalmolingroup.github.io/nextflow_training/) |
 
 ---
 
