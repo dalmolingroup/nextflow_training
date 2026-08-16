@@ -1045,7 +1045,7 @@ Adicione esta pequena linha ao bloco workflow:
 
 \NormalTok{    main}\OperatorTok{:}
     \CommentTok{// cria um canal para entradas}
-\NormalTok{    greeting\_ch }\OperatorTok{=}\NormalTok{ channel}\OperatorTok{.}\FunctionTok{of}\OperatorTok{(}\StringTok{\textquotesingle{}Hello Channels!\textquotesingle{}}\OperatorTok{)}
+\NormalTok{    greeting\_ch }\OperatorTok{=}\NormalTok{ channel}\OperatorTok{.}\FunctionTok{of}\OperatorTok{(}\StringTok{\textquotesingle{}Hello\textquotesingle{}}\OperatorTok{,}\StringTok{\textquotesingle{}Bonjour\textquotesingle{}}\OperatorTok{,}\StringTok{\textquotesingle{}Hola\textquotesingle{}}\OperatorTok{,} \StringTok{"Oi"}\OperatorTok{)}
                          \OperatorTok{.}\FunctionTok{view}\OperatorTok{()}
     \CommentTok{// emite uma saudação}
     \FunctionTok{sayHello}\OperatorTok{(}\NormalTok{greeting\_ch}\OperatorTok{)}
@@ -1102,16 +1102,11 @@ pessoas constroem fluxos de trabalho reais:
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Adicionar uma segunda etapa que converte a saudação para maiúsculas.
+  Adicionar \textbf{uma segunda etapa que converte a saudação para
+  maiúsculas.}
 \item
   Adicionar uma terceira etapa que coleta todas as saudações
   transformadas e as escreve em um único arquivo.
-\item
-  Adicionar um parâmetro para nomear o arquivo de saída final e passá-lo
-  como uma entrada secundária para a etapa de coleta.
-\item
-  Fazer a etapa de coleta também reportar uma estatística simples sobre
-  o que foi processado.
 \end{enumerate}
 
 Execute \href{../hello_nextflow/hello-workflow.nf}{hello-workflow.nf} :
@@ -1377,11 +1372,10 @@ Tentem modularizar o processo convertToUpper()
 
 \section{Containers}\label{containers}
 
-Nas Partes 1-4 deste curso de treinamento, você aprendeu a usar os
-blocos de construção básicos do Nextflow para montar um fluxo de
-trabalho simples capaz de processar texto, paralelizar a execução se
-houvesse múltiplas entradas e coletar os resultados para processamento
-adicional.
+Nas Partes 1-4 deste curso de treinamento, vimos como usar os blocos de
+construção básicos do Nextflow para montar um fluxo de trabalho simples
+capaz de processar texto, paralelizar a execução se houvesse múltiplas
+entradas e coletar os resultados para processamento adicional.
 
 No entanto, você estava limitado às ferramentas básicas do UNIX
 disponíveis no seu ambiente. Tarefas do mundo real frequentemente
@@ -1424,8 +1418,13 @@ Use o contêiner para executar cowpy como um comando único
 \end{Highlighting}
 \end{Shaded}
 
-Execute o(s) comando(s) da ferramenta desejada
-\texttt{yirdtk\ echo\ "Hello\ Containers"\ \textbar{}\ cowpy\ -c\ tux}
+Execute os seguintes comandos dentro do container:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{echo} \StringTok{"Hello Containers"} \KeywordTok{|} \ExtensionTok{cowpy} \AttributeTok{{-}c}\NormalTok{ tux}
+\end{Highlighting}
+\end{Shaded}
 
 \subsection{Use contêineres no
 Nextflow}\label{use-contuxeaineres-no-nextflow}
@@ -2008,6 +2007,52 @@ simbólico apontando para a cópia do pipeline que foi baixada:
 \end{Highlighting}
 \end{Shaded}
 
+\section{Estrutura de um pipeline
+nf-core}\label{estrutura-de-um-pipeline-nf-core}
+
+Todo pipeline nf-core segue o mesmo layout. Aprender esse mapa uma vez
+te economiza tempo em qualquer pipeline da coleção.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{tree} \AttributeTok{{-}L}\NormalTok{ 1 pipelines/nf{-}core/demo}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+pipelines/nf-core/demo
+├── main.nf                # ponto de entrada — quem você chama com `nextflow run`
+├── workflows/             # workflows principais (a lógica de alto nível)
+├── subworkflows/          # blocos reutilizáveis (locais e nf-core)
+├── modules/               # processos individuais
+│   ├── local/             #   → escritos pelo pipeline
+│   └── nf-core/           #   → instalados do repositório nf-core/modules
+├── conf/                  # todos os arquivos de configuração
+│   ├── base.config        #   → labels de recurso (process_low/medium/high)
+│   ├── modules.config     #   → ext.args e publishDir por processo  ★ AQUI VOCÊ CUSTOMIZA
+│   ├── test.config        #   → perfil de teste
+│   └── ...
+├── assets/                # samplesheets exemplo + schemas de entrada
+├── docs/                  # documentação
+├── nextflow.config        # config raiz (carrega tudo em conf/)
+└── nextflow_schema.json   # schema dos parâmetros (alimenta --help)
+\end{verbatim}
+
+Os três lugares onde você mais vai olhar no dia-a-dia:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{\texttt{conf/modules.config}} --- para descobrir quais
+  \texttt{ext.args} já existem e como sobrescrevê-los
+\item
+  \textbf{\texttt{nextflow\_schema.json}} --- para entender parâmetros
+  aceitos (ou use \texttt{-\/-help})
+\item
+  \textbf{\texttt{assets/schema\_input.json}} --- para saber exatamente
+  o que sua samplesheet precisa ter
+\end{itemize}
+
 \section{Examinar o perfil de teste}\label{examinar-o-perfil-de-teste}
 
 É uma boa prática verificar o que o perfil de teste de um pipeline
@@ -2261,6 +2306,60 @@ Sempre inspecione \texttt{conf/modules.config} antes de sobrescrever:
 \end{Highlighting}
 \end{Shaded}
 
+\section{\texorpdfstring{Exercício 1 --- Customizar
+\texttt{ext.args}}{Exercício 1 --- Customizar ext.args}}\label{exercuxedcio-1-customizar-ext.args}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Enunciado}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Modifique o pipeline \texttt{nf-core/demo} para que o \texttt{FASTQC}
+rode com a flag extra \texttt{-\/-kmers\ 8}, \textbf{sem perder} o
+\texttt{-\/-quiet} que já está configurado.
+
+Depois de rodar, prove que a flag entrou inspecionando o
+\texttt{.command.sh} do processo FASTQC.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Resposta}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Crie \texttt{custom.config}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{process }\OperatorTok{\{}
+\NormalTok{    withName}\OperatorTok{:} \StringTok{\textquotesingle{}FASTQC\textquotesingle{}} \OperatorTok{\{}
+\NormalTok{        ext}\OperatorTok{.}\NormalTok{args }\OperatorTok{=} \StringTok{\textquotesingle{}{-}{-}quiet {-}{-}kmers 8\textquotesingle{}}
+    \OperatorTok{\}}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Rode:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{nextflow}\NormalTok{ run nf{-}core/demo }\AttributeTok{{-}profile}\NormalTok{ docker,test }\AttributeTok{{-}{-}outdir}\NormalTok{ demo{-}ex1 }\AttributeTok{{-}c}\NormalTok{ custom.config}
+\end{Highlighting}
+\end{Shaded}
+
+Encontre o hash do FASTQC na saída (ex: \texttt{{[}ca/5b0f3e{]}}) e
+inspecione:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{ work/ca/5b0f3e}\PreprocessorTok{*}\NormalTok{/.command.sh}
+\end{Highlighting}
+\end{Shaded}
+
+A linha do \texttt{fastqc} deve conter \texttt{-\/-quiet\ -\/-kmers\ 8}.
+
+\textbf{Ponto-chave}: se você tivesse escrito só
+\texttt{ext.args\ =\ \textquotesingle{}-\/-kmers\ 8\textquotesingle{}},
+o \texttt{-\/-quiet} teria sumido --- \texttt{ext.args} substitui, não
+soma.
+
+\end{tcolorbox}
+
 \chapter{Validação de entradas}\label{validauxe7uxe3o-de-entradas}
 
 Sem validação, você pode esperar horas até um pipeline falhar num
@@ -2419,6 +2518,70 @@ Fluxo de debug:
   computado ainda.
 \end{enumerate}
 
+\section{Exercício 2 --- Debugando uma
+samplesheet}\label{exercuxedcio-2-debugando-uma-samplesheet}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Enunciado}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Crie uma samplesheet \texttt{bad\_sheet.csv} que quebre a validação de
+\textbf{três formas diferentes ao mesmo tempo}:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Uma coluna obrigatória faltando
+\item
+  Um caminho de arquivo com extensão inválida
+\item
+  Um nome de amostra com espaço em branco
+\end{enumerate}
+
+Rode o pipeline e observe que os três erros aparecem numa mesma
+execução.
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Resposta}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\texttt{bad\_sheet.csv}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sample,fastq\_2}
+\NormalTok{SAMPLE UM,/tmp/reads.txt}
+\end{Highlighting}
+\end{Shaded}
+
+Problemas:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Falta a coluna \texttt{fastq\_1} (obrigatória ---
+  \texttt{required:\ {[}"sample",\ "fastq\_1"{]}})
+\item
+  \texttt{.txt} não bate com o padrão
+  \texttt{.f(ast)?q\textbackslash{}.gz\$}
+\item
+  \texttt{SAMPLE\ UM} tem espaço --- falha no padrão
+  \texttt{\^{}\textbackslash{}S+\$}
+\end{enumerate}
+
+Rode:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{nextflow}\NormalTok{ run nf{-}core/demo }\AttributeTok{{-}profile}\NormalTok{ docker,test }\AttributeTok{{-}{-}outdir}\NormalTok{ demo{-}ex2 }\AttributeTok{{-}{-}input}\NormalTok{ bad\_sheet.csv}
+\end{Highlighting}
+\end{Shaded}
+
+O nf-schema reporta os três erros de uma vez --- você corrige tudo numa
+iteração só, sem ter que rodar três vezes.
+
+\end{tcolorbox}
+
 \chapter{Usando módulos nf-core}\label{usando-muxf3dulos-nf-core}
 
 Todo pipeline nf-core é composto por \textbf{módulos} --- processos que
@@ -2534,6 +2697,131 @@ Se precisar de algo que \texttt{ext.args} não cobre (mudar a lógica do
 processo, adicionar um output), aí sim vale editar. Mas antes,
 \textbf{cheque se o módulo aceita a customização por argumento} ---
 quase sempre aceita.
+
+\section{Exercício 3 --- Adicionando um módulo
+nf-core}\label{exercuxedcio-3-adicionando-um-muxf3dulo-nf-core}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-note-color!10!white, colframe=quarto-callout-note-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Enunciado}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+Suponha que você precisa adicionar \texttt{samtools/faidx} a um pipeline
+hipotético para indexar um FASTA.
+
+Responda:
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi})}
+\tightlist
+\item
+  Como você descobre se o módulo existe e o que ele espera de entrada?
+\item
+  Qual comando instala o módulo no diretório do pipeline?
+\item
+  Escreva a linha \texttt{include} para importá-lo no workflow.
+\item
+  Se você quisesse passar a flag extra \texttt{-\/-fai-idx-name} ao
+  \texttt{samtools\ faidx}, qual seria o bloco \texttt{custom.config}?
+\end{enumerate}
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-tip-color!10!white, colframe=quarto-callout-tip-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{Resposta}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+\textbf{a)} Pelo CLI:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{nf{-}core}\NormalTok{ modules info samtools/faidx}
+\end{Highlighting}
+\end{Shaded}
+
+ou pelo site:
+\href{https://nf-co.re/modules/samtools/faidx}{nf-co.re/modules/samtools/faidx}.
+Ambos mostram inputs/outputs esperados.
+
+\textbf{b)} Dentro da raiz do pipeline:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{nf{-}core}\NormalTok{ modules install samtools/faidx}
+\end{Highlighting}
+\end{Shaded}
+
+Isso cria \texttt{modules/nf-core/samtools/faidx/} e registra em
+\texttt{modules.json}.
+
+\textbf{c)} No arquivo de workflow:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{include }\OperatorTok{\{}\NormalTok{ SAMTOOLS\_FAIDX }\OperatorTok{\}}\NormalTok{ from }\StringTok{\textquotesingle{}../modules/nf{-}core/samtools/faidx/main\textquotesingle{}}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{d)} No \texttt{custom.config}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{process }\OperatorTok{\{}
+\NormalTok{    withName}\OperatorTok{:} \StringTok{\textquotesingle{}SAMTOOLS\_FAIDX\textquotesingle{}} \OperatorTok{\{}
+\NormalTok{        ext}\OperatorTok{.}\NormalTok{args }\OperatorTok{=} \StringTok{\textquotesingle{}{-}{-}fai{-}idx{-}name custom.fai\textquotesingle{}}
+    \OperatorTok{\}}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Sem editar o módulo. Mesmo padrão para qualquer ferramenta nf-core.
+
+\end{tcolorbox}
+
+\chapter{Próximos passos}\label{pruxf3ximos-passos}
+
+Você viu tudo com o \texttt{nf-core/demo}, mas o padrão é o mesmo para
+qualquer pipeline da coleção. O que muda entre eles é o número de
+parâmetros, o volume de dados e o tempo de execução --- mas o mecanismo
+de customização (\texttt{-profile}, \texttt{-params-file}, \texttt{-c}
+com \texttt{ext.args}) é idêntico.
+
+Pipelines populares para começar a explorar:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{\href{https://nf-co.re/rnaseq}{nf-core/rnaseq}} ---
+  quantificação de expressão gênica a partir de RNA-seq
+\item
+  \textbf{\href{https://nf-co.re/sarek}{nf-core/sarek}} --- chamada de
+  variantes germinativas e somáticas (WGS/WES)
+\item
+  \textbf{\href{https://nf-co.re/ampliseq}{nf-core/ampliseq}} ---
+  análise de amplicons (16S, ITS)
+\item
+  \textbf{\href{https://nf-co.re/atacseq}{nf-core/atacseq}} --- ATAC-seq
+\item
+  \textbf{\href{https://nf-co.re/mag}{nf-core/mag}} --- metagenômica
+  assembly
+\end{itemize}
+
+Fluxo recomendado para adotar um pipeline novo:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Ler a aba \textbf{Introduction} e o \textbf{subway map} no site
+\item
+  Ler a aba \textbf{Parameters} e escolher os obrigatórios
+\item
+  Rodar o \texttt{-profile\ test} para confirmar que o ambiente funciona
+\item
+  Preparar a samplesheet no formato do
+  \texttt{assets/schema\_input.json}
+\item
+  Rodar com seus dados reais + \texttt{custom.config} para ajustar
+  recursos/\texttt{ext.args}
+\end{enumerate}
+
+Comunidade: \href{https://nf-co.re/join/slack}{nf-core Slack} para tirar
+dúvidas --- muito ativa e receptiva.
 
 
 

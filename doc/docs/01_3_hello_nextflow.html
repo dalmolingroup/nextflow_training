@@ -465,7 +465,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    main<span class="op">:</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// cria um canal para entradas</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    greeting_ch <span class="op">=</span> channel<span class="op">.</span><span class="fu">of</span><span class="op">(</span><span class="st">'Hello Channels!'</span><span class="op">)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    greeting_ch <span class="op">=</span> channel<span class="op">.</span><span class="fu">of</span><span class="op">(</span><span class="st">'Hello'</span><span class="op">,</span><span class="st">'Bonjour'</span><span class="op">,</span><span class="st">'Hola'</span><span class="op">,</span> <span class="st">"Oi"</span><span class="op">)</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                         <span class="op">.</span><span class="fu">view</span><span class="op">()</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// emite uma saudação</span></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sayHello</span><span class="op">(</span>greeting_ch<span class="op">)</span></span>
@@ -491,10 +491,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>Para demonstrar, continuaremos construindo sobre o exemplo Hello World agnóstico de domínio das Partes 1 e 2. Desta vez, faremos as seguintes alterações em nosso fluxo de trabalho para refletir melhor como as pessoas constroem fluxos de trabalho reais:</p>
 <ol type="1">
-<li>Adicionar uma segunda etapa que converte a saudação para maiúsculas.</li>
+<li>Adicionar <strong>uma segunda etapa que converte a saudação para maiúsculas.</strong></li>
 <li>Adicionar uma terceira etapa que coleta todas as saudações transformadas e as escreve em um único arquivo.</li>
-<li>Adicionar um parâmetro para nomear o arquivo de saída final e passá-lo como uma entrada secundária para a etapa de coleta.</li>
-<li>Fazer a etapa de coleta também reportar uma estatística simples sobre o que foi processado.</li>
 </ol>
 <p>Execute <a href="../hello_nextflow/hello-workflow.nf">hello-workflow.nf</a> :</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run hello-workflow.nf</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
@@ -641,7 +639,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="containers" class="level2" data-number="4.5">
 <h2 data-number="4.5" class="anchored" data-anchor-id="containers"><span class="header-section-number">4.5</span> Containers</h2>
-<p>Nas Partes 1-4 deste curso de treinamento, você aprendeu a usar os blocos de construção básicos do Nextflow para montar um fluxo de trabalho simples capaz de processar texto, paralelizar a execução se houvesse múltiplas entradas e coletar os resultados para processamento adicional.</p>
+<p>Nas Partes 1-4 deste curso de treinamento, vimos como usar os blocos de construção básicos do Nextflow para montar um fluxo de trabalho simples capaz de processar texto, paralelizar a execução se houvesse múltiplas entradas e coletar os resultados para processamento adicional.</p>
 <p>No entanto, você estava limitado às ferramentas básicas do UNIX disponíveis no seu ambiente. Tarefas do mundo real frequentemente requerem várias ferramentas e pacotes não incluídos por padrão. Normalmente, você precisaria instalar essas ferramentas, gerenciar suas dependências e resolver quaisquer conflitos.</p>
 <p>Tudo isso é muito tedioso e irritante, então vamos mostrar como usar contêineres para resolver esse problema de forma muito mais conveniente.</p>
 <p>Um contêiner é uma unidade de software leve, autônoma e executável criada a partir de uma imagem de contêiner que inclui tudo o que é necessário para executar uma aplicação, incluindo código, bibliotecas do sistema e configurações. Como você pode imaginar, isso será muito útil para tornar seus pipelines mais reproduzíveis.</p>
@@ -652,7 +650,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull <span class="st">'community.wave.seqera.io/library/cowpy:1.1.5--3db457ae1977a273'</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Use o contêiner para executar cowpy como um comando único</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--rm</span> <span class="at">-it</span> <span class="st">'community.wave.seqera.io/library/cowpy:1.1.5--3db457ae1977a273'</span> /bin/bash</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Execute o(s) comando(s) da ferramenta desejada <code>tysiok echo "Hello Containers" | cowpy -c tux</code></p>
+<p>Execute os seguintes comandos dentro do container:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Hello Containers"</span> <span class="kw">|</span> <span class="ex">cowpy</span> <span class="at">-c</span> tux</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="use-contêineres-no-nextflow" class="level3" data-number="4.5.1">
 <h3 data-number="4.5.1" class="anchored" data-anchor-id="use-contêineres-no-nextflow"><span class="header-section-number">4.5.1</span> Use contêineres no Nextflow</h3>
 <p>O Nextflow tem suporte integrado para executar processos dentro de contêineres para permitir que você execute ferramentas que não tem instaladas no seu ambiente de computação. Isso significa que você pode usar qualquer imagem de contêiner que desejar para executar seus processos, e o Nextflow cuidará de puxar a imagem, montar os dados e executar o processo dentro dela.</p>
@@ -681,90 +680,90 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Podemos modelar nosso processo cowpy nos outros processos que escrevemos anteriormente.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>#<span class="op">!</span><span class="st">/usr/</span>bin<span class="op">/</span>env nextflow</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Gera arte ASCII com cowpy</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>process cowpy <span class="op">{</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    input<span class="op">:</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    path input_file</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    val character</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    output<span class="op">:</span></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    path <span class="st">"cowpy-</span><span class="ss">${</span>input_file<span class="ss">}</span><span class="st">"</span></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    script<span class="op">:</span></span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"""</span></span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="st">    cat </span><span class="ss">${</span>input_file<span class="ss">}</span><span class="st"> | cowpy -c "</span><span class="ss">${</span>character<span class="ss">}</span><span class="st">" &gt; cowpy-</span><span class="ss">${</span>input_file<span class="ss">}</span></span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>#<span class="op">!</span><span class="st">/usr/</span>bin<span class="op">/</span>env nextflow</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Gera arte ASCII com cowpy</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>process cowpy <span class="op">{</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    input<span class="op">:</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    path input_file</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    val character</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    output<span class="op">:</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    path <span class="st">"cowpy-</span><span class="ss">${</span>input_file<span class="ss">}</span><span class="st">"</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    script<span class="op">:</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"""</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="st">    cat </span><span class="ss">${</span>input_file<span class="ss">}</span><span class="st"> | cowpy -c "</span><span class="ss">${</span>character<span class="ss">}</span><span class="st">" &gt; cowpy-</span><span class="ss">${</span>input_file<span class="ss">}</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <p>O processo espera um input_file contendo as saudações, bem como um valor character.</p>
 <p>A saída será um novo arquivo de texto contendo a arte ASCII gerada pela ferramenta cowpy.</p>
 <p>Adicione cowpy ao fluxo de trabalho</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Inclui módulos</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>include <span class="op">{</span> sayHello <span class="op">}</span> from <span class="st">'./modules/sayHello.nf'</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>include <span class="op">{</span> convertToUpper <span class="op">}</span> from <span class="st">'./modules/convertToUpper.nf'</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>include <span class="op">{</span> collectGreetings <span class="op">}</span> from <span class="st">'./modules/collectGreetings.nf'</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>include <span class="op">{</span> cowpy <span class="op">}</span> from <span class="st">'./modules/cowpy.nf'</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Inclui módulos</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>include <span class="op">{</span> sayHello <span class="op">}</span> from <span class="st">'./modules/sayHello.nf'</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>include <span class="op">{</span> convertToUpper <span class="op">}</span> from <span class="st">'./modules/convertToUpper.nf'</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>include <span class="op">{</span> collectGreetings <span class="op">}</span> from <span class="st">'./modules/collectGreetings.nf'</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>include <span class="op">{</span> cowpy <span class="op">}</span> from <span class="st">'./modules/cowpy.nf'</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Vamos conectar o processo cowpy() à saída do processo collectGreetings(), que como você deve se lembrar produz duas saídas:</p>
 <ul>
 <li>collectGreetings.out.outfile contém o arquivo de saída <em>&lt;–o que queremos</em></li>
 <li>collectGreetings.out.report contém o arquivo de relatório com a contagem de saudações por lote</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>    main<span class="op">:</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// cria um canal para entradas de um arquivo CSV</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    greeting_ch <span class="op">=</span> channel<span class="op">.</span><span class="fu">fromPath</span><span class="op">(</span>params<span class="op">.</span>input<span class="op">)</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                        <span class="op">.</span><span class="fu">splitCsv</span><span class="op">()</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                        <span class="op">.</span><span class="fu">map</span> <span class="op">{</span> line <span class="op">-&gt;</span> line<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">}</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// emite uma saudação</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sayHello</span><span class="op">(</span>greeting_ch<span class="op">)</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// converte a saudação para maiúsculas</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">convertToUpper</span><span class="op">(</span>sayHello<span class="op">.</span>out<span class="op">)</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">// coleta todas as saudações em um arquivo</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">collectGreetings</span><span class="op">(</span>convertToUpper<span class="op">.</span>out<span class="op">.</span><span class="fu">collect</span><span class="op">(),</span> params<span class="op">.</span>batch<span class="op">)</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// gera arte ASCII das saudações com cowpy</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cowpy</span><span class="op">(</span>collectGreetings<span class="op">.</span>out<span class="op">.</span>outfile<span class="op">,</span> params<span class="op">.</span>character<span class="op">)</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>    main<span class="op">:</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// cria um canal para entradas de um arquivo CSV</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    greeting_ch <span class="op">=</span> channel<span class="op">.</span><span class="fu">fromPath</span><span class="op">(</span>params<span class="op">.</span>input<span class="op">)</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>                        <span class="op">.</span><span class="fu">splitCsv</span><span class="op">()</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>                        <span class="op">.</span><span class="fu">map</span> <span class="op">{</span> line <span class="op">-&gt;</span> line<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">}</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// emite uma saudação</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sayHello</span><span class="op">(</span>greeting_ch<span class="op">)</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// converte a saudação para maiúsculas</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">convertToUpper</span><span class="op">(</span>sayHello<span class="op">.</span>out<span class="op">)</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">// coleta todas as saudações em um arquivo</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">collectGreetings</span><span class="op">(</span>convertToUpper<span class="op">.</span>out<span class="op">.</span><span class="fu">collect</span><span class="op">(),</span> params<span class="op">.</span>batch<span class="op">)</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// gera arte ASCII das saudações com cowpy</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cowpy</span><span class="op">(</span>collectGreetings<span class="op">.</span>out<span class="op">.</span>outfile<span class="op">,</span> params<span class="op">.</span>character<span class="op">)</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Adicione o parâmetro character ao bloco param</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">/*</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co">* Parâmetros do pipeline</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>params <span class="op">{</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    input<span class="op">:</span> Path <span class="op">=</span> <span class="st">'data/greetings.csv'</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    batch<span class="op">:</span> <span class="bu">String</span> <span class="op">=</span> <span class="st">'batch'</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    character<span class="op">:</span> <span class="bu">String</span> <span class="op">=</span> <span class="st">'turkey'</span></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">/*</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co">* Parâmetros do pipeline</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>params <span class="op">{</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    input<span class="op">:</span> Path <span class="op">=</span> <span class="st">'data/greetings.csv'</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    batch<span class="op">:</span> <span class="bu">String</span> <span class="op">=</span> <span class="st">'batch'</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    character<span class="op">:</span> <span class="bu">String</span> <span class="op">=</span> <span class="st">'turkey'</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Atualize as saídas do workflow</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    publish<span class="op">:</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    first_output <span class="op">=</span> sayHello<span class="op">.</span>out</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    uppercased <span class="op">=</span> convertToUpper<span class="op">.</span>out</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    collected <span class="op">=</span> collectGreetings<span class="op">.</span>out<span class="op">.</span>outfile</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    batch_report <span class="op">=</span> collectGreetings<span class="op">.</span>out<span class="op">.</span>report</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    cowpy_art <span class="op">=</span> cowpy<span class="op">.</span>out</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    publish<span class="op">:</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    first_output <span class="op">=</span> sayHello<span class="op">.</span>out</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    uppercased <span class="op">=</span> convertToUpper<span class="op">.</span>out</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    collected <span class="op">=</span> collectGreetings<span class="op">.</span>out<span class="op">.</span>outfile</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    batch_report <span class="op">=</span> collectGreetings<span class="op">.</span>out<span class="op">.</span>report</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    cowpy_art <span class="op">=</span> cowpy<span class="op">.</span>out</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Atualize o bloco output</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">{</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    first_output <span class="op">{</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>        path <span class="st">'hello_containers/intermediates'</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>        mode <span class="st">'copy'</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    uppercased <span class="op">{</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        path <span class="st">'hello_containers/intermediates'</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        mode <span class="st">'copy'</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    collected <span class="op">{</span></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>        path <span class="st">'hello_containers/intermediates'</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>        mode <span class="st">'copy'</span></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    batch_report <span class="op">{</span></span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>        path <span class="st">'hello_containers'</span></span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>        mode <span class="st">'copy'</span></span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>    cowpy_art <span class="op">{</span></span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>        path <span class="st">'hello_containers'</span></span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>        mode <span class="st">'copy'</span></span>
-<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>output <span class="op">{</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    first_output <span class="op">{</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>        path <span class="st">'hello_containers/intermediates'</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>        mode <span class="st">'copy'</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    uppercased <span class="op">{</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>        path <span class="st">'hello_containers/intermediates'</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>        mode <span class="st">'copy'</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    collected <span class="op">{</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>        path <span class="st">'hello_containers/intermediates'</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>        mode <span class="st">'copy'</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    batch_report <span class="op">{</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>        path <span class="st">'hello_containers'</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>        mode <span class="st">'copy'</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>    cowpy_art <span class="op">{</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>        path <span class="st">'hello_containers'</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>        mode <span class="st">'copy'</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Execute o workflow</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>nextflow run hello<span class="op">-</span>containers<span class="op">.</span>nf</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>nextflow run hello<span class="op">-</span>containers<span class="op">.</span>nf</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-simple callout-none no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -777,24 +776,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Use um contêiner para executar o processo cowpy</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>process cowpy <span class="op">{</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    container <span class="st">'community.wave.seqera.io/library/cowpy:1.1.5--3db457ae1977a273'</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    input<span class="op">:</span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    path input_file</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    val character</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    output<span class="op">:</span></span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    path <span class="st">"cowpy-</span><span class="ss">${</span>input_file<span class="ss">}</span><span class="st">"</span></span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    script<span class="op">:</span></span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"""</span></span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="st">    cat </span><span class="ss">${</span>input_file<span class="ss">}</span><span class="st"> | cowpy -c "</span><span class="ss">${</span>character<span class="ss">}</span><span class="st">" &gt; cowpy-</span><span class="ss">${</span>input_file<span class="ss">}</span></span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span></span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>process cowpy <span class="op">{</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    container <span class="st">'community.wave.seqera.io/library/cowpy:1.1.5--3db457ae1977a273'</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    input<span class="op">:</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    path input_file</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    val character</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    output<span class="op">:</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    path <span class="st">"cowpy-</span><span class="ss">${</span>input_file<span class="ss">}</span><span class="st">"</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    script<span class="op">:</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"""</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="st">    cat </span><span class="ss">${</span>input_file<span class="ss">}</span><span class="st"> | cowpy -c "</span><span class="ss">${</span>character<span class="ss">}</span><span class="st">" &gt; cowpy-</span><span class="ss">${</span>input_file<span class="ss">}</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Execute o workflow</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>nextflow run hello<span class="op">-</span>containers<span class="op">.</span>nf</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>nextflow run hello<span class="op">-</span>containers<span class="op">.</span>nf</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -823,29 +822,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <p><code>nextflow.config</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>docker<span class="op">.</span>enabled <span class="op">=</span> <span class="kw">true</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>params <span class="op">{</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    input     <span class="op">=</span> <span class="st">'data/greetings.csv'</span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    batch     <span class="op">=</span> <span class="st">'batch'</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    character <span class="op">=</span> <span class="st">'turkey'</span></span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>docker<span class="op">.</span>enabled <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>params <span class="op">{</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    input     <span class="op">=</span> <span class="st">'data/greetings.csv'</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    batch     <span class="op">=</span> <span class="st">'batch'</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    character <span class="op">=</span> <span class="st">'turkey'</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <p>No workflow, mantemos só a declaração dos tipos:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>params <span class="op">{</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    input<span class="op">:</span> Path</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    batch<span class="op">:</span> <span class="bu">String</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    character<span class="op">:</span> <span class="bu">String</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>params <span class="op">{</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    input<span class="op">:</span> Path</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    batch<span class="op">:</span> <span class="bu">String</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    character<span class="op">:</span> <span class="bu">String</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <p><code>nextflow.config</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>docker<span class="op">.</span>enabled <span class="op">=</span> <span class="kw">true</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>docker<span class="op">.</span>enabled <span class="op">=</span> <span class="kw">true</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <p>No workflow, os valores padrão estavam no próprio script:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>params <span class="op">{</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    input<span class="op">:</span> Path     <span class="op">=</span> <span class="st">'data/greetings.csv'</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    batch<span class="op">:</span> <span class="bu">String</span>   <span class="op">=</span> <span class="st">'batch'</span></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    character<span class="op">:</span> <span class="bu">String</span> <span class="op">=</span> <span class="st">'turkey'</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>params <span class="op">{</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    input<span class="op">:</span> Path     <span class="op">=</span> <span class="st">'data/greetings.csv'</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    batch<span class="op">:</span> <span class="bu">String</span>   <span class="op">=</span> <span class="st">'batch'</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    character<span class="op">:</span> <span class="bu">String</span> <span class="op">=</span> <span class="st">'turkey'</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -853,15 +852,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="diretivas-de-processo" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="diretivas-de-processo"><span class="header-section-number">5.3</span> Diretivas de processo</h2>
 <p>As diretivas controlam recursos e comportamento de execução dos processos.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>process <span class="op">{</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    cpus   <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    memory <span class="op">=</span> <span class="fl">1.</span>GB</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    withName<span class="op">:</span> <span class="st">'cowpy'</span> <span class="op">{</span></span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>        cpus   <span class="op">=</span> <span class="dv">2</span></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>        memory <span class="op">=</span> <span class="fl">2.</span>GB</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>process <span class="op">{</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    cpus   <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    memory <span class="op">=</span> <span class="fl">1.</span>GB</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    withName<span class="op">:</span> <span class="st">'cowpy'</span> <span class="op">{</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>        cpus   <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>        memory <span class="op">=</span> <span class="fl">2.</span>GB</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Bloco <code>process { ... }</code>: aplica a <strong>todos</strong> os processos</li>
 <li><code>withName: 'nome'</code>: aplica só a um processo específico</li>
@@ -871,17 +870,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="tecnologia-de-empacotamento-de-software" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="tecnologia-de-empacotamento-de-software"><span class="header-section-number">5.4</span> Tecnologia de empacotamento de software</h2>
 <p>O mesmo pipeline pode rodar com Docker, Singularity ou Conda — basta habilitar no config.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>docker<span class="op">.</span>enabled      <span class="op">=</span> <span class="kw">true</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="co">// ou</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>singularity<span class="op">.</span>enabled <span class="op">=</span> <span class="kw">true</span></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co">// ou</span></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>conda<span class="op">.</span>enabled       <span class="op">=</span> <span class="kw">true</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>docker<span class="op">.</span>enabled      <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="co">// ou</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>singularity<span class="op">.</span>enabled <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="co">// ou</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>conda<span class="op">.</span>enabled       <span class="op">=</span> <span class="kw">true</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <p>E no módulo, cada processo declara sua imagem/pacote:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>process cowpy <span class="op">{</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    container <span class="st">'community.wave.seqera.io/library/cowpy:1.1.5--3db457ae1977a273'</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    conda     <span class="st">'conda-forge::cowpy==1.1.5'</span></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>process cowpy <span class="op">{</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    container <span class="st">'community.wave.seqera.io/library/cowpy:1.1.5--3db457ae1977a273'</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    conda     <span class="st">'conda-forge::cowpy==1.1.5'</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-simple callout-tip">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -896,29 +895,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="perfis-profiles" class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="perfis-profiles"><span class="header-section-number">5.5</span> Perfis (<code>profiles</code>)</h2>
 <p>Perfis são conjuntos nomeados de configuração que você ativa em tempo de execução com <code>-profile</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>profiles <span class="op">{</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    my_laptop <span class="op">{</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>        process<span class="op">.</span>executor <span class="op">=</span> <span class="st">'local'</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>        docker<span class="op">.</span>enabled   <span class="op">=</span> <span class="kw">true</span></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    hpc <span class="op">{</span></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>        process<span class="op">.</span>executor <span class="op">=</span> <span class="st">'slurm'</span></span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>        conda<span class="op">.</span>enabled    <span class="op">=</span> <span class="kw">true</span></span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>        process<span class="op">.</span>resourceLimits <span class="op">=</span> <span class="op">[</span></span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>            memory<span class="op">:</span> <span class="fl">750.</span>GB<span class="op">,</span></span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>            cpus<span class="op">:</span>   <span class="dv">200</span><span class="op">,</span></span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>            time<span class="op">:</span>   <span class="fl">30.d</span></span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">]</span></span>
-<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>    test <span class="op">{</span></span>
-<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>        params<span class="op">.</span>input     <span class="op">=</span> <span class="st">'data/greetings.csv'</span></span>
-<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>        params<span class="op">.</span>batch     <span class="op">=</span> <span class="st">'test'</span></span>
-<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>        params<span class="op">.</span>character <span class="op">=</span> <span class="st">'dragonandcow'</span></span>
-<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>profiles <span class="op">{</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    my_laptop <span class="op">{</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>        process<span class="op">.</span>executor <span class="op">=</span> <span class="st">'local'</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>        docker<span class="op">.</span>enabled   <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    hpc <span class="op">{</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>        process<span class="op">.</span>executor <span class="op">=</span> <span class="st">'slurm'</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>        conda<span class="op">.</span>enabled    <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>        process<span class="op">.</span>resourceLimits <span class="op">=</span> <span class="op">[</span></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>            memory<span class="op">:</span> <span class="fl">750.</span>GB<span class="op">,</span></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>            cpus<span class="op">:</span>   <span class="dv">200</span><span class="op">,</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>            time<span class="op">:</span>   <span class="fl">30.d</span></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">]</span></span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>    test <span class="op">{</span></span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>        params<span class="op">.</span>input     <span class="op">=</span> <span class="st">'data/greetings.csv'</span></span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>        params<span class="op">.</span>batch     <span class="op">=</span> <span class="st">'test'</span></span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>        params<span class="op">.</span>character <span class="op">=</span> <span class="st">'dragonandcow'</span></span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Ativação:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run hello-config.nf <span class="at">-profile</span> my_laptop</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run hello-config.nf <span class="at">-profile</span> my_laptop,test   <span class="co"># combinando perfis</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run hello-config.nf <span class="at">-profile</span> my_laptop</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run hello-config.nf <span class="at">-profile</span> my_laptop,test   <span class="co"># combinando perfis</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -934,11 +933,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="5.6" class="anchored" data-anchor-id="arquivo-de-parâmetros--params-file"><span class="header-section-number">5.6</span> Arquivo de parâmetros (<code>-params-file</code>)</h2>
 <p>Quando você tem muitos parâmetros ou quer distribuir uma configuração de execução, um arquivo YAML/JSON é mais prático que a linha de comando.</p>
 <p><code>test-params.yaml</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">input</span><span class="kw">:</span><span class="at">     </span><span class="st">"data/greetings.csv"</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">batch</span><span class="kw">:</span><span class="at">     </span><span class="st">"yaml"</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">character</span><span class="kw">:</span><span class="at"> </span><span class="st">"stegosaurus"</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">input</span><span class="kw">:</span><span class="at">     </span><span class="st">"data/greetings.csv"</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">batch</span><span class="kw">:</span><span class="at">     </span><span class="st">"yaml"</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">character</span><span class="kw">:</span><span class="at"> </span><span class="st">"stegosaurus"</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Execução:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run hello-config.nf <span class="at">-params-file</span> test-params.yaml</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run hello-config.nf <span class="at">-params-file</span> test-params.yaml</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-simple callout-important">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -963,14 +962,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="inspecionar-a-config-resolvida" class="level2" data-number="5.8">
 <h2 data-number="5.8" class="anchored" data-anchor-id="inspecionar-a-config-resolvida"><span class="header-section-number">5.8</span> Inspecionar a config resolvida</h2>
 <p>Para descobrir com quais valores o pipeline vai rodar <strong>sem executar nada</strong>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> config</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> config <span class="at">-profile</span> my_laptop,test</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> config</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> config <span class="at">-profile</span> my_laptop,test</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <p>O comando devolve toda a configuração já resolvida — muito útil para debug quando algo não está pegando o valor esperado.</p>
 </section>
 <section id="relatório-de-recursos" class="level2" data-number="5.9">
 <h2 data-number="5.9" class="anchored" data-anchor-id="relatório-de-recursos"><span class="header-section-number">5.9</span> Relatório de recursos</h2>
 <p>Para descobrir quanto CPU/memória cada processo realmente usa:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run hello-containers.nf <span class="at">-with-report</span> relatorio.html</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run hello-containers.nf <span class="at">-with-report</span> relatorio.html</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Isso gera um HTML com utilização por processo — base para ajustar <code>cpus</code>/<code>memory</code> no config.</p>
 
 
