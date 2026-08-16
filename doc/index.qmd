@@ -1,0 +1,60 @@
+# Treinamento Nextflow
+
+## Visão geral do curso
+
+Este curso é divido em duas partes, no primeiro momento veremos como o nextflow é estruturado e no segundo momento aprenderemos a executar e personalizar pipelines já existentes. Cada sessão possui objetivos estruturados para introduzir informações gradualmente.
+
+# Ambiente de trabalho
+
+## Ambiente Local
+
+Caso todas as dependencias necessárias para execução desse minicurso estejam instaladas em sua máquina local, clone o repositório deste minicurso:
+
+```bash
+git clone git@github.com:dalmolingroup/nextflow_training.git
+
+cd nextflow_training
+```
+
+## Ambiente Remoto
+
+Caso não as dependencias necessárias para este minicurso não estejam instaladas na sua máquina local, você poderá utilizar o ambiente pré-construído fornecido pela Seqera no [GitHub Codespace](https://codespaces.new/nextflow-io/training?quickstart=1&ref=3.6.1). Este ambiente de treinamento contém todo o software, código e dados necessários para trabalhar no curso de treinamento, então você não precisa instalar nada por conta própria.
+
+# Objetivos
+
+Ao final do minicurso, você deverá ser capaz de:
+
+- Entender a estrutura básica de um pipeline Nextflow (processos, canais, workflow, módulos)
+- Executar pipelines nf-core prontos usando perfis de teste
+- Configurar a execução via `params`, `-params-file` e arquivos de configuração
+- Personalizar recursos e argumentos de ferramentas usando `ext.args`
+- Instalar e usar módulos do repositório nf-core
+- Diagnosticar erros comuns a partir das mensagens de validação de schema/samplesheet
+
+## O que este curso **não** cobre
+
+- Programação em Nextflow do zero (não vamos escrever pipelines novos)
+- Operadores avançados de canais (`flatten`, `groupTuple`, `join`, etc.)
+- Desenvolvimento de módulos nf-core seguindo o template completo
+- Criação de subworkflows
+
+# Pré-requisitos:
+
+- Confortável com o terminal Linux (`cd`, `ls`, editar arquivos)
+- Docker instalado e funcional (ou usar o ambiente remoto via GitHub Codespaces)
+- Nextflow instalado (ou usar o ambiente remoto)
+- `nf-core tools` (para a parte de módulos)
+
+# Agenda (5h)
+
+| Bloco | Duração | Conteúdo |
+|---|---|---|
+| **1. Hello Nextflow — parte 1** | 45 min | História, estrutura de pipeline, primeiro `hello-world.nf`, `.command.*`, `-resume`, `nextflow log` |
+| **2. Hello Nextflow — parte 2** | 45 min | Canais, workflow multi-etapa, módulos, contêineres |
+| **Intervalo** | 15 min | |
+| **3. Configuração Nextflow** | 45 min | `nextflow.config`, diretivas de processo, profiles, `-params-file`, precedência |
+| **4. Hello nf-core — parte 1** | 60 min | O que é nf-core, `nextflow pull`, perfil test, `--help`, `-params-file`, `-c`, `ext.args` |
+| **Intervalo** | 15 min | |
+| **5. Validação de entrada** | 30 min | Schema de parâmetros, schema de samplesheet, debug de erros |
+| **6. Usando módulos nf-core** | 30 min | Catálogo, `nf-core modules install`, `ext.args` para customização |
+| **7. Q&A + prática livre** | 15 min | |

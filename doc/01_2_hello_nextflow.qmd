@@ -1,4 +1,4 @@
-# Como um pipeline em Nexttflow é estruturado?
+# Como um pipeline em Nextflow é estruturado?
 
 ## Estrutura de um pipeline
 
@@ -14,7 +14,35 @@ Fornecemos um script de workflow funcional, embora minimalista, chamado [hello-w
 
 Para começar, vamos abrir o script do fluxo de trabalho para que você tenha uma noção de como ele está estruturado. Então vamos executá-lo e procurar suas saídas.
 
-<INTRODUZIR TOGGLWE DO HELLO WORLD.NF>
+::: {.callout-note collapse="true"}
+## Ver conteúdo de `hello-world.nf`
+
+```groovy
+#!/usr/bin/env nextflow
+
+/*
+ * Use echo to print 'Hello World!' to a file
+ */
+process sayHello {
+
+    output:
+    path 'output.txt'
+
+    script:
+    """
+    echo 'Hello World!' > output.txt
+    """
+}
+
+workflow {
+
+    main:
+    // emit a greeting
+    sayHello()
+
+}
+```
+:::
 
 ::: {.callout-tip}
 Um script de fluxo de trabalho Nextflow normalmente inclui uma ou mais definições de process e o workflow em si, além de alguns blocos opcionais (não presentes aqui) que apresentaremos mais tarde.
@@ -35,18 +63,18 @@ Um script de fluxo de trabalho Nextflow normalmente inclui uma ou mais definiç�
 
 Lance o fluxo de trabalho e monitore a execução, no terminal, execute o seguinte comando:
 
-```{bash}
+```bash
 nextflow run hello-world.nf
 ```
 
 ### Encontre a saída e os logs de execução
 
-Quando você executa o Nextflow, é cria um diretório chamado `work` onde escreverá todos os arquivos gerados durante a execução.
+Quando você executa o Nextflow, é criado um diretório chamado `work` onde ele escreverá todos os arquivos gerados durante a execução.
 
 Dentro do diretório `work`, para cada chamada de processo, o Nextflow cria um subdiretório aninhado, nomeado com um hash para torná-lo único, onde preparará todas as entradas necessárias, escreverá arquivos auxiliares e escreverá logs e quaisquer saídas do processo.
 
 Para examinar o diretório work execute:
-```{bash}
+```bash
 tree -a work
 ```
 
@@ -66,7 +94,7 @@ Caso o workflow seja executado novamente um novo subdiretório com um conjunto c
 
 ### Publique outputs
 
-A saída produzida pelo nosso pipeline está enterrada no diretório `work` várias camadas abaixo. Isso é feito propositalmente; o Nextflow está no controle destdiretório e nãoe  devemos interagir com ele. No entanto, isso torna inconveniente recuperar saídas que nos interessam.
+A saída produzida pelo nosso pipeline está enterrada no diretório `work` várias camadas abaixo. Isso é feito propositalmente; o Nextflow está no controle desse diretório e não devemos interagir com ele. No entanto, isso torna inconveniente recuperar saídas que nos interessam.
 
 Para contornar isso, podemos publicar os outputs em um diretório designado usando definições de saída em nível de workflow.
 
@@ -79,9 +107,10 @@ Isso vai envolver dois novos pedaços de código:
 
 Adicione o bloco publish:
 
-<TOGGLE ANTES E DEPOIS>
-```{nextflow}
+::: {.panel-tabset}
+## Depois
 
+```groovy
 workflow {
 
     main:
@@ -91,9 +120,18 @@ workflow {
     publish:
     first_output = sayHello.out
 }
-
 ```
 
+## Antes
+
+```groovy
+workflow {
+
+    main:
+    // emite uma saudação
+    sayHello()
+}
+```
 :::
 ::: {.callout-note}
 
@@ -103,8 +141,10 @@ Você vê que podemos nos referir à saída do processo simplesmente fazendo say
 
 Adicione o bloco `output` ao script onde o caminho do diretório de saída será especificado:
 
-<TOGGLE ANTES E DEPOIS>
-```{nextflow}
+::: {.panel-tabset}
+## Depois
+
+```groovy
 workflow {
 
     main:
@@ -122,9 +162,24 @@ output {
 }
 ```
 
+## Antes
+
+```groovy
+workflow {
+
+    main:
+    // emite uma saudação
+    sayHello()
+
+    publish:
+    first_output = sayHello.out
+}
+```
+:::
+
 Execute o workflow modificado:
 
-```{nextflow}
+```bash
 nextflow run hello-world.nf
 ```
 
@@ -141,9 +196,11 @@ Isso requer que façamos três conjuntos de mudanças em nosso script:
 Vamos fazer essas mudanças uma de cada vez.
 
 Primeiro, vamos adaptar a definição do processo para aceitar uma entrada chamada greeting.
-<TOGGLE ANTES E DEPOIS>
 
-```{nextflow}
+::: {.panel-tabset}
+## Depois
+
+```groovy
 process sayHello {
 
     input:
@@ -153,28 +210,61 @@ process sayHello {
     path 'output.txt'
 ```
 
+## Antes
+
+```groovy
+process sayHello {
+
+    output:
+    path 'output.txt'
+```
+:::
+
 Agora trocamos o valor codificado original pelo valor da variável de entrada que esperamos receber.
-<TOGGLE ANTES E DEPOIS>
-```{nextflow}
+
+::: {.panel-tabset}
+## Depois
+
+```groovy
     script:
     """
     echo '${greeting}' > output.txt
     """
 ```
 
+## Antes
 
-Aqui, queremos criar um parâmetro chamado --input. Em princípio podemos escrevevê-lo em qualquer lugar, mas podemos colocá-lo diretameente em sayHello().
+```groovy
+    script:
+    """
+    echo 'Hello World!' > output.txt
+    """
+```
+:::
+
+Aqui, queremos criar um parâmetro chamado `--input`. Em princípio podemos escrevê-lo em qualquer lugar, mas podemos colocá-lo diretamente em `sayHello()`.
 
 No bloco do fluxo de trabalho, faça a seguinte alteração de código:
-<TOGGLE ANTES E DEPOIS>
-```{nextflow}
+
+::: {.panel-tabset}
+## Depois
+
+```groovy
     // emite uma saudação
     sayHello(params.input)
 ```
 
+## Antes
+
+```groovy
+    // emite uma saudação
+    sayHello()
+```
+:::
+
 Agora execute o workflow
 
-```{bash}
+```bash
 nextflow run hello-world.nf --input 'Oi mundo!'
 ```
 
@@ -191,7 +281,7 @@ Aqui mostramos como usar o recurso -resume para quando você precisar relançar 
 O Nextflow tem uma opção chamada -resume que permite fazer isso. Especificamente, neste modo, quaisquer processos que já foram executados com exatamente o mesmo código, configurações e entradas serão ignorados. Isso significa que o Nextflow só executará processos que você adicionou ou modificou desde a última execução, ou aos quais você está fornecendo novas configurações ou entradas.
 
 Para usá-lo, basta adicionar -resume ao seu comando e executá-lo:
-```{bash}
+```bash
 nextflow run hello-world.nf --input 'Konnichiwa!' -resume
 ```
 
@@ -199,13 +289,23 @@ nextflow run hello-world.nf --input 'Konnichiwa!' -resume
 
 Sempre que você lança um fluxo de trabalho nextflow, uma linha é escrita em um arquivo de log chamado history, em um diretório oculto chamado .nextflow no diretório de trabalho atual.
 
-<TOGGLE DO LOG>
+::: {.callout-note collapse="true"}
+## Ver exemplo do arquivo `.nextflow/history`
+
+```default
+2024-11-05 10:32:15	5m 23s	golden_cantor	OK	a1b2c3d4	1a2b3c4d-...	nextflow run hello-world.nf
+2024-11-05 10:41:07	3m 12s	elegant_curie	OK	a1b2c3d4	5e6f7a8b-...	nextflow run hello-world.nf --input 'Bonjour!'
+2024-11-05 11:02:44	4m 58s	naughty_lorenz	ERR	a1b2c3d4	9c0d1e2f-...	nextflow run hello-world.nf --input 'Konnichiwa!' -resume
+```
+
+Cada linha: timestamp, duração, nome da execução, status, ID de revisão, ID de sessão, linha de comando.
+:::
 
 Este arquivo fornece o timestamp, nome da execução, status, ID de revisão, ID de sessão e linha de comando completa para cada execução do Nextflow que foi lançada a partir do diretório de trabalho atual.
 
 Uma maneira mais conveniente de acessar essas informações é usar o comando nextflow log.
 
-```{bash}
+```bash
 nextflow log
 ```
 
@@ -218,11 +318,11 @@ Existem várias opções para determinar o que excluir.
 Aqui mostramos um exemplo que exclui todos os subdiretórios de execuções antes de uma determinada execução, especificada usando seu nome de execução.
 
 Primeiro usamos a flag de execução de teste -n para verificar o que será excluído dado o comando:
-```{bash}
+```bash
 nextflow clean -before golden_cantor -n
 ```
 
 Se a saída parecer como esperado e você quiser prosseguir com a exclusão, execute novamente o comando com a flag -f em vez de -n:
-```{bash}
+```bash
 nextflow clean -before golden_cantor -f
 ```

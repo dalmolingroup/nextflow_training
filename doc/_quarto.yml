@@ -1,0 +1,68 @@
+project:
+  type: book
+  output-dir: docs
+
+lang: "pt-BR"
+
+book:
+  title: "Treinamento em Nextflow"
+  chapters:
+    - index.qmd
+    - part: "Hello Nextflow"
+      chapters:
+        - 01_1_hello_nextflow.qmd
+        - 01_2_hello_nextflow.qmd
+        - 01_3_hello_nextflow.qmd
+    - part: "Hello nf-core"
+      chapters:
+        - 02_hello_nf-core.qmd
+  reader-mode: true
+  favicon: content/images/dalmolin_icon.svg
+  site-url: https://dalmolingroup.github.io/
+  repo-url: https://github.com/dalmolingroup/nextflow_training
+  page-footer:
+      Treinamento em Nextflow é um curso adaptado de
+      <a href="https://training.nextflow.io/latest/pt/">training nextflow</a>
+      por membros do
+      <a href="https://dalmolingroup.imd.ufrn.br/">Dalmolin Group</a>.
+
+execute:
+  eval: false
+  echo: true
+
+knitr:
+  opts_chunk:
+    eval: false
+    message: false
+    warning: false
+    results: false
+
+format:
+  pdf:
+    keep-tex: true
+    include-in-header: 
+      text: |
+         \usepackage{fvextra}
+         \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+    include-before-body:
+      text: |
+        \RecustomVerbatimEnvironment{verbatim}{Verbatim}{
+          showspaces = false,
+          showtabs = false,
+          breaksymbolleft={},
+          breaklines
+          % Note: setting commandchars=\\\{\} here will cause an error 
+        }
+    theme:
+      light: flatly
+      dark: darkly
+  html:
+    theme:
+      light: flatly
+      dark: darkly
+    callout-appearance: simple
+    code-link: true
+    code-overflow: wrap
+    code-block-bg: true
+    code-block-border-left: "#b19cd9"
+    highlight-style: github

@@ -1,0 +1,569 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Treinamento em Nextflow",
+    "section": "",
+    "text": "1 Treinamento Nextflow",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Treinamento Nextflow</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#visão-geral-do-curso",
+    "href": "index.html#visão-geral-do-curso",
+    "title": "Treinamento em Nextflow",
+    "section": "1.1 Visão geral do curso",
+    "text": "1.1 Visão geral do curso\nEste curso é divido em duas partes, no primeiro momento veremos como o nextflow é estruturado e no segundo momento aprenderemos a executar e personalizar pipelines já existentes. Cada sessão possui objetivos estruturados para introduzir informações gradualmente.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Treinamento Nextflow</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#ambiente-local",
+    "href": "index.html#ambiente-local",
+    "title": "Treinamento em Nextflow",
+    "section": "2.1 Ambiente Local",
+    "text": "2.1 Ambiente Local\nCaso todas as dependencias necessárias para execução desse minicurso estejam instaladas em sua máquina local, clone o repositório deste minicurso:\ngit clone git@github.com:dalmolingroup/nextflow_training.git\n\ncd nextflow_training",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Treinamento Nextflow</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#ambiente-remoto",
+    "href": "index.html#ambiente-remoto",
+    "title": "Treinamento em Nextflow",
+    "section": "2.2 Ambiente Remoto",
+    "text": "2.2 Ambiente Remoto\nCaso não as dependencias necessárias para este minicurso não estejam instaladas na sua máquina local, você poderá utilizar o ambiente pré-construído fornecido pela Seqera no GitHub Codespace. Este ambiente de treinamento contém todo o software, código e dados necessários para trabalhar no curso de treinamento, então você não precisa instalar nada por conta própria.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Treinamento Nextflow</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#o-que-este-curso-não-cobre",
+    "href": "index.html#o-que-este-curso-não-cobre",
+    "title": "Treinamento em Nextflow",
+    "section": "3.1 O que este curso não cobre",
+    "text": "3.1 O que este curso não cobre\n\nProgramação em Nextflow do zero (não vamos escrever pipelines novos)\nOperadores avançados de canais (flatten, groupTuple, join, etc.)\nDesenvolvimento de módulos nf-core seguindo o template completo\nCriação de subworkflows",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Treinamento Nextflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_1_hello_nextflow.html",
+    "href": "01_1_hello_nextflow.html",
+    "title": "2  Hello Nextflow",
+    "section": "",
+    "text": "2.1 O que é Nextflow\nNextflow é uma linguagem de fluxo de trabalho (workflow language) criada em 2013 pelo Paolo Di Tommaso no Centre for Genomic Regulation (Barcelona), pensada para orquestrar pipelines científicos que envolvem muitas ferramentas e muitos dados.\nHoje é mantido pela Seqera Labs (a empresa fundada por Paolo) junto com uma comunidade global de contribuidores. A Seqera desenvolve o Nextflow como open source e oferece produtos comerciais em cima dele (Seqera Platform, Wave, Fusion), mas o Nextflow em si é livre.",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Hello Nextflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_1_hello_nextflow.html#o-ecossistema-nf-core",
+    "href": "01_1_hello_nextflow.html#o-ecossistema-nf-core",
+    "title": "2  Hello Nextflow",
+    "section": "2.2 O ecossistema nf-core",
+    "text": "2.2 O ecossistema nf-core\nnf-core é uma comunidade independente que constrói pipelines Nextflow curados, revisados por pares e testados — hoje já são mais de 100 pipelines cobrindo genômica, transcriptômica, proteômica, metagenômica etc. Todos seguem o mesmo template, o que significa que aprender a rodar/customizar um pipeline nf-core te ensina a rodar todos.",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Hello Nextflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_1_hello_nextflow.html#por-que-nextflow",
+    "href": "01_1_hello_nextflow.html#por-que-nextflow",
+    "title": "2  Hello Nextflow",
+    "section": "2.3 Por que Nextflow",
+    "text": "2.3 Por que Nextflow\n\nReprodutibilidade: cada processo roda em um contêiner (Docker/Singularity/Conda). Você não precisa instalar dependências manualmente.\nPortabilidade: o mesmo pipeline roda no seu laptop, num HPC (Slurm/PBS/SGE) ou na nuvem (AWS/Google/Azure), mudando só um perfil de configuração.\n-resume: se um passo falha ou você muda um parâmetro, o Nextflow reaproveita tudo que já rodou. Fundamental para pipelines longos.\nParalelismo automático: você declara o fluxo de dados, o Nextflow paraleliza sozinho.\nComunidade: com nf-core você raramente precisa escrever um pipeline do zero.",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Hello Nextflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_1_hello_nextflow.html#defina-o-diretório-de-trabalho",
+    "href": "01_1_hello_nextflow.html#defina-o-diretório-de-trabalho",
+    "title": "2  Hello Nextflow",
+    "section": "2.4 Defina o diretório de trabalho",
+    "text": "2.4 Defina o diretório de trabalho\nNo primeiro momento este curso, trabalharemos no diretório hello-nextflow/.\nMude de diretório executando este comando no terminal:\ncd hello-nextflow/\nVocê pode configurar o VSCode para focar neste diretório, de modo que apenas os arquivos relevantes apareçam na barra lateral do explorador de arquivos:\ncode .\nExplore os materiais fornecidos:\ntree . -L 2",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Hello Nextflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_2_hello_nextflow.html",
+    "href": "01_2_hello_nextflow.html",
+    "title": "3  Como um pipeline em Nextflow é estruturado?",
+    "section": "",
+    "text": "3.1 Estrutura de um pipeline",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Como um pipeline em Nextflow é estruturado?</span>"
+    ]
+  },
+  {
+    "objectID": "01_2_hello_nextflow.html#estrutura-de-um-pipeline",
+    "href": "01_2_hello_nextflow.html#estrutura-de-um-pipeline",
+    "title": "3  Como um pipeline em Nextflow é estruturado?",
+    "section": "",
+    "text": "module: É um processo atômico.\nworkflow: Orquestra subworkflows e módulos. É o que define a ordem de execução.\nchannel: É a aresta do grafo que carrega a informação para cada módulo/subworkflow.",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Como um pipeline em Nextflow é estruturado?</span>"
+    ]
+  },
+  {
+    "objectID": "01_2_hello_nextflow.html#examinando-um-script-nextflow",
+    "href": "01_2_hello_nextflow.html#examinando-um-script-nextflow",
+    "title": "3  Como um pipeline em Nextflow é estruturado?",
+    "section": "3.2 Examinando um script nextflow",
+    "text": "3.2 Examinando um script nextflow\nFornecemos um script de workflow funcional, embora minimalista, chamado hello-world.nf que escreve ‘Hello World!’ com Nextflow.\nPara começar, vamos abrir o script do fluxo de trabalho para que você tenha uma noção de como ele está estruturado. Então vamos executá-lo e procurar suas saídas.\n\n\n\n\n\n\nNotaVer conteúdo de hello-world.nf\n\n\n\n\n\n#!/usr/bin/env nextflow\n\n/*\n * Use echo to print 'Hello World!' to a file\n */\nprocess sayHello {\n\n    output:\n    path 'output.txt'\n\n    script:\n    \"\"\"\n    echo 'Hello World!' &gt; output.txt\n    \"\"\"\n}\n\nworkflow {\n\n    main:\n    // emit a greeting\n    sayHello()\n\n}\n\n\n\n\n\n\n\n\n\nUm script de fluxo de trabalho Nextflow normalmente inclui uma ou mais definições de process e o workflow em si, além de alguns blocos opcionais (não presentes aqui) que apresentaremos mais tarde.\n\n\n\n\n3.2.1 Componentes do hello-world.nf\n\nprocess: O primeiro bloco de código descreve um process. O corpo do processo deve conter um bloco script que especifica o comando a ser executado, que pode ser qualquer coisa que você seria capaz de executar em um terminal de linha de comando.\n\nEstrutura mínima\n\nNome sayHello\noutput neste caso inclui o qualificador path\nscript o que será executado\n\n\nworkflow: O segundo bloco de código descreve o workflow em si. A definição de fluxo de trabalho começa com a palavra-chave workflow, seguida por um nome opcional, depois o corpo do fluxo de trabalho delimitado por chaves.\n\n\n\n3.2.2 Execute o workflow\nLance o fluxo de trabalho e monitore a execução, no terminal, execute o seguinte comando:\nnextflow run hello-world.nf\n\n\n3.2.3 Encontre a saída e os logs de execução\nQuando você executa o Nextflow, é criado um diretório chamado work onde ele escreverá todos os arquivos gerados durante a execução.\nDentro do diretório work, para cada chamada de processo, o Nextflow cria um subdiretório aninhado, nomeado com um hash para torná-lo único, onde preparará todas as entradas necessárias, escreverá arquivos auxiliares e escreverá logs e quaisquer saídas do processo.\nPara examinar o diretório work execute:\ntree -a work\n\n.command.begin: Metadados relacionados ao início da execução da chamada do processo\n.command.err: Mensagens de erro (stderr) emitidas pela chamada do processo\n.command.log: Saída de log completa emitida pela chamada do processo\n.command.out: Saída regular (stdout) pela chamada do processo\n.command.run: Script completo executado pelo Nextflow para executar a chamada do processo\n.command.sh: O comando que foi realmente executado pela chamada do processo\n.exitcode: O código de saída resultante do comando\n\nO arquivo .command.sh é especialmente útil porque informa o comando principal que o Nextflow executou, não incluindo toda a contabilidade e configuração de tarefa/ambiente.\nCaso o workflow seja executado novamente um novo subdiretório com um conjunto completo de arquivos de saída e log será criado para cada execução. Isso mostra que executar o mesmo fluxo de trabalho várias vezes não sobrescreverá os resultados de execuções anteriores.",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Como um pipeline em Nextflow é estruturado?</span>"
+    ]
+  },
+  {
+    "objectID": "01_2_hello_nextflow.html#aprimorando-o-hello-world",
+    "href": "01_2_hello_nextflow.html#aprimorando-o-hello-world",
+    "title": "3  Como um pipeline em Nextflow é estruturado?",
+    "section": "3.3 Aprimorando o Hello world",
+    "text": "3.3 Aprimorando o Hello world\n\n3.3.1 Publique outputs\nA saída produzida pelo nosso pipeline está enterrada no diretório work várias camadas abaixo. Isso é feito propositalmente; o Nextflow está no controle desse diretório e não devemos interagir com ele. No entanto, isso torna inconveniente recuperar saídas que nos interessam.\nPara contornar isso, podemos publicar os outputs em um diretório designado usando definições de saída em nível de workflow.\n\n\n3.3.2 Uso básico\nIsso vai envolver dois novos pedaços de código:\n\nUm bloco publish: dentro do corpo do workflow, declarando saídas de processo.\nUm bloco output no script especificando opções de saída como modo e localização.\n\nAdicione o bloco publish:\n\nDepoisAntes\n\n\nworkflow {\n\n    main:\n    // emite uma saudação\n    sayHello()\n\n    publish:\n    first_output = sayHello.out\n}\n\n\nworkflow {\n\n    main:\n    // emite uma saudação\n    sayHello()\n}\n\n\n\n\n\n\n\n\n\nVocê vê que podemos nos referir à saída do processo simplesmente fazendo sayHello().out, e atribuir a ela um nome arbitrário, first_output.\n\n\n\nAdicione o bloco output ao script onde o caminho do diretório de saída será especificado:\n\nDepoisAntes\n\n\nworkflow {\n\n    main:\n    // emite uma saudação\n    sayHello()\n\n    publish:\n    first_output = sayHello.out\n}\n\noutput {\n    first_output {\n        path 'hello_world'\n    }\n}\n\n\nworkflow {\n\n    main:\n    // emite uma saudação\n    sayHello()\n\n    publish:\n    first_output = sayHello.out\n}\n\n\n\nExecute o workflow modificado:\nnextflow run hello-world.nf",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Como um pipeline em Nextflow é estruturado?</span>"
+    ]
+  },
+  {
+    "objectID": "01_2_hello_nextflow.html#usando-inputs-variáveis",
+    "href": "01_2_hello_nextflow.html#usando-inputs-variáveis",
+    "title": "3  Como um pipeline em Nextflow é estruturado?",
+    "section": "3.4 Usando inputs variáveis",
+    "text": "3.4 Usando inputs variáveis\nEm seu estado atual, nosso fluxo de trabalho usa uma saudação codificada no comando do processo. Queremos adicionar alguma flexibilidade usando uma variável de entrada, para que possamos mudar mais facilmente a saudação em tempo de execução.\nIsso requer que façamos três conjuntos de mudanças em nosso script:\n\nAlterar o processo para esperar uma entrada variável\nConfigurar um parâmetro de linha de comando para capturar a entrada do usuário\nPassar a entrada para o processo no corpo do fluxo de trabalho\n\nVamos fazer essas mudanças uma de cada vez.\nPrimeiro, vamos adaptar a definição do processo para aceitar uma entrada chamada greeting.\n\nDepoisAntes\n\n\nprocess sayHello {\n\n    input:\n    val greeting\n\n    output:\n    path 'output.txt'\n\n\nprocess sayHello {\n\n    output:\n    path 'output.txt'\n\n\n\nAgora trocamos o valor codificado original pelo valor da variável de entrada que esperamos receber.\n\nDepoisAntes\n\n\n    script:\n    \"\"\"\n    echo '${greeting}' &gt; output.txt\n    \"\"\"\n\n\n    script:\n    \"\"\"\n    echo 'Hello World!' &gt; output.txt\n    \"\"\"\n\n\n\nAqui, queremos criar um parâmetro chamado --input. Em princípio podemos escrevê-lo em qualquer lugar, mas podemos colocá-lo diretamente em sayHello().\nNo bloco do fluxo de trabalho, faça a seguinte alteração de código:\n\nDepoisAntes\n\n\n    // emite uma saudação\n    sayHello(params.input)\n\n\n    // emite uma saudação\n    sayHello()\n\n\n\nAgora execute o workflow\nnextflow run hello-world.nf --input 'Oi mundo!'",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Como um pipeline em Nextflow é estruturado?</span>"
+    ]
+  },
+  {
+    "objectID": "01_3_hello_nextflow.html",
+    "href": "01_3_hello_nextflow.html",
+    "title": "4  Componentes de um Workflow",
+    "section": "",
+    "text": "4.1 Channels\nNa maioria dos pipelines realistas, queremos processar múltiplos valores (vários arquivos FASTQ, por exemplo), então precisamos de uma maneira mais sofisticada de lidar com entradas.\nÉ para isso que servem os canais do Nextflow. Canais são filas projetadas para lidar com entradas eficientemente e transportá-las de uma etapa para outra em fluxos de trabalho de múltiplas etapas, ao mesmo tempo que fornecem paralelismo integrado e muitos benefícios adicionais.",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Componentes de um Workflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_3_hello_nextflow.html#channels",
+    "href": "01_3_hello_nextflow.html#channels",
+    "title": "4  Componentes de um Workflow",
+    "section": "",
+    "text": "4.1.1 Forneça entradas variáveis através de um canal explicitamente\nExistem várias fábricas de canais que podemos usar para configurar um canal. Para manter as coisas simples por enquanto, vamos usar a fábrica de canais mais básica, chamada channel.of, que criará um canal contendo um único valor. Funcionalmente, isso será semelhante a como tínhamos configurado antes, mas em vez de ter o Nextflow criando um canal implicitamente, estamos fazendo isso explicitamente agora.\nAdicione o channel greeting_ch em hello_channels.nf:\n\nworkflow {\n\n    main:\n    // cria um canal para entradas\n    greeting_ch = channel.of('Hello','Bonjour','Hola', \"Oi\")\n    // emite uma saudação\n    sayHello(greeting_ch)\n\n    publish:\n    first_output = sayHello.out\n}\nIsso cria um canal chamado greeting_ch usando a fábrica de canais channel.of(), que configura um canal de fila simples, e carrega a string ‘Hello Channels!’ para usar como o valor da saudação.\nExecute o workflow:\nnextflow run hello-channels.nf\nOs canais do Nextflow são construídos de uma maneira que nos permite operar em seu conteúdo usando operadores, que cobriremos em detalhes mais tarde neste capítulo.\nPor enquanto, vamos apenas mostrar como usar um operador super simples chamado view() para inspecionar o conteúdo de um canal. Você pode pensar em view() como uma ferramenta de depuração, como uma instrução print() em Python, ou seu equivalente em outras linguagens.\nAdicione esta pequena linha ao bloco workflow:\nworkflow {\n\n    main:\n    // cria um canal para entradas\n    greeting_ch = channel.of('Hello Channels!')\n                         .view()\n    // emite uma saudação\n    sayHello(greeting_ch)\n\n    publish:\n    first_output = sayHello.out\n}\nAgora execute o fluxo de trabalho novamente:\nnextflow run hello-channels.nf\nComo você pode ver, isso exibe o conteúdo do canal no console. Aqui temos apenas um elemento, mas quando começarmos a carregar múltiplos valores no canal na próxima seção, você verá que isso está configurado para exibir um elemento por linha.",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Componentes de um Workflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_3_hello_nextflow.html#workflows",
+    "href": "01_3_hello_nextflow.html#workflows",
+    "title": "4  Componentes de um Workflow",
+    "section": "4.2 Workflows",
+    "text": "4.2 Workflows\nA maioria dos fluxos de trabalho do mundo real envolve mais de uma etapa. Neste módulo de treinamento, você aprenderá como conectar processos em um fluxo de trabalho com múltiplas etapas.\nAgora veremos como realizar o seguinte:\n\nFazer os dados fluírem de um processo para o próximo\nColetar saídas de múltiplas chamadas de processo em uma única chamada de processo\nPassar parâmetros adicionais para um processo\nLidar com múltiplas saídas provenientes de um processo\n\nPara demonstrar, continuaremos construindo sobre o exemplo Hello World agnóstico de domínio das Partes 1 e 2. Desta vez, faremos as seguintes alterações em nosso fluxo de trabalho para refletir melhor como as pessoas constroem fluxos de trabalho reais:\n\nAdicionar uma segunda etapa que converte a saudação para maiúsculas.\nAdicionar uma terceira etapa que coleta todas as saudações transformadas e as escreve em um único arquivo.\nAdicionar um parâmetro para nomear o arquivo de saída final e passá-lo como uma entrada secundária para a etapa de coleta.\nFazer a etapa de coleta também reportar uma estatística simples sobre o que foi processado.\n\nExecute hello-workflow.nf :\nnextflow run hello-workflow.nf\nEste diagrama resume a operação atual do fluxo de trabalho. Deve parecer familiar, exceto que agora estamos mostrando explicitamente que as saídas do processo são empacotadas em um canal, assim como as entradas foram. Vamos colocar esse canal de saída em bom uso em um minuto.",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Componentes de um Workflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_3_hello_nextflow.html#adicionando-uma-segunda-etapa",
+    "href": "01_3_hello_nextflow.html#adicionando-uma-segunda-etapa",
+    "title": "4  Componentes de um Workflow",
+    "section": "4.3 Adicionando uma segunda etapa",
+    "text": "4.3 Adicionando uma segunda etapa\nVamos adicionar uma etapa para converter cada saudação para maiúsculas.\n\nPara isso, precisamos fazer três coisas:\n\nDefinir o comando que vamos usar para fazer a conversão para maiúsculas.\nEscrever um novo processo que envolve o comando de conversão para maiúsculas.\nChamar o novo processo no bloco workflow e configurá-lo para receber a saída do processo sayHello() como entrada.\n\n\nComando de conversão para maiúsculas e teste-o no terminal:\n\ntr '[a-z]' '[A-Z]'\n\nAdicionando um novo processo em nosso workflow que irá executar esse comando\n\n/*\n * Use uma ferramenta de substituição de texto para converter a saudação para maiúsculas\n */\nprocess convertToUpper {\n\n    input:\n    path input_file\n\n    output:\n    path \"UPPER-${input_file}\"\n\n    script:\n    \"\"\"\n    cat '${input_file}' | tr '[a-z]' '[A-Z]' &gt; 'UPPER-${input_file}'\n    \"\"\"\n}\n\n\n\n\n\n\nNeste, componhamos o segundo nome de arquivo de saída com base no nome do arquivo de entrada, de forma similar ao que fizemos originalmente para a saída do primeiro processo.\n\n\n\n\nAdicione uma chamada ao novo processo no bloco workflow\n\nworkflow {\n\n    main:\n    // cria um canal para entradas a partir de um arquivo CSV\n    greeting_ch = channel.fromPath(params.input)\n                        .splitCsv()\n                        .map { line -&gt; line[0] }\n    // emite uma saudação\n    sayHello(greeting_ch)\n    // converte a saudação para maiúsculas\n    convertToUpper()\n\n    publish:\n    first_output = sayHello.out\n}\n\nPasse a saída do primeiro processo para o segundo processo\n\n    // converte a saudação para maiúsculas\n    convertToUpper(sayHello.out)\n\nConfigure a publicação de saída do fluxo de trabalho\n\n\n    publish:\n    first_output = sayHello.out\n    uppercased = convertToUpper.out\n}\noutput {\n    first_output {\n        path 'hello_workflow'\n        mode 'copy'\n    }\n    uppercased {\n        path 'hello_workflow'\n        mode 'copy'\n    }\n}\nExecute o fluxo de trabalho com -resume\nnextflow run hello-workflow.nf -resume",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Componentes de um Workflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_3_hello_nextflow.html#módulos",
+    "href": "01_3_hello_nextflow.html#módulos",
+    "title": "4  Componentes de um Workflow",
+    "section": "4.4 Módulos",
+    "text": "4.4 Módulos\nÉ uma boa prática armazenar seus módulos em um diretório específico. Você pode chamar esse diretório de qualquer nome, mas a convenção é chamá-lo de modules/.\nmkdir modules\nNa sua forma mais simples, transformar um processo existente em um módulo é pouco mais do que uma operação de copiar e colar. Vamos criar um esboço de arquivo para o módulo, copiar o código relevante e então excluí-lo do arquivo principal do fluxo de trabalho.\nEntão tudo o que precisaremos fazer é adicionar uma declaração include para que o Nextflow saiba trazer o código relevante em tempo de execução.\nCrie um novo arquivo chamado sayHello.nf dentro da pasta modules e cole o processo sayHello\nmodules/sayHello.nf\n/*\n * Usa echo para imprimir 'Hello World!' em um arquivo\n */\nprocess sayHello {\n\n    input:\n    val greeting\n\n    output:\n    path \"${greeting}-output.txt\"\n\n    script:\n    \"\"\"\n    echo '${greeting}' &gt; '${greeting}-output.txt'\n    \"\"\"\n}\nUma vez feito isso, apague o processo sayHello do arquivo de fluxo de trabalho.\nA sintaxe para incluir um processo de um módulo é bastante direta:\ninclude { &lt;PROCESS_NAME&gt; } from '&lt;path_to_module&gt;'\nVamos inserir isso acima do bloco params e preenchê-lo adequadamente.\n// Inclui módulos\ninclude { sayHello } from './modules/sayHello.nf'\n\n/*\n* Pipeline parameters\n*/\nparams {\n    input: Path = 'data/greetings.csv'\n    batch: String = 'batch'\n}\nExecute o fluxo de trabalho\nnextflow run hello-modules.nf -resume \n\n\n\n\n\n\nTentem modularizar o processo convertToUpper()",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Componentes de um Workflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_3_hello_nextflow.html#containers",
+    "href": "01_3_hello_nextflow.html#containers",
+    "title": "4  Componentes de um Workflow",
+    "section": "4.5 Containers",
+    "text": "4.5 Containers\nNas Partes 1-4 deste curso de treinamento, você aprendeu a usar os blocos de construção básicos do Nextflow para montar um fluxo de trabalho simples capaz de processar texto, paralelizar a execução se houvesse múltiplas entradas e coletar os resultados para processamento adicional.\nNo entanto, você estava limitado às ferramentas básicas do UNIX disponíveis no seu ambiente. Tarefas do mundo real frequentemente requerem várias ferramentas e pacotes não incluídos por padrão. Normalmente, você precisaria instalar essas ferramentas, gerenciar suas dependências e resolver quaisquer conflitos.\nTudo isso é muito tedioso e irritante, então vamos mostrar como usar contêineres para resolver esse problema de forma muito mais conveniente.\nUm contêiner é uma unidade de software leve, autônoma e executável criada a partir de uma imagem de contêiner que inclui tudo o que é necessário para executar uma aplicação, incluindo código, bibliotecas do sistema e configurações. Como você pode imaginar, isso será muito útil para tornar seus pipelines mais reproduzíveis.\nExecute hello-containers.nf\nnextflow run hello-containers.nf\nVamos usar um “container” manualmente\nBaixe a imagem do container\ndocker pull 'community.wave.seqera.io/library/cowpy:1.1.5--3db457ae1977a273'\nUse o contêiner para executar cowpy como um comando único\ndocker run --rm -it 'community.wave.seqera.io/library/cowpy:1.1.5--3db457ae1977a273' /bin/bash\nExecute o(s) comando(s) da ferramenta desejada tysiok echo \"Hello Containers\" | cowpy -c tux\n\n4.5.1 Use contêineres no Nextflow\nO Nextflow tem suporte integrado para executar processos dentro de contêineres para permitir que você execute ferramentas que não tem instaladas no seu ambiente de computação. Isso significa que você pode usar qualquer imagem de contêiner que desejar para executar seus processos, e o Nextflow cuidará de puxar a imagem, montar os dados e executar o processo dentro dela.\nPara demonstrar isso, vamos adicionar uma etapa cowpy ao pipeline que estivemos desenvolvendo, após a etapa collectGreetings.\n\n\n\n\n\n\n\nTentem escrever o módulo cowpy.nf\n\n\n\n\n\n\n\n\n\nDicaMostrar resposta\n\n\n\n\n\nPodemos modelar nosso processo cowpy nos outros processos que escrevemos anteriormente.\n#!/usr/bin/env nextflow\n\n// Gera arte ASCII com cowpy\nprocess cowpy {\n\n    input:\n    path input_file\n    val character\n\n    output:\n    path \"cowpy-${input_file}\"\n\n    script:\n    \"\"\"\n    cat ${input_file} | cowpy -c \"${character}\" &gt; cowpy-${input_file}\n    \"\"\"\nO processo espera um input_file contendo as saudações, bem como um valor character.\nA saída será um novo arquivo de texto contendo a arte ASCII gerada pela ferramenta cowpy.\nAdicione cowpy ao fluxo de trabalho\n// Inclui módulos\ninclude { sayHello } from './modules/sayHello.nf'\ninclude { convertToUpper } from './modules/convertToUpper.nf'\ninclude { collectGreetings } from './modules/collectGreetings.nf'\ninclude { cowpy } from './modules/cowpy.nf'\nVamos conectar o processo cowpy() à saída do processo collectGreetings(), que como você deve se lembrar produz duas saídas:\n\ncollectGreetings.out.outfile contém o arquivo de saída &lt;–o que queremos\ncollectGreetings.out.report contém o arquivo de relatório com a contagem de saudações por lote\n\n    main:\n    // cria um canal para entradas de um arquivo CSV\n    greeting_ch = channel.fromPath(params.input)\n                        .splitCsv()\n                        .map { line -&gt; line[0] }\n    // emite uma saudação\n    sayHello(greeting_ch)\n    // converte a saudação para maiúsculas\n    convertToUpper(sayHello.out)\n    // coleta todas as saudações em um arquivo\n    collectGreetings(convertToUpper.out.collect(), params.batch)\n    // gera arte ASCII das saudações com cowpy\n    cowpy(collectGreetings.out.outfile, params.character)\nAdicione o parâmetro character ao bloco param\n/*\n* Parâmetros do pipeline\n*/\nparams {\n    input: Path = 'data/greetings.csv'\n    batch: String = 'batch'\n    character: String = 'turkey'\n}\nAtualize as saídas do workflow\n\n    publish:\n    first_output = sayHello.out\n    uppercased = convertToUpper.out\n    collected = collectGreetings.out.outfile\n    batch_report = collectGreetings.out.report\n    cowpy_art = cowpy.out\nAtualize o bloco output\noutput {\n    first_output {\n        path 'hello_containers/intermediates'\n        mode 'copy'\n    }\n    uppercased {\n        path 'hello_containers/intermediates'\n        mode 'copy'\n    }\n    collected {\n        path 'hello_containers/intermediates'\n        mode 'copy'\n    }\n    batch_report {\n        path 'hello_containers'\n        mode 'copy'\n    }\n    cowpy_art {\n        path 'hello_containers'\n        mode 'copy'\n    }\n}\nExecute o workflow\nnextflow run hello-containers.nf\n\n\n\n\n\n\nOh não, há um erro! O código de erro dado por error exit status (127) significa que o executável que pedimos não foi encontrado.\nIsso faz sentido, já que estamos chamando a ferramenta cowpy mas ainda não especificamos um contêiner (ops).\n\n\n\nUse um contêiner para executar o processo cowpy\nprocess cowpy {\n\n    container 'community.wave.seqera.io/library/cowpy:1.1.5--3db457ae1977a273'\n\n    input:\n    path input_file\n    val character\n\n    output:\n    path \"cowpy-${input_file}\"\n\n    script:\n    \"\"\"\n    cat ${input_file} | cowpy -c \"${character}\" &gt; cowpy-${input_file}\n    \"\"\"\n}\nExecute o workflow\nnextflow run hello-containers.nf",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Componentes de um Workflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_3_hello_nextflow.html#o-arquivo-nextflow.config",
+    "href": "01_3_hello_nextflow.html#o-arquivo-nextflow.config",
+    "title": "4  Componentes de um Workflow",
+    "section": "5.1 O arquivo nextflow.config",
+    "text": "5.1 O arquivo nextflow.config\nQuando você roda nextflow run &lt;script&gt;, o Nextflow carrega automaticamente um arquivo chamado nextflow.config no diretório atual (se existir).\nEle pode conter:\n\nValores padrão de parâmetros (params)\nDiretivas de processo (cpus, memory, container, publishDir, …)\nHabilitação de contêineres/conda (docker.enabled, conda.enabled, …)\nPerfis de configuração (profiles { ... })\nConfigurações de saída (outputDir, workflow.output.mode)",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Componentes de um Workflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_3_hello_nextflow.html#movendo-params-para-o-config",
+    "href": "01_3_hello_nextflow.html#movendo-params-para-o-config",
+    "title": "4  Componentes de um Workflow",
+    "section": "5.2 Movendo params para o config",
+    "text": "5.2 Movendo params para o config\nManter valores padrão no arquivo de configuração deixa o código do workflow mais limpo e permite alterar valores sem editar o script.\n\nDepoisAntes\n\n\nnextflow.config:\ndocker.enabled = true\n\nparams {\n    input     = 'data/greetings.csv'\n    batch     = 'batch'\n    character = 'turkey'\n}\nNo workflow, mantemos só a declaração dos tipos:\nparams {\n    input: Path\n    batch: String\n    character: String\n}\n\n\nnextflow.config:\ndocker.enabled = true\nNo workflow, os valores padrão estavam no próprio script:\nparams {\n    input: Path     = 'data/greetings.csv'\n    batch: String   = 'batch'\n    character: String = 'turkey'\n}",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Componentes de um Workflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_3_hello_nextflow.html#diretivas-de-processo",
+    "href": "01_3_hello_nextflow.html#diretivas-de-processo",
+    "title": "4  Componentes de um Workflow",
+    "section": "5.3 Diretivas de processo",
+    "text": "5.3 Diretivas de processo\nAs diretivas controlam recursos e comportamento de execução dos processos.\nprocess {\n    cpus   = 1\n    memory = 1.GB\n\n    withName: 'cowpy' {\n        cpus   = 2\n        memory = 2.GB\n    }\n}\n\nBloco process { ... }: aplica a todos os processos\nwithName: 'nome': aplica só a um processo específico\nDiretivas comuns: cpus, memory, time, container, conda, publishDir, errorStrategy",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Componentes de um Workflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_3_hello_nextflow.html#tecnologia-de-empacotamento-de-software",
+    "href": "01_3_hello_nextflow.html#tecnologia-de-empacotamento-de-software",
+    "title": "4  Componentes de um Workflow",
+    "section": "5.4 Tecnologia de empacotamento de software",
+    "text": "5.4 Tecnologia de empacotamento de software\nO mesmo pipeline pode rodar com Docker, Singularity ou Conda — basta habilitar no config.\ndocker.enabled      = true\n// ou\nsingularity.enabled = true\n// ou\nconda.enabled       = true\nE no módulo, cada processo declara sua imagem/pacote:\nprocess cowpy {\n    container 'community.wave.seqera.io/library/cowpy:1.1.5--3db457ae1977a273'\n    conda     'conda-forge::cowpy==1.1.5'\n    ...\n}\n\n\n\n\n\n\nSe Docker e Conda estiverem habilitados juntos, o Nextflow prioriza contêineres.",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Componentes de um Workflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_3_hello_nextflow.html#perfis-profiles",
+    "href": "01_3_hello_nextflow.html#perfis-profiles",
+    "title": "4  Componentes de um Workflow",
+    "section": "5.5 Perfis (profiles)",
+    "text": "5.5 Perfis (profiles)\nPerfis são conjuntos nomeados de configuração que você ativa em tempo de execução com -profile.\nprofiles {\n    my_laptop {\n        process.executor = 'local'\n        docker.enabled   = true\n    }\n    hpc {\n        process.executor = 'slurm'\n        conda.enabled    = true\n        process.resourceLimits = [\n            memory: 750.GB,\n            cpus:   200,\n            time:   30.d\n        ]\n    }\n    test {\n        params.input     = 'data/greetings.csv'\n        params.batch     = 'test'\n        params.character = 'dragonandcow'\n    }\n}\nAtivação:\nnextflow run hello-config.nf -profile my_laptop\nnextflow run hello-config.nf -profile my_laptop,test   # combinando perfis\n\n\n\n\n\n\nEste é exatamente o mecanismo que pipelines nf-core usam com -profile docker,test — que veremos na próxima parte do curso.",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Componentes de um Workflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_3_hello_nextflow.html#arquivo-de-parâmetros--params-file",
+    "href": "01_3_hello_nextflow.html#arquivo-de-parâmetros--params-file",
+    "title": "4  Componentes de um Workflow",
+    "section": "5.6 Arquivo de parâmetros (-params-file)",
+    "text": "5.6 Arquivo de parâmetros (-params-file)\nQuando você tem muitos parâmetros ou quer distribuir uma configuração de execução, um arquivo YAML/JSON é mais prático que a linha de comando.\ntest-params.yaml:\ninput:     \"data/greetings.csv\"\nbatch:     \"yaml\"\ncharacter: \"stegosaurus\"\nExecução:\nnextflow run hello-config.nf -params-file test-params.yaml\n\n\n\n\n\n\nNo arquivo de parâmetros use : (YAML). No nextflow.config use = (Groovy).",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Componentes de um Workflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_3_hello_nextflow.html#ordem-de-precedência",
+    "href": "01_3_hello_nextflow.html#ordem-de-precedência",
+    "title": "4  Componentes de um Workflow",
+    "section": "5.7 Ordem de precedência",
+    "text": "5.7 Ordem de precedência\nQuando o mesmo parâmetro é definido em vários lugares, o Nextflow segue esta ordem (do mais forte ao mais fraco):\n\nLinha de comando (--param valor)\nArquivo de parâmetros (-params-file)\nArquivos de configuração (-c custom.config, depois nextflow.config)\nValores padrão no bloco params do workflow",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Componentes de um Workflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_3_hello_nextflow.html#inspecionar-a-config-resolvida",
+    "href": "01_3_hello_nextflow.html#inspecionar-a-config-resolvida",
+    "title": "4  Componentes de um Workflow",
+    "section": "5.8 Inspecionar a config resolvida",
+    "text": "5.8 Inspecionar a config resolvida\nPara descobrir com quais valores o pipeline vai rodar sem executar nada:\nnextflow config\nnextflow config -profile my_laptop,test\nO comando devolve toda a configuração já resolvida — muito útil para debug quando algo não está pegando o valor esperado.",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Componentes de um Workflow</span>"
+    ]
+  },
+  {
+    "objectID": "01_3_hello_nextflow.html#relatório-de-recursos",
+    "href": "01_3_hello_nextflow.html#relatório-de-recursos",
+    "title": "4  Componentes de um Workflow",
+    "section": "5.9 Relatório de recursos",
+    "text": "5.9 Relatório de recursos\nPara descobrir quanto CPU/memória cada processo realmente usa:\nnextflow run hello-containers.nf -with-report relatorio.html\nIsso gera um HTML com utilização por processo — base para ajustar cpus/memory no config.",
+    "crumbs": [
+      "Hello Nextflow",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Componentes de um Workflow</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html",
+    "href": "02_hello_nf-core.html",
+    "title": "5  Hello nf-core",
+    "section": "",
+    "text": "5.1 O que é nf-core\nnf-core é uma comunidade global que desenvolve e mantém pipelines Nextflow curados, revisados por pares e prontos para produção. Todos seguem o mesmo template, então uma vez que você aprende a estrutura, sabe navegar em qualquer pipeline da coleção.\nO que a comunidade entrega:\nO ganho prático para quem faz bioinformática: você não escreve pipelines do zero, você usa e customiza o que a comunidade já validou.",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#o-que-é-nf-core",
+    "href": "02_hello_nf-core.html#o-que-é-nf-core",
+    "title": "5  Hello nf-core",
+    "section": "",
+    "text": "Pipelines (nf-co.re/pipelines) — mais de 100, cobrindo genômica, transcriptômica, proteômica, metagenômica, etc.\nMódulos reutilizáveis (nf-co.re/modules) — processos wrapping ferramentas comuns (FASTQC, samtools, GATK…) que qualquer pipeline pode instalar.\nConfigurações institucionais (nf-co.re/configs) — perfis prontos para HPCs de dezenas de universidades.\nFerramenta CLI nf-core — para criar, testar e instalar pipelines/módulos.",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#configurar-o-diretório-de-trabalho",
+    "href": "02_hello_nf-core.html#configurar-o-diretório-de-trabalho",
+    "title": "5  Hello nf-core",
+    "section": "5.2 Configurar o diretório de trabalho",
+    "text": "5.2 Configurar o diretório de trabalho\nMude de diretório agora executando este comando no terminal:\ncd hello_nfcore\nNesta primeira parte do curso de treinamento Hello nf-core, mostramos como encontrar e experimentar um pipeline do nf-core, configurar e personalizar sua execução para suas necessidades, e entender como a validação de entrada protege contra erros comuns.\nVamos usar um pipeline chamado nf-core/demo que é mantido pelo projeto nf-core como parte de seu inventário de pipelines para fins de demonstração e treinamento.\nCertifique-se de que seu diretório de trabalho esteja definido como hello-nf-core/",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#recuperar-o-código-do-pipeline-demo",
+    "href": "02_hello_nf-core.html#recuperar-o-código-do-pipeline-demo",
+    "title": "5  Hello nf-core",
+    "section": "5.3 Recuperar o código do pipeline Demo",
+    "text": "5.3 Recuperar o código do pipeline Demo\nDepois de determinarmos que o pipeline parece ser adequado para nossos propósitos, vamos experimentá-lo. Felizmente, o Nextflow facilita a recuperação de pipelines de repositórios formatados corretamente sem precisar baixar nada manualmente.\nnextflow pull nf-core/demo\nVocê pode fazer isso com qualquer pipeline Nextflow que esteja configurado adequadamente no GitHub, não apenas pipelines do nf-core. No entanto, o nf-core é a maior coleção de código aberto de pipelines Nextflow.\nPara facilitar a navegação pelo código-fonte do pipeline, crie um link simbólico apontando para a cópia do pipeline que foi baixada:\nmkdir -p pipelines/nf-core\nln -s \"$(echo $NXF_HOME/assets/.repos/nf-core/demo/clones/*/)\" pipelines/nf-core/demo",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#examinar-o-perfil-de-teste",
+    "href": "02_hello_nf-core.html#examinar-o-perfil-de-teste",
+    "title": "5  Hello nf-core",
+    "section": "5.4 Examinar o perfil de teste",
+    "text": "5.4 Examinar o perfil de teste\nÉ uma boa prática verificar o que o perfil de teste de um pipeline especifica antes de executá-lo. O perfil test para nf-core/demo está no arquivo de configuração conf/test.config. Você pode encontrá-lo localmente dentro do código-fonte do pipeline que o nextflow pull baixou.\ncode pipelines/nf-core/demo/conf/test.config",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#examinar-o-workflow-do-pipeline",
+    "href": "02_hello_nf-core.html#examinar-o-workflow-do-pipeline",
+    "title": "5  Hello nf-core",
+    "section": "5.5 Examinar o workflow do pipeline",
+    "text": "5.5 Examinar o workflow do pipeline\ncode pipelines/nf-core/demo/main.nf",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#executar-o-pipeline",
+    "href": "02_hello_nf-core.html#executar-o-pipeline",
+    "title": "5  Hello nf-core",
+    "section": "5.6 Executar o pipeline",
+    "text": "5.6 Executar o pipeline\nnextflow run nf-core/demo -profile docker,test --outdir demo-results",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#parâmetros-do-pipeline",
+    "href": "02_hello_nf-core.html#parâmetros-do-pipeline",
+    "title": "5  Hello nf-core",
+    "section": "6.1 Parâmetros do pipeline",
+    "text": "6.1 Parâmetros do pipeline\n\n6.1.1 Listar todos os parâmetros com --help\nTodo pipeline nf-core expõe seus parâmetros com uma flag --help, alimentada pelo nextflow_schema.json:\nnextflow run nf-core/demo --help\nA saída agrupa os parâmetros por categoria (Input/output, Reference genome, etc.) com tipo, descrição e valor padrão.\n\n\n\n\n\n\nUse nextflow run nf-core/demo --help --show_hidden para ver parâmetros ocultos, como --publish_dir_mode.\n\n\n\n\n\n6.1.2 Definir valores de parâmetros\nTrês formas equivalentes:\n1. Linha de comando (rápido, um valor por vez):\nnextflow run nf-core/demo -profile docker,test --outdir demo-results --skip_trim\n2. Arquivo de parâmetros com -params-file (recomendado):\nmy_params.yml:\nskip_trim: true\nnextflow run nf-core/demo -profile docker,test --outdir demo-results -params-file my_params.yml\n3. Arquivo de configuração personalizado com -c — funciona, mas para params prefira as opções 1 e 2 (precedência é mais previsível).\n\n\n\n\n\n\nBooleans na linha de comando: a partir do Nextflow 26.04, valores da CLI são tratados como strings. Passar --skip_trim puro pode falhar validação. Para booleans, use -params-file.",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#validação-automática-de-parâmetros",
+    "href": "02_hello_nf-core.html#validação-automática-de-parâmetros",
+    "title": "5  Hello nf-core",
+    "section": "6.2 Validação automática de parâmetros",
+    "text": "6.2 Validação automática de parâmetros\nO nf-schema valida parâmetros contra o nextflow_schema.json antes de executar qualquer processo — falha rápida:\nParâmetro inexistente (só warning, mas alerta typos):\nnextflow run nf-core/demo -profile docker,test --outdir demo --outDir demo\n# WARN: --outDir: invalid\nValor de tipo errado (falha imediata):\nnextflow run nf-core/demo -profile docker,test --outdir demo --skip_trim yes\n# ERROR: --skip_trim (yes): Value is [string] but should be [boolean]\nIsso economiza horas de execução perdidas por erros de digitação ou tipo.",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#configuração-propriamente-dita",
+    "href": "02_hello_nf-core.html#configuração-propriamente-dita",
+    "title": "5  Hello nf-core",
+    "section": "6.3 Configuração propriamente dita",
+    "text": "6.3 Configuração propriamente dita\nOs arquivos de config do pipeline ficam em pipelines/nf-core/demo/conf/. Os mais importantes:\n\nbase.config: define labels de recurso (process_low, process_medium, process_high) — CPUs/memória/tempo por categoria de processo.\nmodules.config: define ext.args (argumentos extras por ferramenta) e configurações de publishDir por processo.\ntest.config: perfil de teste com dataset mínimo (ativado por -profile test).\n\nRegra de ouro: nunca edite esses arquivos diretamente. Crie um custom.config e passe com -c — os valores dele sobrescrevem os padrões.",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#personalizar-recursos-e-argumentos-com--c",
+    "href": "02_hello_nf-core.html#personalizar-recursos-e-argumentos-com--c",
+    "title": "5  Hello nf-core",
+    "section": "6.4 Personalizar recursos e argumentos com -c",
+    "text": "6.4 Personalizar recursos e argumentos com -c\ncustom.config:\nprocess {\n    withName: 'FASTQC' {\n        cpus   = 2\n        memory = 4.GB\n    }\n    withName: 'SEQTK_TRIM' {\n        ext.args = '-b 5'\n    }\n}\n\nPrimeiro bloco: reduz recursos alocados ao FASTQC.\nSegundo bloco: passa a flag extra -b 5 ao seqtk trimfq (corta 5 bases do início de cada read).\n\nExecutar:\nnextflow run nf-core/demo -profile docker,test --outdir demo-results-custom -c custom.config\nPara confirmar que a flag entrou, procure o hash de SEQTK_TRIM na saída e inspecione o comando:\ncat work/17/428668*/.command.sh",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#ext.args-o-padrão-chave-para-customização",
+    "href": "02_hello_nf-core.html#ext.args-o-padrão-chave-para-customização",
+    "title": "5  Hello nf-core",
+    "section": "6.5 ext.args — o padrão-chave para customização",
+    "text": "6.5 ext.args — o padrão-chave para customização\nToda ferramenta CLI tem dezenas de flags. Os módulos nf-core não expõem todas como parâmetros; em vez disso, deixam um “gancho” chamado ext.args que é passado direto para a ferramenta.\n\n\n\n\n\n\next.args substitui o valor padrão do módulo, não adiciona. Se FASTQC já tem ext.args = '--quiet' em conf/modules.config e você define ext.args = '--kmers 8', o --quiet desaparece. Para manter ambos: ext.args = '--quiet --kmers 8'.\n\n\n\nSempre inspecione conf/modules.config antes de sobrescrever:\ngrep -A5 \"withName: FASTQC\" pipelines/nf-core/demo/conf/modules.config",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#dois-níveis-de-validação",
+    "href": "02_hello_nf-core.html#dois-níveis-de-validação",
+    "title": "5  Hello nf-core",
+    "section": "7.1 Dois níveis de validação",
+    "text": "7.1 Dois níveis de validação\n\n\n\n\n\n\n\nArquivo\nO que valida\n\n\n\n\nnextflow_schema.json\nParâmetros do pipeline (--input, --outdir, --skip_trim, …)\n\n\nassets/schema_input.json\nEstrutura da samplesheet (colunas, tipos, arquivos existentes)\n\n\n\nAmbos usam o padrão JSON Schema.\n\n\n\n\n\n\nA validação de samplesheet checa a estrutura (colunas certas, arquivos existem, extensão correta), não o conteúdo dos arquivos (integridade do FASTQ, por exemplo).",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#validação-de-parâmetros",
+    "href": "02_hello_nf-core.html#validação-de-parâmetros",
+    "title": "5  Hello nf-core",
+    "section": "7.2 Validação de parâmetros",
+    "text": "7.2 Validação de parâmetros\nO nf-core/demo exibe todos os parâmetros e suas restrições via --help. Cada campo do schema define tipo, formato e regras.\nExemplo de erro por tipo errado:\nnextflow run nf-core/demo -profile docker,test --outdir demo --skip_trim yes\nERROR ~ Validation of pipeline parameters failed!\n* --skip_trim (yes): Value is [string] but should be [boolean]\nO pipeline para antes de rodar qualquer processo.",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#validação-de-samplesheet",
+    "href": "02_hello_nf-core.html#validação-de-samplesheet",
+    "title": "5  Hello nf-core",
+    "section": "7.3 Validação de samplesheet",
+    "text": "7.3 Validação de samplesheet\nO schema assets/schema_input.json define para cada coluna: nome, tipo, obrigatoriedade, padrão (regex), se o arquivo precisa existir e a mensagem de erro amigável.\nExemplo real do nf-core/demo:\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"sample\": {\n            \"type\": \"string\",\n            \"pattern\": \"^\\\\S+$\",\n            \"errorMessage\": \"Sample name must be provided and cannot contain spaces\"\n        },\n        \"fastq_1\": {\n            \"type\": \"string\",\n            \"format\": \"file-path\",\n            \"exists\": true,\n            \"pattern\": \"^([\\\\S\\\\s]*\\\\/)?[^\\\\s\\\\/]+\\\\.f(ast)?q\\\\.gz$\",\n            \"errorMessage\": \"FastQ file for reads 1 must be provided...\"\n        },\n        \"fastq_2\": { \"...\": \"...\" }\n    },\n    \"required\": [\"sample\", \"fastq_1\"]\n}\nfastq_1 é obrigatório; fastq_2 é opcional (suporta single-end).",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#demonstração-samplesheet-quebrada",
+    "href": "02_hello_nf-core.html#demonstração-samplesheet-quebrada",
+    "title": "5  Hello nf-core",
+    "section": "7.4 Demonstração — samplesheet quebrada",
+    "text": "7.4 Demonstração — samplesheet quebrada\nmalformed_samplesheet.csv:\nsample,fastq_2\nSAMPLE1,/not/a/real/file.fastq.gz\nEste arquivo tem dois problemas: falta a coluna fastq_1 e o caminho em fastq_2 não existe.\nnextflow run nf-core/demo -profile docker,test --outdir demo --input malformed_samplesheet.csv\nERROR ~ Validation of pipeline parameters failed!\n\n* --input (malformed_samplesheet.csv): Validation of file failed:\n    -&gt; Entry 1: Error for field 'fastq_2' (/not/a/real/file.fastq.gz): the file\n       or directory does not exist\n    -&gt; Entry 1: Missing required field(s): fastq_1\n\n\n\n\n\n\nO nf-schema reporta todos os erros de uma vez, não só o primeiro. Você corrige tudo em uma iteração.",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#quando-algo-falha-na-validação",
+    "href": "02_hello_nf-core.html#quando-algo-falha-na-validação",
+    "title": "5  Hello nf-core",
+    "section": "7.5 Quando algo falha na validação",
+    "text": "7.5 Quando algo falha na validação\nFluxo de debug:\n\nLer a mensagem — quase sempre diz exatamente qual campo/valor está errado.\nSe for parâmetro: consultar nextflow run &lt;pipeline&gt; --help para ver tipo/formato esperado.\nSe for samplesheet: abrir assets/schema_input.json do pipeline para ver o schema exato.\nCorrigir e reexecutar — não precisa -resume, nada foi computado ainda.",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#buscar-módulos-disponíveis",
+    "href": "02_hello_nf-core.html#buscar-módulos-disponíveis",
+    "title": "5  Hello nf-core",
+    "section": "8.1 Buscar módulos disponíveis",
+    "text": "8.1 Buscar módulos disponíveis\nPelo site: nf-co.re/modules — busca com filtro e página de doc para cada módulo (inputs, outputs, exemplo de uso).\nPela linha de comando (requer nf-core tools instalado):\nnf-core modules list remote                        # lista todos\nnf-core modules list remote | grep -i samtools     # filtra\nnf-core modules info samtools/view                 # detalhes de um módulo\n\n\n\n\n\n\nConvenção de nomes: o / na URL vira _ em alguns contextos. samtools/view = pacote samtools, comando view. Módulos com um único comando principal têm nome curto: fastqc, multiqc.",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#instalar-um-módulo-num-pipeline",
+    "href": "02_hello_nf-core.html#instalar-um-módulo-num-pipeline",
+    "title": "5  Hello nf-core",
+    "section": "8.2 Instalar um módulo num pipeline",
+    "text": "8.2 Instalar um módulo num pipeline\nDentro do diretório raiz de um pipeline nf-core:\nnf-core modules install samtools/view\nIsso faz três coisas:\n\nBaixa os arquivos do módulo para modules/nf-core/samtools/view/.\nRegistra o módulo em modules.json (com SHA para reprodutibilidade).\nDevolve a linha de include pronta para colar no workflow.",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#estrutura-do-módulo-instalado",
+    "href": "02_hello_nf-core.html#estrutura-do-módulo-instalado",
+    "title": "5  Hello nf-core",
+    "section": "8.3 Estrutura do módulo instalado",
+    "text": "8.3 Estrutura do módulo instalado\nmodules/nf-core/samtools/view/\n├── main.nf              # o processo em si\n├── meta.yml             # descrição, inputs, outputs\n├── environment.yml      # dependências conda\n└── tests/               # testes automatizados",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#importar-e-usar",
+    "href": "02_hello_nf-core.html#importar-e-usar",
+    "title": "5  Hello nf-core",
+    "section": "8.4 Importar e usar",
+    "text": "8.4 Importar e usar\ninclude { SAMTOOLS_VIEW } from '../modules/nf-core/samtools/view/main'\nConvenção: nomes de módulos importados ficam em MAIÚSCULAS.",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#atualizar-e-desinstalar",
+    "href": "02_hello_nf-core.html#atualizar-e-desinstalar",
+    "title": "5  Hello nf-core",
+    "section": "8.5 Atualizar e desinstalar",
+    "text": "8.5 Atualizar e desinstalar\nnf-core modules update samtools/view     # atualiza para versão mais recente\nnf-core modules uninstall samtools/view  # remove",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_hello_nf-core.html#personalização-o-padrão-ext.args-de-novo",
+    "href": "02_hello_nf-core.html#personalização-o-padrão-ext.args-de-novo",
+    "title": "5  Hello nf-core",
+    "section": "8.6 Personalização — o padrão ext.args de novo",
+    "text": "8.6 Personalização — o padrão ext.args de novo\nComo todo módulo nf-core respeita ext.args, você quase nunca precisa editar o código do módulo. Basta passar os argumentos extras via custom.config:\nprocess {\n    withName: 'SAMTOOLS_VIEW' {\n        ext.args = '-b -q 30 -f 2'\n    }\n}\nSe precisar de algo que ext.args não cobre (mudar a lógica do processo, adicionar um output), aí sim vale editar. Mas antes, cheque se o módulo aceita a customização por argumento — quase sempre aceita.",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+    ]
+  }
+]

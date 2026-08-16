@@ -1,8 +1,22 @@
 # Hello Nextflow
 
-Historia do nextflow, quem é seqera e nf-core
+## O que é Nextflow
 
-porque o nextflow é bom (conteiners, resume, comunidade etc...)
+Nextflow é uma linguagem de fluxo de trabalho (workflow language) criada em 2013 pelo Paolo Di Tommaso no Centre for Genomic Regulation (Barcelona), pensada para orquestrar pipelines científicos que envolvem muitas ferramentas e muitos dados.
+
+Hoje é mantido pela **Seqera Labs** (a empresa fundada por Paolo) junto com uma comunidade global de contribuidores. A Seqera desenvolve o Nextflow como open source e oferece produtos comerciais em cima dele (Seqera Platform, Wave, Fusion), mas o Nextflow em si é livre.
+
+## O ecossistema nf-core
+
+**nf-core** é uma comunidade independente que constrói pipelines Nextflow curados, revisados por pares e testados — hoje já são mais de 100 pipelines cobrindo genômica, transcriptômica, proteômica, metagenômica etc. Todos seguem o mesmo template, o que significa que aprender a rodar/customizar **um** pipeline nf-core te ensina a rodar **todos**.
+
+## Por que Nextflow
+
+- **Reprodutibilidade**: cada processo roda em um contêiner (Docker/Singularity/Conda). Você não precisa instalar dependências manualmente.
+- **Portabilidade**: o mesmo pipeline roda no seu laptop, num HPC (Slurm/PBS/SGE) ou na nuvem (AWS/Google/Azure), mudando só um perfil de configuração.
+- **`-resume`**: se um passo falha ou você muda um parâmetro, o Nextflow reaproveita tudo que já rodou. Fundamental para pipelines longos.
+- **Paralelismo automático**: você declara o fluxo de dados, o Nextflow paraleliza sozinho.
+- **Comunidade**: com nf-core você raramente precisa escrever um pipeline do zero.
 
 ## Defina o diretório de trabalho
 
@@ -10,18 +24,18 @@ No primeiro momento este curso, trabalharemos no diretório hello-nextflow/.
 
 Mude de diretório executando este comando no terminal:
 
-```{r}
+```bash
 cd hello-nextflow/
 ```
 
 Você pode configurar o VSCode para focar neste diretório, de modo que apenas os arquivos relevantes apareçam na barra lateral do explorador de arquivos:
 
-```{r}
+```bash
 code .
 ```
 
 Explore os materiais fornecidos:
 
-```{r}
+```bash
 tree . -L 2
 ```

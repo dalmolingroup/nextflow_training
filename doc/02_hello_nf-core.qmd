@@ -1,0 +1,531 @@
+# Hello nf-core
+
+## O que é nf-core
+
+nf-core é uma comunidade global que desenvolve e mantém pipelines Nextflow **curados, revisados por pares e prontos para produção**. Todos seguem o mesmo template, então uma vez que você aprende a estrutura, sabe navegar em qualquer pipeline da coleção.
+
+O que a comunidade entrega:
+
+- **Pipelines** ([nf-co.re/pipelines](https://nf-co.re/pipelines)) — mais de 100, cobrindo genômica, transcriptômica, proteômica, metagenômica, etc.
+- **Módulos reutilizáveis** ([nf-co.re/modules](https://nf-co.re/modules)) — processos wrapping ferramentas comuns (FASTQC, samtools, GATK...) que qualquer pipeline pode instalar.
+- **Configurações institucionais** ([nf-co.re/configs](https://nf-co.re/configs)) — perfis prontos para HPCs de dezenas de universidades.
+- **Ferramenta CLI `nf-core`** — para criar, testar e instalar pipelines/módulos.
+
+O ganho prático para quem faz bioinformática: você não escreve pipelines do zero, você **usa** e **customiza** o que a comunidade já validou.
+
+## Configurar o diretório de trabalho
+
+Mude de diretório agora executando este comando no terminal:
+
+```bash
+cd hello_nfcore
+```
+
+Nesta primeira parte do curso de treinamento Hello nf-core, mostramos como encontrar e experimentar um pipeline do nf-core, configurar e personalizar sua execução para suas necessidades, e entender como a validação de entrada protege contra erros comuns.
+
+Vamos usar um pipeline chamado [nf-core/demo](https://nf-co.re/demo/1.2.0/) que é mantido pelo projeto nf-core como parte de seu inventário de pipelines para fins de demonstração e treinamento.
+
+Certifique-se de que seu diretório de trabalho esteja definido como hello-nf-core/
+
+## Recuperar o código do pipeline Demo
+
+Depois de determinarmos que o pipeline parece ser adequado para nossos propósitos, vamos experimentá-lo. Felizmente, o Nextflow facilita a recuperação de pipelines de repositórios formatados corretamente sem precisar baixar nada manualmente.
+
+```bash
+nextflow pull nf-core/demo
+```
+
+Você pode fazer isso com qualquer pipeline Nextflow que esteja configurado adequadamente no GitHub, não apenas pipelines do nf-core. No entanto, o nf-core é a maior coleção de código aberto de pipelines Nextflow.
+
+Para facilitar a navegação pelo código-fonte do pipeline, crie um link simbólico apontando para a cópia do pipeline que foi baixada:
+
+```bash
+mkdir -p pipelines/nf-core
+ln -s "$(echo $NXF_HOME/assets/.repos/nf-core/demo/clones/*/)" pipelines/nf-core/demo
+```
+
+## Estrutura de um pipeline nf-core
+
+Todo pipeline nf-core segue o mesmo layout. Aprender esse mapa uma vez te economiza tempo em qualquer pipeline da coleção.
+
+```bash
+tree -L 1 pipelines/nf-core/demo
+```
+
+```
+pipelines/nf-core/demo
+├── main.nf                # ponto de entrada — quem você chama com `nextflow run`
+├── workflows/             # workflows principais (a lógica de alto nível)
+├── subworkflows/          # blocos reutilizáveis (locais e nf-core)
+├── modules/               # processos individuais
+│   ├── local/             #   → escritos pelo pipeline
+│   └── nf-core/           #   → instalados do repositório nf-core/modules
+├── conf/                  # todos os arquivos de configuração
+│   ├── base.config        #   → labels de recurso (process_low/medium/high)
+│   ├── modules.config     #   → ext.args e publishDir por processo  ★ AQUI VOCÊ CUSTOMIZA
+│   ├── test.config        #   → perfil de teste
+│   └── ...
+├── assets/                # samplesheets exemplo + schemas de entrada
+├── docs/                  # documentação
+├── nextflow.config        # config raiz (carrega tudo em conf/)
+└── nextflow_schema.json   # schema dos parâmetros (alimenta --help)
+```
+
+Os três lugares onde você mais vai olhar no dia-a-dia:
+
+- **`conf/modules.config`** — para descobrir quais `ext.args` já existem e como sobrescrevê-los
+- **`nextflow_schema.json`** — para entender parâmetros aceitos (ou use `--help`)
+- **`assets/schema_input.json`** — para saber exatamente o que sua samplesheet precisa ter
+
+## Examinar o perfil de teste
+
+É uma boa prática verificar o que o perfil de teste de um pipeline especifica antes de executá-lo. O perfil test para nf-core/demo está no arquivo de configuração conf/test.config. Você pode encontrá-lo localmente dentro do código-fonte do pipeline que o nextflow pull baixou.
+
+```bash
+code pipelines/nf-core/demo/conf/test.config
+```
+
+## Examinar o workflow do pipeline
+
+```bash
+code pipelines/nf-core/demo/main.nf
+```
+
+## Executar o pipeline
+
+```bash
+nextflow run nf-core/demo -profile docker,test --outdir demo-results
+```
+
+# Configurar a execução do pipeline
+
+O nf-core distingue dois níveis de configuração:
+
+| Nível | O que é | Como definir |
+|---|---|---|
+| **Parâmetros do pipeline** (`params`) | Entradas, flags de análise, comportamento de ferramentas | `--param`, `-params-file file.yml`, bloco `params` no config |
+| **Configuração** propriamente dita | Como o pipeline é executado — executor, recursos, engine de contêiner | `nextflow.config`, `-c custom.config`, `-profile` |
+
+## Parâmetros do pipeline
+
+### Listar todos os parâmetros com `--help`
+
+Todo pipeline nf-core expõe seus parâmetros com uma flag `--help`, alimentada pelo `nextflow_schema.json`:
+
+```bash
+nextflow run nf-core/demo --help
+```
+
+A saída agrupa os parâmetros por categoria (Input/output, Reference genome, etc.) com tipo, descrição e valor padrão.
+
+::: {.callout-tip}
+Use `nextflow run nf-core/demo --help --show_hidden` para ver parâmetros ocultos, como `--publish_dir_mode`.
+:::
+
+### Definir valores de parâmetros
+
+Três formas equivalentes:
+
+**1. Linha de comando** (rápido, um valor por vez):
+```bash
+nextflow run nf-core/demo -profile docker,test --outdir demo-results --skip_trim
+```
+
+**2. Arquivo de parâmetros com `-params-file`** (recomendado):
+
+`my_params.yml`:
+```yaml
+skip_trim: true
+```
+
+```bash
+nextflow run nf-core/demo -profile docker,test --outdir demo-results -params-file my_params.yml
+```
+
+**3. Arquivo de configuração personalizado com `-c`** — funciona, mas para `params` prefira as opções 1 e 2 (precedência é mais previsível).
+
+::: {.callout-important}
+**Booleans na linha de comando**: a partir do Nextflow 26.04, valores da CLI são tratados como strings. Passar `--skip_trim` puro pode falhar validação. Para booleans, use `-params-file`.
+:::
+
+## Validação automática de parâmetros
+
+O nf-schema valida parâmetros contra o `nextflow_schema.json` **antes** de executar qualquer processo — falha rápida:
+
+**Parâmetro inexistente** (só warning, mas alerta typos):
+```bash
+nextflow run nf-core/demo -profile docker,test --outdir demo --outDir demo
+# WARN: --outDir: invalid
+```
+
+**Valor de tipo errado** (falha imediata):
+```bash
+nextflow run nf-core/demo -profile docker,test --outdir demo --skip_trim yes
+# ERROR: --skip_trim (yes): Value is [string] but should be [boolean]
+```
+
+Isso economiza horas de execução perdidas por erros de digitação ou tipo.
+
+## Configuração propriamente dita
+
+Os arquivos de config do pipeline ficam em `pipelines/nf-core/demo/conf/`. Os mais importantes:
+
+- **`base.config`**: define labels de recurso (`process_low`, `process_medium`, `process_high`) — CPUs/memória/tempo por categoria de processo.
+- **`modules.config`**: define `ext.args` (argumentos extras por ferramenta) e configurações de `publishDir` por processo.
+- **`test.config`**: perfil de teste com dataset mínimo (ativado por `-profile test`).
+
+**Regra de ouro**: nunca edite esses arquivos diretamente. Crie um `custom.config` e passe com `-c` — os valores dele sobrescrevem os padrões.
+
+## Personalizar recursos e argumentos com `-c`
+
+`custom.config`:
+```groovy
+process {
+    withName: 'FASTQC' {
+        cpus   = 2
+        memory = 4.GB
+    }
+    withName: 'SEQTK_TRIM' {
+        ext.args = '-b 5'
+    }
+}
+```
+
+- Primeiro bloco: reduz recursos alocados ao FASTQC.
+- Segundo bloco: passa a flag extra `-b 5` ao `seqtk trimfq` (corta 5 bases do início de cada read).
+
+Executar:
+```bash
+nextflow run nf-core/demo -profile docker,test --outdir demo-results-custom -c custom.config
+```
+
+Para confirmar que a flag entrou, procure o hash de SEQTK_TRIM na saída e inspecione o comando:
+```bash
+cat work/17/428668*/.command.sh
+```
+
+## `ext.args` — o padrão-chave para customização
+
+Toda ferramenta CLI tem dezenas de flags. Os módulos nf-core não expõem todas como parâmetros; em vez disso, deixam um "gancho" chamado `ext.args` que é passado direto para a ferramenta.
+
+::: {.callout-warning}
+`ext.args` **substitui** o valor padrão do módulo, não adiciona. Se `FASTQC` já tem `ext.args = '--quiet'` em `conf/modules.config` e você define `ext.args = '--kmers 8'`, o `--quiet` **desaparece**. Para manter ambos: `ext.args = '--quiet --kmers 8'`.
+:::
+
+Sempre inspecione `conf/modules.config` antes de sobrescrever:
+```bash
+grep -A5 "withName: FASTQC" pipelines/nf-core/demo/conf/modules.config
+```
+
+## Exercício 1 — Customizar `ext.args`
+
+::: {.callout-note}
+## Enunciado
+
+Modifique o pipeline `nf-core/demo` para que o `FASTQC` rode com a flag extra `--kmers 8`, **sem perder** o `--quiet` que já está configurado.
+
+Depois de rodar, prove que a flag entrou inspecionando o `.command.sh` do processo FASTQC.
+:::
+
+::: {.callout-tip collapse="true"}
+## Resposta
+
+Crie `custom.config`:
+```groovy
+process {
+    withName: 'FASTQC' {
+        ext.args = '--quiet --kmers 8'
+    }
+}
+```
+
+Rode:
+```bash
+nextflow run nf-core/demo -profile docker,test --outdir demo-ex1 -c custom.config
+```
+
+Encontre o hash do FASTQC na saída (ex: `[ca/5b0f3e]`) e inspecione:
+```bash
+cat work/ca/5b0f3e*/.command.sh
+```
+
+A linha do `fastqc` deve conter `--quiet --kmers 8`.
+
+**Ponto-chave**: se você tivesse escrito só `ext.args = '--kmers 8'`, o `--quiet` teria sumido — `ext.args` substitui, não soma.
+:::
+
+# Validação de entradas
+
+Sem validação, você pode esperar horas até um pipeline falhar num arquivo inexistente. O nf-core resolve isso com o plugin **nf-schema**, que valida **antes** de qualquer processo rodar.
+
+## Dois níveis de validação
+
+| Arquivo | O que valida |
+|---|---|
+| `nextflow_schema.json` | Parâmetros do pipeline (`--input`, `--outdir`, `--skip_trim`, ...) |
+| `assets/schema_input.json` | Estrutura da samplesheet (colunas, tipos, arquivos existentes) |
+
+Ambos usam o padrão [JSON Schema](https://json-schema.org/).
+
+::: {.callout-note}
+A validação de samplesheet checa a **estrutura** (colunas certas, arquivos existem, extensão correta), não o **conteúdo** dos arquivos (integridade do FASTQ, por exemplo).
+:::
+
+## Validação de parâmetros
+
+O `nf-core/demo` exibe todos os parâmetros e suas restrições via `--help`. Cada campo do schema define tipo, formato e regras.
+
+Exemplo de erro por tipo errado:
+```bash
+nextflow run nf-core/demo -profile docker,test --outdir demo --skip_trim yes
+```
+```
+ERROR ~ Validation of pipeline parameters failed!
+* --skip_trim (yes): Value is [string] but should be [boolean]
+```
+
+O pipeline **para antes** de rodar qualquer processo.
+
+## Validação de samplesheet
+
+O schema `assets/schema_input.json` define para cada coluna: nome, tipo, obrigatoriedade, padrão (regex), se o arquivo precisa existir e a mensagem de erro amigável.
+
+Exemplo real do `nf-core/demo`:
+```json
+{
+    "type": "object",
+    "properties": {
+        "sample": {
+            "type": "string",
+            "pattern": "^\\S+$",
+            "errorMessage": "Sample name must be provided and cannot contain spaces"
+        },
+        "fastq_1": {
+            "type": "string",
+            "format": "file-path",
+            "exists": true,
+            "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
+            "errorMessage": "FastQ file for reads 1 must be provided..."
+        },
+        "fastq_2": { "...": "..." }
+    },
+    "required": ["sample", "fastq_1"]
+}
+```
+
+`fastq_1` é obrigatório; `fastq_2` é opcional (suporta single-end).
+
+## Demonstração — samplesheet quebrada
+
+`malformed_samplesheet.csv`:
+```csv
+sample,fastq_2
+SAMPLE1,/not/a/real/file.fastq.gz
+```
+
+Este arquivo tem dois problemas: falta a coluna `fastq_1` e o caminho em `fastq_2` não existe.
+
+```bash
+nextflow run nf-core/demo -profile docker,test --outdir demo --input malformed_samplesheet.csv
+```
+
+```
+ERROR ~ Validation of pipeline parameters failed!
+
+* --input (malformed_samplesheet.csv): Validation of file failed:
+    -> Entry 1: Error for field 'fastq_2' (/not/a/real/file.fastq.gz): the file
+       or directory does not exist
+    -> Entry 1: Missing required field(s): fastq_1
+```
+
+::: {.callout-tip}
+O nf-schema reporta **todos os erros de uma vez**, não só o primeiro. Você corrige tudo em uma iteração.
+:::
+
+## Quando algo falha na validação
+
+Fluxo de debug:
+
+1. Ler a mensagem — quase sempre diz exatamente qual campo/valor está errado.
+2. Se for parâmetro: consultar `nextflow run <pipeline> --help` para ver tipo/formato esperado.
+3. Se for samplesheet: abrir `assets/schema_input.json` do pipeline para ver o schema exato.
+4. Corrigir e reexecutar — não precisa `-resume`, nada foi computado ainda.
+
+## Exercício 2 — Debugando uma samplesheet
+
+::: {.callout-note}
+## Enunciado
+
+Crie uma samplesheet `bad_sheet.csv` que quebre a validação de **três formas diferentes ao mesmo tempo**:
+
+1. Uma coluna obrigatória faltando
+2. Um caminho de arquivo com extensão inválida
+3. Um nome de amostra com espaço em branco
+
+Rode o pipeline e observe que os três erros aparecem numa mesma execução.
+:::
+
+::: {.callout-tip collapse="true"}
+## Resposta
+
+`bad_sheet.csv`:
+```csv
+sample,fastq_2
+SAMPLE UM,/tmp/reads.txt
+```
+
+Problemas:
+
+1. Falta a coluna `fastq_1` (obrigatória — `required: ["sample", "fastq_1"]`)
+2. `.txt` não bate com o padrão `.f(ast)?q\.gz$`
+3. `SAMPLE UM` tem espaço — falha no padrão `^\S+$`
+
+Rode:
+```bash
+nextflow run nf-core/demo -profile docker,test --outdir demo-ex2 --input bad_sheet.csv
+```
+
+O nf-schema reporta os três erros de uma vez — você corrige tudo numa iteração só, sem ter que rodar três vezes.
+:::
+
+# Usando módulos nf-core
+
+Todo pipeline nf-core é composto por **módulos** — processos que envolvem uma ferramenta específica (FASTQC, samtools, GATK...). Muitos são compartilhados entre pipelines através do repositório [nf-core/modules](https://nf-co.re/modules).
+
+Isso significa que, ao customizar ou construir um pipeline, você raramente precisa escrever um processo do zero: instale o módulo pronto e use.
+
+## Buscar módulos disponíveis
+
+Pelo site: [nf-co.re/modules](https://nf-co.re/modules) — busca com filtro e página de doc para cada módulo (inputs, outputs, exemplo de uso).
+
+Pela linha de comando (requer `nf-core tools` instalado):
+```bash
+nf-core modules list remote                        # lista todos
+nf-core modules list remote | grep -i samtools     # filtra
+nf-core modules info samtools/view                 # detalhes de um módulo
+```
+
+::: {.callout-note}
+Convenção de nomes: o `/` na URL vira `_` em alguns contextos. `samtools/view` = pacote samtools, comando view. Módulos com um único comando principal têm nome curto: `fastqc`, `multiqc`.
+:::
+
+## Instalar um módulo num pipeline
+
+Dentro do diretório raiz de um pipeline nf-core:
+```bash
+nf-core modules install samtools/view
+```
+
+Isso faz três coisas:
+
+1. Baixa os arquivos do módulo para `modules/nf-core/samtools/view/`.
+2. Registra o módulo em `modules.json` (com SHA para reprodutibilidade).
+3. Devolve a linha de `include` pronta para colar no workflow.
+
+## Estrutura do módulo instalado
+
+```
+modules/nf-core/samtools/view/
+├── main.nf              # o processo em si
+├── meta.yml             # descrição, inputs, outputs
+├── environment.yml      # dependências conda
+└── tests/               # testes automatizados
+```
+
+## Importar e usar
+
+```groovy
+include { SAMTOOLS_VIEW } from '../modules/nf-core/samtools/view/main'
+```
+
+Convenção: nomes de módulos importados ficam em **MAIÚSCULAS**.
+
+## Atualizar e desinstalar
+
+```bash
+nf-core modules update samtools/view     # atualiza para versão mais recente
+nf-core modules uninstall samtools/view  # remove
+```
+
+## Personalização — o padrão `ext.args` de novo
+
+Como todo módulo nf-core respeita `ext.args`, você quase nunca precisa **editar** o código do módulo. Basta passar os argumentos extras via `custom.config`:
+
+```groovy
+process {
+    withName: 'SAMTOOLS_VIEW' {
+        ext.args = '-b -q 30 -f 2'
+    }
+}
+```
+
+Se precisar de algo que `ext.args` não cobre (mudar a lógica do processo, adicionar um output), aí sim vale editar. Mas antes, **cheque se o módulo aceita a customização por argumento** — quase sempre aceita.
+
+## Exercício 3 — Adicionando um módulo nf-core
+
+::: {.callout-note}
+## Enunciado
+
+Suponha que você precisa adicionar `samtools/faidx` a um pipeline hipotético para indexar um FASTA.
+
+Responda:
+
+a) Como você descobre se o módulo existe e o que ele espera de entrada?
+b) Qual comando instala o módulo no diretório do pipeline?
+c) Escreva a linha `include` para importá-lo no workflow.
+d) Se você quisesse passar a flag extra `--fai-idx-name` ao `samtools faidx`, qual seria o bloco `custom.config`?
+:::
+
+::: {.callout-tip collapse="true"}
+## Resposta
+
+**a)** Pelo CLI:
+```bash
+nf-core modules info samtools/faidx
+```
+ou pelo site: [nf-co.re/modules/samtools/faidx](https://nf-co.re/modules/samtools/faidx). Ambos mostram inputs/outputs esperados.
+
+**b)** Dentro da raiz do pipeline:
+```bash
+nf-core modules install samtools/faidx
+```
+Isso cria `modules/nf-core/samtools/faidx/` e registra em `modules.json`.
+
+**c)** No arquivo de workflow:
+```groovy
+include { SAMTOOLS_FAIDX } from '../modules/nf-core/samtools/faidx/main'
+```
+
+**d)** No `custom.config`:
+```groovy
+process {
+    withName: 'SAMTOOLS_FAIDX' {
+        ext.args = '--fai-idx-name custom.fai'
+    }
+}
+```
+
+Sem editar o módulo. Mesmo padrão para qualquer ferramenta nf-core.
+:::
+
+# Próximos passos
+
+Você viu tudo com o `nf-core/demo`, mas o padrão é o mesmo para qualquer pipeline da coleção. O que muda entre eles é o número de parâmetros, o volume de dados e o tempo de execução — mas o mecanismo de customização (`-profile`, `-params-file`, `-c` com `ext.args`) é idêntico.
+
+Pipelines populares para começar a explorar:
+
+- **[nf-core/rnaseq](https://nf-co.re/rnaseq)** — quantificação de expressão gênica a partir de RNA-seq
+- **[nf-core/sarek](https://nf-co.re/sarek)** — chamada de variantes germinativas e somáticas (WGS/WES)
+- **[nf-core/ampliseq](https://nf-co.re/ampliseq)** — análise de amplicons (16S, ITS)
+- **[nf-core/atacseq](https://nf-co.re/atacseq)** — ATAC-seq
+- **[nf-core/mag](https://nf-co.re/mag)** — metagenômica assembly
+
+Fluxo recomendado para adotar um pipeline novo:
+
+1. Ler a aba **Introduction** e o **subway map** no site
+2. Ler a aba **Parameters** e escolher os obrigatórios
+3. Rodar o `-profile test` para confirmar que o ambiente funciona
+4. Preparar a samplesheet no formato do `assets/schema_input.json`
+5. Rodar com seus dados reais + `custom.config` para ajustar recursos/`ext.args`
+
+Comunidade: [nf-core Slack](https://nf-co.re/join/slack) para tirar dúvidas — muito ativa e receptiva.
