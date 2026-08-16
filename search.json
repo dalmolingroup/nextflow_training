@@ -314,8 +314,8 @@
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html",
-    "href": "02_hello_nf-core.html",
+    "objectID": "02_1_hello_nf-core.html",
+    "href": "02_1_hello_nf-core.html",
     "title": "5  Hello nf-core",
     "section": "",
     "text": "5.1 O que é nf-core\nnf-core é uma comunidade global que desenvolve e mantém pipelines Nextflow curados, revisados por pares e prontos para produção. Todos seguem o mesmo template, então uma vez que você aprende a estrutura, sabe navegar em qualquer pipeline da coleção.\nO que a comunidade entrega:\nO ganho prático para quem faz bioinformática: você não escreve pipelines do zero, você usa e customiza o que a comunidade já validou.",
@@ -325,8 +325,8 @@
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#o-que-é-nf-core",
-    "href": "02_hello_nf-core.html#o-que-é-nf-core",
+    "objectID": "02_1_hello_nf-core.html#o-que-é-nf-core",
+    "href": "02_1_hello_nf-core.html#o-que-é-nf-core",
     "title": "5  Hello nf-core",
     "section": "",
     "text": "Pipelines (nf-co.re/pipelines) — mais de 100, cobrindo genômica, transcriptômica, proteômica, metagenômica, etc.\nMódulos reutilizáveis (nf-co.re/modules) — processos wrapping ferramentas comuns (FASTQC, samtools, GATK…) que qualquer pipeline pode instalar.\nConfigurações institucionais (nf-co.re/configs) — perfis prontos para HPCs de dezenas de universidades.\nFerramenta CLI nf-core — para criar, testar e instalar pipelines/módulos.",
@@ -336,8 +336,8 @@
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#configurar-o-diretório-de-trabalho",
-    "href": "02_hello_nf-core.html#configurar-o-diretório-de-trabalho",
+    "objectID": "02_1_hello_nf-core.html#configurar-o-diretório-de-trabalho",
+    "href": "02_1_hello_nf-core.html#configurar-o-diretório-de-trabalho",
     "title": "5  Hello nf-core",
     "section": "5.2 Configurar o diretório de trabalho",
     "text": "5.2 Configurar o diretório de trabalho\nMude de diretório agora executando este comando no terminal:\ncd hello_nfcore\nNesta primeira parte do curso de treinamento Hello nf-core, mostramos como encontrar e experimentar um pipeline do nf-core, configurar e personalizar sua execução para suas necessidades, e entender como a validação de entrada protege contra erros comuns.\nVamos usar um pipeline chamado nf-core/demo que é mantido pelo projeto nf-core como parte de seu inventário de pipelines para fins de demonstração e treinamento.\nCertifique-se de que seu diretório de trabalho esteja definido como hello-nf-core/",
@@ -347,267 +347,278 @@
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#recuperar-o-código-do-pipeline-demo",
-    "href": "02_hello_nf-core.html#recuperar-o-código-do-pipeline-demo",
-    "title": "5  Hello nf-core",
-    "section": "5.3 Recuperar o código do pipeline Demo",
-    "text": "5.3 Recuperar o código do pipeline Demo\nDepois de determinarmos que o pipeline parece ser adequado para nossos propósitos, vamos experimentá-lo. Felizmente, o Nextflow facilita a recuperação de pipelines de repositórios formatados corretamente sem precisar baixar nada manualmente.\nnextflow pull nf-core/demo\nVocê pode fazer isso com qualquer pipeline Nextflow que esteja configurado adequadamente no GitHub, não apenas pipelines do nf-core. No entanto, o nf-core é a maior coleção de código aberto de pipelines Nextflow.\nPara facilitar a navegação pelo código-fonte do pipeline, crie um link simbólico apontando para a cópia do pipeline que foi baixada:\nmkdir -p pipelines/nf-core\nln -s \"$(echo $NXF_HOME/assets/.repos/nf-core/demo/clones/*/)\" pipelines/nf-core/demo",
+    "objectID": "02_2_hello_nf-core.html",
+    "href": "02_2_hello_nf-core.html",
+    "title": "6  Usando o nf-core",
+    "section": "",
+    "text": "6.1 Recuperar o código do pipeline Demo\nDepois de determinarmos que o pipeline parece ser adequado para nossos propósitos, vamos experimentá-lo. Felizmente, o Nextflow facilita a recuperação de pipelines de repositórios formatados corretamente sem precisar baixar nada manualmente.\nVocê pode fazer isso com qualquer pipeline Nextflow que esteja configurado adequadamente no GitHub, não apenas pipelines do nf-core. No entanto, o nf-core é a maior coleção de código aberto de pipelines Nextflow.\nPara facilitar a navegação pelo código-fonte do pipeline, crie um link simbólico apontando para a cópia do pipeline que foi baixada:",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#estrutura-de-um-pipeline-nf-core",
-    "href": "02_hello_nf-core.html#estrutura-de-um-pipeline-nf-core",
-    "title": "5  Hello nf-core",
-    "section": "5.4 Estrutura de um pipeline nf-core",
-    "text": "5.4 Estrutura de um pipeline nf-core\nTodo pipeline nf-core segue o mesmo layout. Aprender esse mapa uma vez te economiza tempo em qualquer pipeline da coleção.\ntree -L 1 pipelines/nf-core/demo\npipelines/nf-core/demo\n├── main.nf                # ponto de entrada — quem você chama com `nextflow run`\n├── workflows/             # workflows principais (a lógica de alto nível)\n├── subworkflows/          # blocos reutilizáveis (locais e nf-core)\n├── modules/               # processos individuais\n│   ├── local/             #   → escritos pelo pipeline\n│   └── nf-core/           #   → instalados do repositório nf-core/modules\n├── conf/                  # todos os arquivos de configuração\n│   ├── base.config        #   → labels de recurso (process_low/medium/high)\n│   ├── modules.config     #   → ext.args e publishDir por processo  ★ AQUI VOCÊ CUSTOMIZA\n│   ├── test.config        #   → perfil de teste\n│   └── ...\n├── assets/                # samplesheets exemplo + schemas de entrada\n├── docs/                  # documentação\n├── nextflow.config        # config raiz (carrega tudo em conf/)\n└── nextflow_schema.json   # schema dos parâmetros (alimenta --help)\nOs três lugares onde você mais vai olhar no dia-a-dia:\n\nconf/modules.config — para descobrir quais ext.args já existem e como sobrescrevê-los\nnextflow_schema.json — para entender parâmetros aceitos (ou use --help)\nassets/schema_input.json — para saber exatamente o que sua samplesheet precisa ter",
+    "objectID": "02_2_hello_nf-core.html#recuperar-o-código-do-pipeline-demo",
+    "href": "02_2_hello_nf-core.html#recuperar-o-código-do-pipeline-demo",
+    "title": "6  Usando o nf-core",
+    "section": "",
+    "text": "nextflow pull nf-core/demo\n\n\nmkdir -p pipelines/nf-core\nln -s \"$(echo $NXF_HOME/assets/.repos/nf-core/demo/clones/*/)\" pipelines/nf-core/demo",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#examinar-o-perfil-de-teste",
-    "href": "02_hello_nf-core.html#examinar-o-perfil-de-teste",
-    "title": "5  Hello nf-core",
-    "section": "5.5 Examinar o perfil de teste",
-    "text": "5.5 Examinar o perfil de teste\nÉ uma boa prática verificar o que o perfil de teste de um pipeline especifica antes de executá-lo. O perfil test para nf-core/demo está no arquivo de configuração conf/test.config. Você pode encontrá-lo localmente dentro do código-fonte do pipeline que o nextflow pull baixou.\ncode pipelines/nf-core/demo/conf/test.config",
+    "objectID": "02_2_hello_nf-core.html#estrutura-de-um-pipeline-nf-core",
+    "href": "02_2_hello_nf-core.html#estrutura-de-um-pipeline-nf-core",
+    "title": "6  Usando o nf-core",
+    "section": "6.2 Estrutura de um pipeline nf-core",
+    "text": "6.2 Estrutura de um pipeline nf-core\nTodo pipeline nf-core segue o mesmo layout. Aprender esse mapa uma vez te economiza tempo em qualquer pipeline da coleção.\ntree -L 1 pipelines/nf-core/demo\npipelines/nf-core/demo\n├── main.nf                # ponto de entrada — quem você chama com `nextflow run`\n├── workflows/             # workflows principais (a lógica de alto nível)\n├── subworkflows/          # blocos reutilizáveis (locais e nf-core)\n├── modules/               # processos individuais\n│   ├── local/             #   → escritos pelo pipeline\n│   └── nf-core/           #   → instalados do repositório nf-core/modules\n├── conf/                  # todos os arquivos de configuração\n│   ├── base.config        #   → labels de recurso (process_low/medium/high)\n│   ├── modules.config     #   → ext.args e publishDir por processo  ★ AQUI VOCÊ CUSTOMIZA\n│   ├── test.config        #   → perfil de teste\n│   └── ...\n├── assets/                # samplesheets exemplo + schemas de entrada\n├── docs/                  # documentação\n├── nextflow.config        # config raiz (carrega tudo em conf/)\n└── nextflow_schema.json   # schema dos parâmetros (alimenta --help)\nOs três lugares onde você mais vai olhar no dia-a-dia:\n\nconf/modules.config — para descobrir quais ext.args já existem e como sobrescrevê-los\nnextflow_schema.json — para entender parâmetros aceitos (ou use --help)\nassets/schema_input.json — para saber exatamente o que sua samplesheet precisa ter",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#examinar-o-workflow-do-pipeline",
-    "href": "02_hello_nf-core.html#examinar-o-workflow-do-pipeline",
-    "title": "5  Hello nf-core",
-    "section": "5.6 Examinar o workflow do pipeline",
-    "text": "5.6 Examinar o workflow do pipeline\ncode pipelines/nf-core/demo/main.nf",
+    "objectID": "02_2_hello_nf-core.html#examinar-o-perfil-de-teste",
+    "href": "02_2_hello_nf-core.html#examinar-o-perfil-de-teste",
+    "title": "6  Usando o nf-core",
+    "section": "6.3 Examinar o perfil de teste",
+    "text": "6.3 Examinar o perfil de teste\nÉ uma boa prática verificar o que o perfil de teste de um pipeline especifica antes de executá-lo. O perfil test para nf-core/demo está no arquivo de configuração conf/test.config. Você pode encontrá-lo localmente dentro do código-fonte do pipeline que o nextflow pull baixou.\ncode pipelines/nf-core/demo/conf/test.config",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#executar-o-pipeline",
-    "href": "02_hello_nf-core.html#executar-o-pipeline",
-    "title": "5  Hello nf-core",
-    "section": "5.7 Executar o pipeline",
-    "text": "5.7 Executar o pipeline\nnextflow run nf-core/demo -profile docker,test --outdir demo-results",
+    "objectID": "02_2_hello_nf-core.html#examinar-o-workflow-do-pipeline",
+    "href": "02_2_hello_nf-core.html#examinar-o-workflow-do-pipeline",
+    "title": "6  Usando o nf-core",
+    "section": "6.4 Examinar o workflow do pipeline",
+    "text": "6.4 Examinar o workflow do pipeline\ncode pipelines/nf-core/demo/main.nf",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#parâmetros-do-pipeline",
-    "href": "02_hello_nf-core.html#parâmetros-do-pipeline",
-    "title": "5  Hello nf-core",
-    "section": "6.1 Parâmetros do pipeline",
-    "text": "6.1 Parâmetros do pipeline\n\n6.1.1 Listar todos os parâmetros com --help\nTodo pipeline nf-core expõe seus parâmetros com uma flag --help, alimentada pelo nextflow_schema.json:\nnextflow run nf-core/demo --help\nA saída agrupa os parâmetros por categoria (Input/output, Reference genome, etc.) com tipo, descrição e valor padrão.\n\n\n\n\n\n\nUse nextflow run nf-core/demo --help --show_hidden para ver parâmetros ocultos, como --publish_dir_mode.\n\n\n\n\n\n6.1.2 Definir valores de parâmetros\nTrês formas equivalentes:\n1. Linha de comando (rápido, um valor por vez):\nnextflow run nf-core/demo -profile docker,test --outdir demo-results --skip_trim\n2. Arquivo de parâmetros com -params-file (recomendado):\nmy_params.yml:\nskip_trim: true\nnextflow run nf-core/demo -profile docker,test --outdir demo-results -params-file my_params.yml\n3. Arquivo de configuração personalizado com -c — funciona, mas para params prefira as opções 1 e 2 (precedência é mais previsível).\n\n\n\n\n\n\nBooleans na linha de comando: a partir do Nextflow 26.04, valores da CLI são tratados como strings. Passar --skip_trim puro pode falhar validação. Para booleans, use -params-file.",
+    "objectID": "02_2_hello_nf-core.html#executar-o-pipeline",
+    "href": "02_2_hello_nf-core.html#executar-o-pipeline",
+    "title": "6  Usando o nf-core",
+    "section": "6.5 Executar o pipeline",
+    "text": "6.5 Executar o pipeline\nnextflow run nf-core/demo -profile docker,test --outdir demo-results",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#validação-automática-de-parâmetros",
-    "href": "02_hello_nf-core.html#validação-automática-de-parâmetros",
-    "title": "5  Hello nf-core",
-    "section": "6.2 Validação automática de parâmetros",
-    "text": "6.2 Validação automática de parâmetros\nO nf-schema valida parâmetros contra o nextflow_schema.json antes de executar qualquer processo — falha rápida:\nParâmetro inexistente (só warning, mas alerta typos):\nnextflow run nf-core/demo -profile docker,test --outdir demo --outDir demo\n# WARN: --outDir: invalid\nValor de tipo errado (falha imediata):\nnextflow run nf-core/demo -profile docker,test --outdir demo --skip_trim yes\n# ERROR: --skip_trim (yes): Value is [string] but should be [boolean]\nIsso economiza horas de execução perdidas por erros de digitação ou tipo.",
+    "objectID": "02_2_hello_nf-core.html#parâmetros-do-pipeline",
+    "href": "02_2_hello_nf-core.html#parâmetros-do-pipeline",
+    "title": "6  Usando o nf-core",
+    "section": "7.1 Parâmetros do pipeline",
+    "text": "7.1 Parâmetros do pipeline\n\n7.1.1 Listar todos os parâmetros com --help\nTodo pipeline nf-core expõe seus parâmetros com uma flag --help, alimentada pelo nextflow_schema.json:\nnextflow run nf-core/demo --help\nA saída agrupa os parâmetros por categoria (Input/output, Reference genome, etc.) com tipo, descrição e valor padrão.\n\n\n\n\n\n\nUse nextflow run nf-core/demo --help --show_hidden para ver parâmetros ocultos, como --publish_dir_mode.\n\n\n\n\n\n7.1.2 Definir valores de parâmetros\nTrês formas equivalentes:\n1. Linha de comando (rápido, um valor por vez):\nnextflow run nf-core/demo -profile docker,test --outdir demo-results --skip_trim\n2. Arquivo de parâmetros com -params-file (recomendado):\nmy_params.yml:\nskip_trim: true\nnextflow run nf-core/demo -profile docker,test --outdir demo-results -params-file my_params.yml\n3. Arquivo de configuração personalizado com -c — funciona, mas para params prefira as opções 1 e 2 (precedência é mais previsível).\n\n\n\n\n\n\nBooleans na linha de comando: a partir do Nextflow 26.04, valores da CLI são tratados como strings. Passar --skip_trim puro pode falhar validação. Para booleans, use -params-file.",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#configuração-propriamente-dita",
-    "href": "02_hello_nf-core.html#configuração-propriamente-dita",
-    "title": "5  Hello nf-core",
-    "section": "6.3 Configuração propriamente dita",
-    "text": "6.3 Configuração propriamente dita\nOs arquivos de config do pipeline ficam em pipelines/nf-core/demo/conf/. Os mais importantes:\n\nbase.config: define labels de recurso (process_low, process_medium, process_high) — CPUs/memória/tempo por categoria de processo.\nmodules.config: define ext.args (argumentos extras por ferramenta) e configurações de publishDir por processo.\ntest.config: perfil de teste com dataset mínimo (ativado por -profile test).\n\nRegra de ouro: nunca edite esses arquivos diretamente. Crie um custom.config e passe com -c — os valores dele sobrescrevem os padrões.",
+    "objectID": "02_2_hello_nf-core.html#validação-automática-de-parâmetros",
+    "href": "02_2_hello_nf-core.html#validação-automática-de-parâmetros",
+    "title": "6  Usando o nf-core",
+    "section": "7.2 Validação automática de parâmetros",
+    "text": "7.2 Validação automática de parâmetros\nO nf-schema valida parâmetros contra o nextflow_schema.json antes de executar qualquer processo — falha rápida:\nParâmetro inexistente (só warning, mas alerta typos):\nnextflow run nf-core/demo -profile docker,test --outdir demo --outDir demo\n# WARN: --outDir: invalid\nValor de tipo errado (falha imediata):\nnextflow run nf-core/demo -profile docker,test --outdir demo --skip_trim yes\n# ERROR: --skip_trim (yes): Value is [string] but should be [boolean]\nIsso economiza horas de execução perdidas por erros de digitação ou tipo.",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#personalizar-recursos-e-argumentos-com--c",
-    "href": "02_hello_nf-core.html#personalizar-recursos-e-argumentos-com--c",
-    "title": "5  Hello nf-core",
-    "section": "6.4 Personalizar recursos e argumentos com -c",
-    "text": "6.4 Personalizar recursos e argumentos com -c\ncustom.config:\nprocess {\n    withName: 'FASTQC' {\n        cpus   = 2\n        memory = 4.GB\n    }\n    withName: 'SEQTK_TRIM' {\n        ext.args = '-b 5'\n    }\n}\n\nPrimeiro bloco: reduz recursos alocados ao FASTQC.\nSegundo bloco: passa a flag extra -b 5 ao seqtk trimfq (corta 5 bases do início de cada read).\n\nExecutar:\nnextflow run nf-core/demo -profile docker,test --outdir demo-results-custom -c custom.config\nPara confirmar que a flag entrou, procure o hash de SEQTK_TRIM na saída e inspecione o comando:\ncat work/17/428668*/.command.sh",
+    "objectID": "02_2_hello_nf-core.html#configuração-propriamente-dita",
+    "href": "02_2_hello_nf-core.html#configuração-propriamente-dita",
+    "title": "6  Usando o nf-core",
+    "section": "7.3 Configuração propriamente dita",
+    "text": "7.3 Configuração propriamente dita\nOs arquivos de config do pipeline ficam em pipelines/nf-core/demo/conf/. Os mais importantes:\n\nbase.config: define labels de recurso (process_low, process_medium, process_high) — CPUs/memória/tempo por categoria de processo.\nmodules.config: define ext.args (argumentos extras por ferramenta) e configurações de publishDir por processo.\ntest.config: perfil de teste com dataset mínimo (ativado por -profile test).\n\nRegra de ouro: nunca edite esses arquivos diretamente. Crie um custom.config e passe com -c — os valores dele sobrescrevem os padrões.",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#ext.args-o-padrão-chave-para-customização",
-    "href": "02_hello_nf-core.html#ext.args-o-padrão-chave-para-customização",
-    "title": "5  Hello nf-core",
-    "section": "6.5 ext.args — o padrão-chave para customização",
-    "text": "6.5 ext.args — o padrão-chave para customização\nToda ferramenta CLI tem dezenas de flags. Os módulos nf-core não expõem todas como parâmetros; em vez disso, deixam um “gancho” chamado ext.args que é passado direto para a ferramenta.\n\n\n\n\n\n\next.args substitui o valor padrão do módulo, não adiciona. Se FASTQC já tem ext.args = '--quiet' em conf/modules.config e você define ext.args = '--kmers 8', o --quiet desaparece. Para manter ambos: ext.args = '--quiet --kmers 8'.\n\n\n\nSempre inspecione conf/modules.config antes de sobrescrever:\ngrep -A5 \"withName: FASTQC\" pipelines/nf-core/demo/conf/modules.config",
+    "objectID": "02_2_hello_nf-core.html#personalizar-recursos-e-argumentos-com--c",
+    "href": "02_2_hello_nf-core.html#personalizar-recursos-e-argumentos-com--c",
+    "title": "6  Usando o nf-core",
+    "section": "7.4 Personalizar recursos e argumentos com -c",
+    "text": "7.4 Personalizar recursos e argumentos com -c\ncustom.config:\nprocess {\n    withName: 'FASTQC' {\n        cpus   = 2\n        memory = 4.GB\n    }\n    withName: 'SEQTK_TRIM' {\n        ext.args = '-b 5'\n    }\n}\n\nPrimeiro bloco: reduz recursos alocados ao FASTQC.\nSegundo bloco: passa a flag extra -b 5 ao seqtk trimfq (corta 5 bases do início de cada read).\n\nExecutar:\nnextflow run nf-core/demo -profile docker,test --outdir demo-results-custom -c custom.config\nPara confirmar que a flag entrou, procure o hash de SEQTK_TRIM na saída e inspecione o comando:\ncat work/17/428668*/.command.sh",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#exercício-1-customizar-ext.args",
-    "href": "02_hello_nf-core.html#exercício-1-customizar-ext.args",
-    "title": "5  Hello nf-core",
-    "section": "6.6 Exercício 1 — Customizar ext.args",
-    "text": "6.6 Exercício 1 — Customizar ext.args\n\n\n\n\n\n\nNotaEnunciado\n\n\n\nModifique o pipeline nf-core/demo para que o FASTQC rode com a flag extra --kmers 8, sem perder o --quiet que já está configurado.\nDepois de rodar, prove que a flag entrou inspecionando o .command.sh do processo FASTQC.\n\n\n\n\n\n\n\n\nDicaResposta\n\n\n\n\n\nCrie custom.config:\nprocess {\n    withName: 'FASTQC' {\n        ext.args = '--quiet --kmers 8'\n    }\n}\nRode:\nnextflow run nf-core/demo -profile docker,test --outdir demo-ex1 -c custom.config\nEncontre o hash do FASTQC na saída (ex: [ca/5b0f3e]) e inspecione:\ncat work/ca/5b0f3e*/.command.sh\nA linha do fastqc deve conter --quiet --kmers 8.\nPonto-chave: se você tivesse escrito só ext.args = '--kmers 8', o --quiet teria sumido — ext.args substitui, não soma.",
+    "objectID": "02_2_hello_nf-core.html#ext.args-o-padrão-chave-para-customização",
+    "href": "02_2_hello_nf-core.html#ext.args-o-padrão-chave-para-customização",
+    "title": "6  Usando o nf-core",
+    "section": "7.5 ext.args — o padrão-chave para customização",
+    "text": "7.5 ext.args — o padrão-chave para customização\nToda ferramenta CLI tem dezenas de flags. Os módulos nf-core não expõem todas como parâmetros; em vez disso, deixam um “gancho” chamado ext.args que é passado direto para a ferramenta.\n\n\n\n\n\n\next.args substitui o valor padrão do módulo, não adiciona. Se FASTQC já tem ext.args = '--quiet' em conf/modules.config e você define ext.args = '--kmers 8', o --quiet desaparece. Para manter ambos: ext.args = '--quiet --kmers 8'.\n\n\n\nSempre inspecione conf/modules.config antes de sobrescrever:\ngrep -A5 \"withName: FASTQC\" pipelines/nf-core/demo/conf/modules.config",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#dois-níveis-de-validação",
-    "href": "02_hello_nf-core.html#dois-níveis-de-validação",
-    "title": "5  Hello nf-core",
-    "section": "7.1 Dois níveis de validação",
-    "text": "7.1 Dois níveis de validação\n\n\n\n\n\n\n\nArquivo\nO que valida\n\n\n\n\nnextflow_schema.json\nParâmetros do pipeline (--input, --outdir, --skip_trim, …)\n\n\nassets/schema_input.json\nEstrutura da samplesheet (colunas, tipos, arquivos existentes)\n\n\n\nAmbos usam o padrão JSON Schema.\n\n\n\n\n\n\nA validação de samplesheet checa a estrutura (colunas certas, arquivos existem, extensão correta), não o conteúdo dos arquivos (integridade do FASTQ, por exemplo).",
+    "objectID": "02_2_hello_nf-core.html#exercício-1-customizar-ext.args",
+    "href": "02_2_hello_nf-core.html#exercício-1-customizar-ext.args",
+    "title": "6  Usando o nf-core",
+    "section": "7.6 Exercício 1 — Customizar ext.args",
+    "text": "7.6 Exercício 1 — Customizar ext.args\n\n\n\n\n\n\nNotaEnunciado\n\n\n\nModifique o pipeline nf-core/demo para que o FASTQC rode com a flag extra --kmers 8, sem perder o --quiet que já está configurado.\nDepois de rodar, prove que a flag entrou inspecionando o .command.sh do processo FASTQC.\n\n\n\n\n\n\n\n\nDicaResposta\n\n\n\n\n\nCrie custom.config:\nprocess {\n    withName: 'FASTQC' {\n        ext.args = '--quiet --kmers 8'\n    }\n}\nRode:\nnextflow run nf-core/demo -profile docker,test --outdir demo-ex1 -c custom.config\nEncontre o hash do FASTQC na saída (ex: [ca/5b0f3e]) e inspecione:\ncat work/ca/5b0f3e*/.command.sh\nA linha do fastqc deve conter --quiet --kmers 8.\nPonto-chave: se você tivesse escrito só ext.args = '--kmers 8', o --quiet teria sumido — ext.args substitui, não soma.",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#validação-de-parâmetros",
-    "href": "02_hello_nf-core.html#validação-de-parâmetros",
-    "title": "5  Hello nf-core",
-    "section": "7.2 Validação de parâmetros",
-    "text": "7.2 Validação de parâmetros\nO nf-core/demo exibe todos os parâmetros e suas restrições via --help. Cada campo do schema define tipo, formato e regras.\nExemplo de erro por tipo errado:\nnextflow run nf-core/demo -profile docker,test --outdir demo --skip_trim yes\nERROR ~ Validation of pipeline parameters failed!\n* --skip_trim (yes): Value is [string] but should be [boolean]\nO pipeline para antes de rodar qualquer processo.",
+    "objectID": "02_2_hello_nf-core.html#dois-níveis-de-validação",
+    "href": "02_2_hello_nf-core.html#dois-níveis-de-validação",
+    "title": "6  Usando o nf-core",
+    "section": "8.1 Dois níveis de validação",
+    "text": "8.1 Dois níveis de validação\n\n\n\n\n\n\n\nArquivo\nO que valida\n\n\n\n\nnextflow_schema.json\nParâmetros do pipeline (--input, --outdir, --skip_trim, …)\n\n\nassets/schema_input.json\nEstrutura da samplesheet (colunas, tipos, arquivos existentes)\n\n\n\nAmbos usam o padrão JSON Schema.\n\n\n\n\n\n\nA validação de samplesheet checa a estrutura (colunas certas, arquivos existem, extensão correta), não o conteúdo dos arquivos (integridade do FASTQ, por exemplo).",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#validação-de-samplesheet",
-    "href": "02_hello_nf-core.html#validação-de-samplesheet",
-    "title": "5  Hello nf-core",
-    "section": "7.3 Validação de samplesheet",
-    "text": "7.3 Validação de samplesheet\nO schema assets/schema_input.json define para cada coluna: nome, tipo, obrigatoriedade, padrão (regex), se o arquivo precisa existir e a mensagem de erro amigável.\nExemplo real do nf-core/demo:\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"sample\": {\n            \"type\": \"string\",\n            \"pattern\": \"^\\\\S+$\",\n            \"errorMessage\": \"Sample name must be provided and cannot contain spaces\"\n        },\n        \"fastq_1\": {\n            \"type\": \"string\",\n            \"format\": \"file-path\",\n            \"exists\": true,\n            \"pattern\": \"^([\\\\S\\\\s]*\\\\/)?[^\\\\s\\\\/]+\\\\.f(ast)?q\\\\.gz$\",\n            \"errorMessage\": \"FastQ file for reads 1 must be provided...\"\n        },\n        \"fastq_2\": { \"...\": \"...\" }\n    },\n    \"required\": [\"sample\", \"fastq_1\"]\n}\nfastq_1 é obrigatório; fastq_2 é opcional (suporta single-end).",
+    "objectID": "02_2_hello_nf-core.html#validação-de-parâmetros",
+    "href": "02_2_hello_nf-core.html#validação-de-parâmetros",
+    "title": "6  Usando o nf-core",
+    "section": "8.2 Validação de parâmetros",
+    "text": "8.2 Validação de parâmetros\nO nf-core/demo exibe todos os parâmetros e suas restrições via --help. Cada campo do schema define tipo, formato e regras.\nExemplo de erro por tipo errado:\nnextflow run nf-core/demo -profile docker,test --outdir demo --skip_trim yes\nERROR ~ Validation of pipeline parameters failed!\n* --skip_trim (yes): Value is [string] but should be [boolean]\nO pipeline para antes de rodar qualquer processo.",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#demonstração-samplesheet-quebrada",
-    "href": "02_hello_nf-core.html#demonstração-samplesheet-quebrada",
-    "title": "5  Hello nf-core",
-    "section": "7.4 Demonstração — samplesheet quebrada",
-    "text": "7.4 Demonstração — samplesheet quebrada\nmalformed_samplesheet.csv:\nsample,fastq_2\nSAMPLE1,/not/a/real/file.fastq.gz\nEste arquivo tem dois problemas: falta a coluna fastq_1 e o caminho em fastq_2 não existe.\nnextflow run nf-core/demo -profile docker,test --outdir demo --input malformed_samplesheet.csv\nERROR ~ Validation of pipeline parameters failed!\n\n* --input (malformed_samplesheet.csv): Validation of file failed:\n    -&gt; Entry 1: Error for field 'fastq_2' (/not/a/real/file.fastq.gz): the file\n       or directory does not exist\n    -&gt; Entry 1: Missing required field(s): fastq_1\n\n\n\n\n\n\nO nf-schema reporta todos os erros de uma vez, não só o primeiro. Você corrige tudo em uma iteração.",
+    "objectID": "02_2_hello_nf-core.html#validação-de-samplesheet",
+    "href": "02_2_hello_nf-core.html#validação-de-samplesheet",
+    "title": "6  Usando o nf-core",
+    "section": "8.3 Validação de samplesheet",
+    "text": "8.3 Validação de samplesheet\nO schema assets/schema_input.json define para cada coluna: nome, tipo, obrigatoriedade, padrão (regex), se o arquivo precisa existir e a mensagem de erro amigável.\nExemplo real do nf-core/demo:\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"sample\": {\n            \"type\": \"string\",\n            \"pattern\": \"^\\\\S+$\",\n            \"errorMessage\": \"Sample name must be provided and cannot contain spaces\"\n        },\n        \"fastq_1\": {\n            \"type\": \"string\",\n            \"format\": \"file-path\",\n            \"exists\": true,\n            \"pattern\": \"^([\\\\S\\\\s]*\\\\/)?[^\\\\s\\\\/]+\\\\.f(ast)?q\\\\.gz$\",\n            \"errorMessage\": \"FastQ file for reads 1 must be provided...\"\n        },\n        \"fastq_2\": { \"...\": \"...\" }\n    },\n    \"required\": [\"sample\", \"fastq_1\"]\n}\nfastq_1 é obrigatório; fastq_2 é opcional (suporta single-end).",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#quando-algo-falha-na-validação",
-    "href": "02_hello_nf-core.html#quando-algo-falha-na-validação",
-    "title": "5  Hello nf-core",
-    "section": "7.5 Quando algo falha na validação",
-    "text": "7.5 Quando algo falha na validação\nFluxo de debug:\n\nLer a mensagem — quase sempre diz exatamente qual campo/valor está errado.\nSe for parâmetro: consultar nextflow run &lt;pipeline&gt; --help para ver tipo/formato esperado.\nSe for samplesheet: abrir assets/schema_input.json do pipeline para ver o schema exato.\nCorrigir e reexecutar — não precisa -resume, nada foi computado ainda.",
+    "objectID": "02_2_hello_nf-core.html#demonstração-samplesheet-quebrada",
+    "href": "02_2_hello_nf-core.html#demonstração-samplesheet-quebrada",
+    "title": "6  Usando o nf-core",
+    "section": "8.4 Demonstração — samplesheet quebrada",
+    "text": "8.4 Demonstração — samplesheet quebrada\nmalformed_samplesheet.csv:\nsample,fastq_2\nSAMPLE1,/not/a/real/file.fastq.gz\nEste arquivo tem dois problemas: falta a coluna fastq_1 e o caminho em fastq_2 não existe.\nnextflow run nf-core/demo -profile docker,test --outdir demo --input malformed_samplesheet.csv\nERROR ~ Validation of pipeline parameters failed!\n\n* --input (malformed_samplesheet.csv): Validation of file failed:\n    -&gt; Entry 1: Error for field 'fastq_2' (/not/a/real/file.fastq.gz): the file\n       or directory does not exist\n    -&gt; Entry 1: Missing required field(s): fastq_1\n\n\n\n\n\n\nO nf-schema reporta todos os erros de uma vez, não só o primeiro. Você corrige tudo em uma iteração.",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#exercício-2-debugando-uma-samplesheet",
-    "href": "02_hello_nf-core.html#exercício-2-debugando-uma-samplesheet",
-    "title": "5  Hello nf-core",
-    "section": "7.6 Exercício 2 — Debugando uma samplesheet",
-    "text": "7.6 Exercício 2 — Debugando uma samplesheet\n\n\n\n\n\n\nNotaEnunciado\n\n\n\nCrie uma samplesheet bad_sheet.csv que quebre a validação de três formas diferentes ao mesmo tempo:\n\nUma coluna obrigatória faltando\nUm caminho de arquivo com extensão inválida\nUm nome de amostra com espaço em branco\n\nRode o pipeline e observe que os três erros aparecem numa mesma execução.\n\n\n\n\n\n\n\n\nDicaResposta\n\n\n\n\n\nbad_sheet.csv:\nsample,fastq_2\nSAMPLE UM,/tmp/reads.txt\nProblemas:\n\nFalta a coluna fastq_1 (obrigatória — required: [\"sample\", \"fastq_1\"])\n.txt não bate com o padrão .f(ast)?q\\.gz$\nSAMPLE UM tem espaço — falha no padrão ^\\S+$\n\nRode:\nnextflow run nf-core/demo -profile docker,test --outdir demo-ex2 --input bad_sheet.csv\nO nf-schema reporta os três erros de uma vez — você corrige tudo numa iteração só, sem ter que rodar três vezes.",
+    "objectID": "02_2_hello_nf-core.html#quando-algo-falha-na-validação",
+    "href": "02_2_hello_nf-core.html#quando-algo-falha-na-validação",
+    "title": "6  Usando o nf-core",
+    "section": "8.5 Quando algo falha na validação",
+    "text": "8.5 Quando algo falha na validação\nFluxo de debug:\n\nLer a mensagem — quase sempre diz exatamente qual campo/valor está errado.\nSe for parâmetro: consultar nextflow run &lt;pipeline&gt; --help para ver tipo/formato esperado.\nSe for samplesheet: abrir assets/schema_input.json do pipeline para ver o schema exato.\nCorrigir e reexecutar — não precisa -resume, nada foi computado ainda.",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#buscar-módulos-disponíveis",
-    "href": "02_hello_nf-core.html#buscar-módulos-disponíveis",
-    "title": "5  Hello nf-core",
-    "section": "8.1 Buscar módulos disponíveis",
-    "text": "8.1 Buscar módulos disponíveis\nPelo site: nf-co.re/modules — busca com filtro e página de doc para cada módulo (inputs, outputs, exemplo de uso).\nPela linha de comando (requer nf-core tools instalado):\nnf-core modules list remote                        # lista todos\nnf-core modules list remote | grep -i samtools     # filtra\nnf-core modules info samtools/view                 # detalhes de um módulo\n\n\n\n\n\n\nConvenção de nomes: o / na URL vira _ em alguns contextos. samtools/view = pacote samtools, comando view. Módulos com um único comando principal têm nome curto: fastqc, multiqc.",
+    "objectID": "02_2_hello_nf-core.html#exercício-2-debugando-uma-samplesheet",
+    "href": "02_2_hello_nf-core.html#exercício-2-debugando-uma-samplesheet",
+    "title": "6  Usando o nf-core",
+    "section": "8.6 Exercício 2 — Debugando uma samplesheet",
+    "text": "8.6 Exercício 2 — Debugando uma samplesheet\n\n\n\n\n\n\nNotaEnunciado\n\n\n\nCrie uma samplesheet bad_sheet.csv que quebre a validação de três formas diferentes ao mesmo tempo:\n\nUma coluna obrigatória faltando\nUm caminho de arquivo com extensão inválida\nUm nome de amostra com espaço em branco\n\nRode o pipeline e observe que os três erros aparecem numa mesma execução.\n\n\n\n\n\n\n\n\nDicaResposta\n\n\n\n\n\nbad_sheet.csv:\nsample,fastq_2\nSAMPLE UM,/tmp/reads.txt\nProblemas:\n\nFalta a coluna fastq_1 (obrigatória — required: [\"sample\", \"fastq_1\"])\n.txt não bate com o padrão .f(ast)?q\\.gz$\nSAMPLE UM tem espaço — falha no padrão ^\\S+$\n\nRode:\nnextflow run nf-core/demo -profile docker,test --outdir demo-ex2 --input bad_sheet.csv\nO nf-schema reporta os três erros de uma vez — você corrige tudo numa iteração só, sem ter que rodar três vezes.",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#instalar-um-módulo-num-pipeline",
-    "href": "02_hello_nf-core.html#instalar-um-módulo-num-pipeline",
-    "title": "5  Hello nf-core",
-    "section": "8.2 Instalar um módulo num pipeline",
-    "text": "8.2 Instalar um módulo num pipeline\nDentro do diretório raiz de um pipeline nf-core:\nnf-core modules install samtools/view\nIsso faz três coisas:\n\nBaixa os arquivos do módulo para modules/nf-core/samtools/view/.\nRegistra o módulo em modules.json (com SHA para reprodutibilidade).\nDevolve a linha de include pronta para colar no workflow.",
+    "objectID": "02_2_hello_nf-core.html#buscar-módulos-disponíveis",
+    "href": "02_2_hello_nf-core.html#buscar-módulos-disponíveis",
+    "title": "6  Usando o nf-core",
+    "section": "9.1 Buscar módulos disponíveis",
+    "text": "9.1 Buscar módulos disponíveis\nPelo site: nf-co.re/modules — busca com filtro e página de doc para cada módulo (inputs, outputs, exemplo de uso).\nPela linha de comando (requer nf-core tools instalado):\nnf-core modules list remote                        # lista todos\nnf-core modules list remote | grep -i samtools     # filtra\nnf-core modules info samtools/view                 # detalhes de um módulo\n\n\n\n\n\n\nConvenção de nomes: o / na URL vira _ em alguns contextos. samtools/view = pacote samtools, comando view. Módulos com um único comando principal têm nome curto: fastqc, multiqc.",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#estrutura-do-módulo-instalado",
-    "href": "02_hello_nf-core.html#estrutura-do-módulo-instalado",
-    "title": "5  Hello nf-core",
-    "section": "8.3 Estrutura do módulo instalado",
-    "text": "8.3 Estrutura do módulo instalado\nmodules/nf-core/samtools/view/\n├── main.nf              # o processo em si\n├── meta.yml             # descrição, inputs, outputs\n├── environment.yml      # dependências conda\n└── tests/               # testes automatizados",
+    "objectID": "02_2_hello_nf-core.html#instalar-um-módulo-num-pipeline",
+    "href": "02_2_hello_nf-core.html#instalar-um-módulo-num-pipeline",
+    "title": "6  Usando o nf-core",
+    "section": "9.2 Instalar um módulo num pipeline",
+    "text": "9.2 Instalar um módulo num pipeline\nDentro do diretório raiz de um pipeline nf-core:\nnf-core modules install samtools/view\nIsso faz três coisas:\n\nBaixa os arquivos do módulo para modules/nf-core/samtools/view/.\nRegistra o módulo em modules.json (com SHA para reprodutibilidade).\nDevolve a linha de include pronta para colar no workflow.",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#importar-e-usar",
-    "href": "02_hello_nf-core.html#importar-e-usar",
-    "title": "5  Hello nf-core",
-    "section": "8.4 Importar e usar",
-    "text": "8.4 Importar e usar\ninclude { SAMTOOLS_VIEW } from '../modules/nf-core/samtools/view/main'\nConvenção: nomes de módulos importados ficam em MAIÚSCULAS.",
+    "objectID": "02_2_hello_nf-core.html#estrutura-do-módulo-instalado",
+    "href": "02_2_hello_nf-core.html#estrutura-do-módulo-instalado",
+    "title": "6  Usando o nf-core",
+    "section": "9.3 Estrutura do módulo instalado",
+    "text": "9.3 Estrutura do módulo instalado\nmodules/nf-core/samtools/view/\n├── main.nf              # o processo em si\n├── meta.yml             # descrição, inputs, outputs\n├── environment.yml      # dependências conda\n└── tests/               # testes automatizados",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#atualizar-e-desinstalar",
-    "href": "02_hello_nf-core.html#atualizar-e-desinstalar",
-    "title": "5  Hello nf-core",
-    "section": "8.5 Atualizar e desinstalar",
-    "text": "8.5 Atualizar e desinstalar\nnf-core modules update samtools/view     # atualiza para versão mais recente\nnf-core modules uninstall samtools/view  # remove",
+    "objectID": "02_2_hello_nf-core.html#importar-e-usar",
+    "href": "02_2_hello_nf-core.html#importar-e-usar",
+    "title": "6  Usando o nf-core",
+    "section": "9.4 Importar e usar",
+    "text": "9.4 Importar e usar\ninclude { SAMTOOLS_VIEW } from '../modules/nf-core/samtools/view/main'\nConvenção: nomes de módulos importados ficam em MAIÚSCULAS.",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#personalização-o-padrão-ext.args-de-novo",
-    "href": "02_hello_nf-core.html#personalização-o-padrão-ext.args-de-novo",
-    "title": "5  Hello nf-core",
-    "section": "8.6 Personalização — o padrão ext.args de novo",
-    "text": "8.6 Personalização — o padrão ext.args de novo\nComo todo módulo nf-core respeita ext.args, você quase nunca precisa editar o código do módulo. Basta passar os argumentos extras via custom.config:\nprocess {\n    withName: 'SAMTOOLS_VIEW' {\n        ext.args = '-b -q 30 -f 2'\n    }\n}\nSe precisar de algo que ext.args não cobre (mudar a lógica do processo, adicionar um output), aí sim vale editar. Mas antes, cheque se o módulo aceita a customização por argumento — quase sempre aceita.",
+    "objectID": "02_2_hello_nf-core.html#atualizar-e-desinstalar",
+    "href": "02_2_hello_nf-core.html#atualizar-e-desinstalar",
+    "title": "6  Usando o nf-core",
+    "section": "9.5 Atualizar e desinstalar",
+    "text": "9.5 Atualizar e desinstalar\nnf-core modules update samtools/view     # atualiza para versão mais recente\nnf-core modules uninstall samtools/view  # remove",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   },
   {
-    "objectID": "02_hello_nf-core.html#exercício-3-adicionando-um-módulo-nf-core",
-    "href": "02_hello_nf-core.html#exercício-3-adicionando-um-módulo-nf-core",
-    "title": "5  Hello nf-core",
-    "section": "8.7 Exercício 3 — Adicionando um módulo nf-core",
-    "text": "8.7 Exercício 3 — Adicionando um módulo nf-core\n\n\n\n\n\n\nNotaEnunciado\n\n\n\nSuponha que você precisa adicionar samtools/faidx a um pipeline hipotético para indexar um FASTA.\nResponda:\n\nComo você descobre se o módulo existe e o que ele espera de entrada?\nQual comando instala o módulo no diretório do pipeline?\nEscreva a linha include para importá-lo no workflow.\nSe você quisesse passar a flag extra --fai-idx-name ao samtools faidx, qual seria o bloco custom.config?\n\n\n\n\n\n\n\n\n\nDicaResposta\n\n\n\n\n\na) Pelo CLI:\nnf-core modules info samtools/faidx\nou pelo site: nf-co.re/modules/samtools/faidx. Ambos mostram inputs/outputs esperados.\nb) Dentro da raiz do pipeline:\nnf-core modules install samtools/faidx\nIsso cria modules/nf-core/samtools/faidx/ e registra em modules.json.\nc) No arquivo de workflow:\ninclude { SAMTOOLS_FAIDX } from '../modules/nf-core/samtools/faidx/main'\nd) No custom.config:\nprocess {\n    withName: 'SAMTOOLS_FAIDX' {\n        ext.args = '--fai-idx-name custom.fai'\n    }\n}\nSem editar o módulo. Mesmo padrão para qualquer ferramenta nf-core.",
+    "objectID": "02_2_hello_nf-core.html#personalização-o-padrão-ext.args-de-novo",
+    "href": "02_2_hello_nf-core.html#personalização-o-padrão-ext.args-de-novo",
+    "title": "6  Usando o nf-core",
+    "section": "9.6 Personalização — o padrão ext.args de novo",
+    "text": "9.6 Personalização — o padrão ext.args de novo\nComo todo módulo nf-core respeita ext.args, você quase nunca precisa editar o código do módulo. Basta passar os argumentos extras via custom.config:\nprocess {\n    withName: 'SAMTOOLS_VIEW' {\n        ext.args = '-b -q 30 -f 2'\n    }\n}\nSe precisar de algo que ext.args não cobre (mudar a lógica do processo, adicionar um output), aí sim vale editar. Mas antes, cheque se o módulo aceita a customização por argumento — quase sempre aceita.",
     "crumbs": [
       "Hello nf-core",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hello nf-core</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
+    ]
+  },
+  {
+    "objectID": "02_2_hello_nf-core.html#exercício-3-adicionando-um-módulo-nf-core",
+    "href": "02_2_hello_nf-core.html#exercício-3-adicionando-um-módulo-nf-core",
+    "title": "6  Usando o nf-core",
+    "section": "9.7 Exercício 3 — Adicionando um módulo nf-core",
+    "text": "9.7 Exercício 3 — Adicionando um módulo nf-core\n\n\n\n\n\n\nNotaEnunciado\n\n\n\nSuponha que você precisa adicionar samtools/faidx a um pipeline hipotético para indexar um FASTA.\nResponda:\n\nComo você descobre se o módulo existe e o que ele espera de entrada?\nQual comando instala o módulo no diretório do pipeline?\nEscreva a linha include para importá-lo no workflow.\nSe você quisesse passar a flag extra --fai-idx-name ao samtools faidx, qual seria o bloco custom.config?\n\n\n\n\n\n\n\n\n\nDicaResposta\n\n\n\n\n\na) Pelo CLI:\nnf-core modules info samtools/faidx\nou pelo site: nf-co.re/modules/samtools/faidx. Ambos mostram inputs/outputs esperados.\nb) Dentro da raiz do pipeline:\nnf-core modules install samtools/faidx\nIsso cria modules/nf-core/samtools/faidx/ e registra em modules.json.\nc) No arquivo de workflow:\ninclude { SAMTOOLS_FAIDX } from '../modules/nf-core/samtools/faidx/main'\nd) No custom.config:\nprocess {\n    withName: 'SAMTOOLS_FAIDX' {\n        ext.args = '--fai-idx-name custom.fai'\n    }\n}\nSem editar o módulo. Mesmo padrão para qualquer ferramenta nf-core.",
+    "crumbs": [
+      "Hello nf-core",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Usando o nf-core</span>"
     ]
   }
 ]

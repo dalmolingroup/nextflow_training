@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Treinamento em Nextflow</title>
+<title>5&nbsp; Hello nf-core – Treinamento em Nextflow</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -71,7 +71,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./01_1_hello_nextflow.html" rel="next">
+<link href="./02_2_hello_nf-core.html" rel="next">
+<link href="./01_3_hello_nextflow.html" rel="prev">
 <link href="./content/images/dalmolin_icon.svg" rel="icon" type="image/svg+xml">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -289,7 +290,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Treinamento Nextflow</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02_1_hello_nf-core.html">Hello nf-core</a></li><li class="breadcrumb-item"><a href="./02_1_hello_nf-core.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hello nf-core</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
@@ -325,7 +326,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Treinamento Nextflow</span></span></a>
   </div>
 </li>
@@ -369,7 +370,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02_1_hello_nf-core.html" class="sidebar-item-text sidebar-link">
+  <a href="./02_1_hello_nf-core.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hello nf-core</span></span></a>
   </div>
 </li>
@@ -391,21 +392,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Índice</h2>
    
   <ul>
-  <li><a href="#treinamento-nextflow" id="toc-treinamento-nextflow" class="nav-link active" data-scroll-target="#treinamento-nextflow"><span class="header-section-number">1</span> Treinamento Nextflow</a>
-  <ul class="collapse">
-  <li><a href="#visão-geral-do-curso" id="toc-visão-geral-do-curso" class="nav-link" data-scroll-target="#visão-geral-do-curso"><span class="header-section-number">1.1</span> Visão geral do curso</a></li>
-  </ul></li>
-  <li><a href="#ambiente-de-trabalho" id="toc-ambiente-de-trabalho" class="nav-link" data-scroll-target="#ambiente-de-trabalho"><span class="header-section-number">2</span> Ambiente de trabalho</a>
-  <ul class="collapse">
-  <li><a href="#ambiente-local" id="toc-ambiente-local" class="nav-link" data-scroll-target="#ambiente-local"><span class="header-section-number">2.1</span> Ambiente Local</a></li>
-  <li><a href="#ambiente-remoto" id="toc-ambiente-remoto" class="nav-link" data-scroll-target="#ambiente-remoto"><span class="header-section-number">2.2</span> Ambiente Remoto</a></li>
-  </ul></li>
-  <li><a href="#objetivos" id="toc-objetivos" class="nav-link" data-scroll-target="#objetivos"><span class="header-section-number">3</span> Objetivos</a>
-  <ul class="collapse">
-  <li><a href="#o-que-este-curso-não-cobre" id="toc-o-que-este-curso-não-cobre" class="nav-link" data-scroll-target="#o-que-este-curso-não-cobre"><span class="header-section-number">3.1</span> O que este curso <strong>não</strong> cobre</a></li>
-  </ul></li>
-  <li><a href="#pré-requisitos" id="toc-pré-requisitos" class="nav-link" data-scroll-target="#pré-requisitos"><span class="header-section-number">4</span> Pré-requisitos:</a></li>
-  <li><a href="#agenda-5h" id="toc-agenda-5h" class="nav-link" data-scroll-target="#agenda-5h"><span class="header-section-number">5</span> Agenda (5h)</a></li>
+  <li><a href="#o-que-é-nf-core" id="toc-o-que-é-nf-core" class="nav-link active" data-scroll-target="#o-que-é-nf-core"><span class="header-section-number">5.1</span> O que é nf-core</a></li>
+  <li><a href="#configurar-o-diretório-de-trabalho" id="toc-configurar-o-diretório-de-trabalho" class="nav-link" data-scroll-target="#configurar-o-diretório-de-trabalho"><span class="header-section-number">5.2</span> Configurar o diretório de trabalho</a></li>
   </ul>
 </nav>
     </div>
@@ -413,9 +401,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02_1_hello_nf-core.html">Hello nf-core</a></li><li class="breadcrumb-item"><a href="./02_1_hello_nf-core.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hello nf-core</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Treinamento em Nextflow</h1>
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hello nf-core</span></h1>
 </div>
 
 
@@ -432,120 +420,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="treinamento-nextflow" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Treinamento Nextflow</h1>
-<section id="visão-geral-do-curso" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="visão-geral-do-curso"><span class="header-section-number">1.1</span> Visão geral do curso</h2>
-<p>Este curso é divido em duas partes, no primeiro momento veremos como o nextflow é estruturado e no segundo momento aprenderemos a executar e personalizar pipelines já existentes. Cada sessão possui objetivos estruturados para introduzir informações gradualmente.</p>
-</section>
-</section>
-<section id="ambiente-de-trabalho" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Ambiente de trabalho</h1>
-<section id="ambiente-local" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="ambiente-local"><span class="header-section-number">2.1</span> Ambiente Local</h2>
-<p>Caso todas as dependencias necessárias para execução desse minicurso estejam instaladas em sua máquina local, clone o repositório deste minicurso:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:dalmolingroup/nextflow_training.git</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> nextflow_training</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="ambiente-remoto" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="ambiente-remoto"><span class="header-section-number">2.2</span> Ambiente Remoto</h2>
-<p>Caso não as dependencias necessárias para este minicurso não estejam instaladas na sua máquina local, você poderá utilizar o ambiente pré-construído fornecido pela Seqera no <a href="https://codespaces.new/nextflow-io/training?quickstart=1&amp;ref=3.6.1">GitHub Codespace</a>. Este ambiente de treinamento contém todo o software, código e dados necessários para trabalhar no curso de treinamento, então você não precisa instalar nada por conta própria.</p>
-</section>
-</section>
-<section id="objetivos" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Objetivos</h1>
-<p>Ao final do minicurso, você deverá ser capaz de:</p>
+<section id="o-que-é-nf-core" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="o-que-é-nf-core"><span class="header-section-number">5.1</span> O que é nf-core</h2>
+<p>nf-core é uma comunidade global que desenvolve e mantém pipelines Nextflow <strong>curados, revisados por pares e prontos para produção</strong>. Todos seguem o mesmo template, então uma vez que você aprende a estrutura, sabe navegar em qualquer pipeline da coleção.</p>
+<p>O que a comunidade entrega:</p>
 <ul>
-<li>Entender a estrutura básica de um pipeline Nextflow (processos, canais, workflow, módulos)</li>
-<li>Executar pipelines nf-core prontos usando perfis de teste</li>
-<li>Configurar a execução via <code>params</code>, <code>-params-file</code> e arquivos de configuração</li>
-<li>Personalizar recursos e argumentos de ferramentas usando <code>ext.args</code></li>
-<li>Instalar e usar módulos do repositório nf-core</li>
-<li>Diagnosticar erros comuns a partir das mensagens de validação de schema/samplesheet</li>
+<li><strong>Pipelines</strong> (<a href="https://nf-co.re/pipelines">nf-co.re/pipelines</a>) — mais de 100, cobrindo genômica, transcriptômica, proteômica, metagenômica, etc.</li>
+<li><strong>Módulos reutilizáveis</strong> (<a href="https://nf-co.re/modules">nf-co.re/modules</a>) — processos wrapping ferramentas comuns (FASTQC, samtools, GATK…) que qualquer pipeline pode instalar.</li>
+<li><strong>Configurações institucionais</strong> (<a href="https://nf-co.re/configs">nf-co.re/configs</a>) — perfis prontos para HPCs de dezenas de universidades.</li>
+<li><strong>Ferramenta CLI <code>nf-core</code></strong> — para criar, testar e instalar pipelines/módulos.</li>
 </ul>
-<section id="o-que-este-curso-não-cobre" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="o-que-este-curso-não-cobre"><span class="header-section-number">3.1</span> O que este curso <strong>não</strong> cobre</h2>
-<ul>
-<li>Programação em Nextflow do zero (não vamos escrever pipelines novos)</li>
-<li>Operadores avançados de canais (<code>flatten</code>, <code>groupTuple</code>, <code>join</code>, etc.)</li>
-<li>Desenvolvimento de módulos nf-core seguindo o template completo</li>
-<li>Criação de subworkflows</li>
-</ul>
+<p>O ganho prático para quem faz bioinformática: você não escreve pipelines do zero, você <strong>usa</strong> e <strong>customiza</strong> o que a comunidade já validou.</p>
 </section>
-</section>
-<section id="pré-requisitos" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Pré-requisitos:</h1>
-<ul>
-<li>Confortável com o terminal Linux (<code>cd</code>, <code>ls</code>, editar arquivos)</li>
-<li>Docker instalado e funcional (ou usar o ambiente remoto via GitHub Codespaces)</li>
-<li>Nextflow instalado (ou usar o ambiente remoto)</li>
-<li><code>nf-core tools</code> (para a parte de módulos)</li>
-</ul>
-</section>
-<section id="agenda-5h" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Agenda (5h)</h1>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Bloco</th>
-<th>Duração</th>
-<th>Conteúdo</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>1. Hello Nextflow — parte 1</strong></td>
-<td>45 min</td>
-<td>História, estrutura de pipeline, primeiro <code>hello-world.nf</code>, <code>.command.*</code>, <code>-resume</code>, <code>nextflow log</code></td>
-</tr>
-<tr class="even">
-<td><strong>2. Hello Nextflow — parte 2</strong></td>
-<td>45 min</td>
-<td>Canais, workflow multi-etapa, módulos, contêineres</td>
-</tr>
-<tr class="odd">
-<td><strong>Intervalo</strong></td>
-<td>15 min</td>
-<td></td>
-</tr>
-<tr class="even">
-<td><strong>3. Configuração Nextflow</strong></td>
-<td>45 min</td>
-<td><code>nextflow.config</code>, diretivas de processo, profiles, <code>-params-file</code>, precedência</td>
-</tr>
-<tr class="odd">
-<td><strong>4. Hello nf-core — parte 1</strong></td>
-<td>60 min</td>
-<td>O que é nf-core, <code>nextflow pull</code>, perfil test, <code>--help</code>, <code>-params-file</code>, <code>-c</code>, <code>ext.args</code></td>
-</tr>
-<tr class="even">
-<td><strong>Intervalo</strong></td>
-<td>15 min</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td><strong>5. Validação de entrada</strong></td>
-<td>30 min</td>
-<td>Schema de parâmetros, schema de samplesheet, debug de erros</td>
-</tr>
-<tr class="even">
-<td><strong>6. Usando módulos nf-core</strong></td>
-<td>30 min</td>
-<td>Catálogo, <code>nf-core modules install</code>, <code>ext.args</code> para customização</td>
-</tr>
-<tr class="odd">
-<td><strong>7. Q&amp;A + prática livre</strong></td>
-<td>15 min</td>
-<td></td>
-</tr>
-</tbody>
-</table>
+<section id="configurar-o-diretório-de-trabalho" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="configurar-o-diretório-de-trabalho"><span class="header-section-number">5.2</span> Configurar o diretório de trabalho</h2>
+<p>Mude de diretório agora executando este comando no terminal:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> hello_nfcore</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Nesta primeira parte do curso de treinamento Hello nf-core, mostramos como encontrar e experimentar um pipeline do nf-core, configurar e personalizar sua execução para suas necessidades, e entender como a validação de entrada protege contra erros comuns.</p>
+<p>Vamos usar um pipeline chamado <a href="https://nf-co.re/demo/1.2.0/">nf-core/demo</a> que é mantido pelo projeto nf-core como parte de seu inventário de pipelines para fins de demonstração e treinamento.</p>
+<p>Certifique-se de que seu diretório de trabalho esteja definido como hello-nf-core/</p>
 
 
 </section>
@@ -966,10 +859,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./01_3_hello_nextflow.html" class="pagination-link" aria-label="Componentes de um Workflow">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Componentes de um Workflow</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./01_1_hello_nextflow.html" class="pagination-link" aria-label="Hello Nextflow">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Hello Nextflow</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./02_2_hello_nf-core.html" class="pagination-link" aria-label="Usando o nf-core">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Usando o nf-core</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
