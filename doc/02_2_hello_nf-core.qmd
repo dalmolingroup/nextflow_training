@@ -434,51 +434,71 @@ process {
 
 Se precisar de algo que `ext.args` não cobre (mudar a lógica do processo, adicionar um output), aí sim vale editar. Mas antes, **cheque se o módulo aceita a customização por argumento** — quase sempre aceita.
 
-## Exercício 3 — Adicionando um módulo nf-core
+## Exercício 3 — Adicionando um módulo ao pipeline demo
 
 ::: {.callout-note}
 ## Enunciado
 
-Suponha que você precisa adicionar `samtools/faidx` a um pipeline hipotético para indexar um FASTA.
+Vamos estender o pipeline `nf-core/demo` com o módulo **`seqkit/stats`**, que gera estatísticas resumidas de arquivos FASTQ (número de reads, tamanho médio, GC%, etc.).
 
-Responda:
+Objetivo: após o `SEQTK_TRIM`, calcular as estatísticas dos reads trimados e publicá-las em `<outdir>/seqkit_stats/`.
 
-a) Como você descobre se o módulo existe e o que ele espera de entrada?
-b) Qual comando instala o módulo no diretório do pipeline?
-c) Escreva a linha `include` para importá-lo no workflow.
-d) Se você quisesse passar a flag extra `--fai-idx-name` ao `samtools faidx`, qual seria o bloco `custom.config`?
+Passos:
+
+a) Descubra os inputs/outputs esperados pelo módulo `seqkit/stats`.
+b) Instale o módulo no pipeline demo.
+c) Importe o módulo no workflow (`workflows/demo.nf`).
+d) Chame o módulo passando a saída do `SEQTK_TRIM`.
+e) Execute o pipeline e confirme que o TSV com estatísticas foi gerado.
+
+::: {.callout-tip}
+Trabalhe na cópia local do pipeline (via link simbólico `pipelines/nf-core/demo/`). O `nextflow run pipelines/nf-core/demo` executa a versão modificada.
+:::
 :::
 
 ::: {.callout-tip collapse="true"}
 ## Resposta
 
-**a)** Pelo CLI:
+**a)** Consultar o módulo:
 ```bash
-nf-core modules info samtools/faidx
+nf-core modules info seqkit/stats
 ```
-ou pelo site: [nf-co.re/modules/samtools/faidx](https://nf-co.re/modules/samtools/faidx). Ambos mostram inputs/outputs esperados.
+O input é `tuple val(meta), path(reads)` — mesmo formato que o `SEQTK_TRIM` emite. O output principal é `tuple val(meta), path("*.tsv")`.
 
-**b)** Dentro da raiz do pipeline:
+**b)** Instalar (a partir da raiz do pipeline demo):
 ```bash
-nf-core modules install samtools/faidx
+cd pipelines/nf-core/demo
+nf-core modules install seqkit/stats
 ```
-Isso cria `modules/nf-core/samtools/faidx/` e registra em `modules.json`.
+Cria `modules/nf-core/seqkit/stats/` e registra em `modules.json`.
 
-**c)** No arquivo de workflow:
+**c)** Em `workflows/demo.nf`, adicionar o `include` junto com os outros:
 ```groovy
-include { SAMTOOLS_FAIDX } from '../modules/nf-core/samtools/faidx/main'
+include { SEQKIT_STATS } from '../modules/nf-core/seqkit/stats/main'
 ```
 
-**d)** No `custom.config`:
+**d)** Dentro do bloco `if (!params.skip_trim) { ... }`, chamar o novo módulo com a saída do trim:
 ```groovy
-process {
-    withName: 'SAMTOOLS_FAIDX' {
-        ext.args = '--fai-idx-name custom.fai'
-    }
+if (!params.skip_trim) {
+    SEQTK_TRIM(ch_samplesheet)
+    SEQKIT_STATS(SEQTK_TRIM.out.reads)
 }
 ```
+Como as assinaturas batem (`tuple val(meta), path(reads)` dos dois lados), o encadeamento é direto — sem operadores no meio.
 
-Sem editar o módulo. Mesmo padrão para qualquer ferramenta nf-core.
+**e)** Executar:
+```bash
+nextflow run pipelines/nf-core/demo -profile docker,test --outdir demo-seqkit
+```
+
+Verificar o resultado:
+```bash
+cat demo-seqkit/seqkit_stats/*.tsv
+```
+
+Deve mostrar uma linha por arquivo FASTQ com número de reads, comprimento mínimo/máximo/médio e GC%.
+
+**Ponto-chave**: instalamos e integramos um módulo mantido pela comunidade em ~5 linhas de código, sem escrever nenhum processo do zero. Esse é o padrão de crescimento de qualquer pipeline nf-core.
 :::
 
 # Próximos passos
