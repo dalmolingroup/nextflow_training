@@ -426,7 +426,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#importar-e-usar" id="toc-importar-e-usar" class="nav-link" data-scroll-target="#importar-e-usar"><span class="header-section-number">9.4</span> Importar e usar</a></li>
   <li><a href="#atualizar-e-desinstalar" id="toc-atualizar-e-desinstalar" class="nav-link" data-scroll-target="#atualizar-e-desinstalar"><span class="header-section-number">9.5</span> Atualizar e desinstalar</a></li>
   <li><a href="#personalização-o-padrão-ext.args-de-novo" id="toc-personalização-o-padrão-ext.args-de-novo" class="nav-link" data-scroll-target="#personalização-o-padrão-ext.args-de-novo"><span class="header-section-number">9.6</span> Personalização — o padrão <code>ext.args</code> de novo</a></li>
-  <li><a href="#exercício-3-adicionando-um-módulo-nf-core" id="toc-exercício-3-adicionando-um-módulo-nf-core" class="nav-link" data-scroll-target="#exercício-3-adicionando-um-módulo-nf-core"><span class="header-section-number">9.7</span> Exercício 3 — Adicionando um módulo nf-core</a></li>
+  <li><a href="#exercício-3-adicionando-um-módulo-ao-pipeline-demo" id="toc-exercício-3-adicionando-um-módulo-ao-pipeline-demo" class="nav-link" data-scroll-target="#exercício-3-adicionando-um-módulo-ao-pipeline-demo"><span class="header-section-number">9.7</span> Exercício 3 — Adicionando um módulo ao pipeline demo</a></li>
   </ul></li>
   <li><a href="#próximos-passos" id="toc-próximos-passos" class="nav-link" data-scroll-target="#próximos-passos"><span class="header-section-number">10</span> Próximos passos</a></li>
   </ul>
@@ -894,8 +894,8 @@ SAMPLE UM,/tmp/reads.txt</code></pre>
 <span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Se precisar de algo que <code>ext.args</code> não cobre (mudar a lógica do processo, adicionar um output), aí sim vale editar. Mas antes, <strong>cheque se o módulo aceita a customização por argumento</strong> — quase sempre aceita.</p>
 </section>
-<section id="exercício-3-adicionando-um-módulo-nf-core" class="level2" data-number="9.7">
-<h2 data-number="9.7" class="anchored" data-anchor-id="exercício-3-adicionando-um-módulo-nf-core"><span class="header-section-number">9.7</span> Exercício 3 — Adicionando um módulo nf-core</h2>
+<section id="exercício-3-adicionando-um-módulo-ao-pipeline-demo" class="level2" data-number="9.7">
+<h2 data-number="9.7" class="anchored" data-anchor-id="exercício-3-adicionando-um-módulo-ao-pipeline-demo"><span class="header-section-number">9.7</span> Exercício 3 — Adicionando um módulo ao pipeline demo</h2>
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -906,14 +906,26 @@ SAMPLE UM,/tmp/reads.txt</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Suponha que você precisa adicionar <code>samtools/faidx</code> a um pipeline hipotético para indexar um FASTA.</p>
-<p>Responda:</p>
+<p>Vamos estender o pipeline <code>nf-core/demo</code> com o módulo <strong><code>seqkit/stats</code></strong>, que gera estatísticas resumidas de arquivos FASTQ (número de reads, tamanho médio, GC%, etc.).</p>
+<p>Objetivo: após o <code>SEQTK_TRIM</code>, calcular as estatísticas dos reads trimados e publicá-las em <code>&lt;outdir&gt;/seqkit_stats/</code>.</p>
+<p>Passos:</p>
 <ol type="a">
-<li>Como você descobre se o módulo existe e o que ele espera de entrada?</li>
-<li>Qual comando instala o módulo no diretório do pipeline?</li>
-<li>Escreva a linha <code>include</code> para importá-lo no workflow.</li>
-<li>Se você quisesse passar a flag extra <code>--fai-idx-name</code> ao <code>samtools faidx</code>, qual seria o bloco <code>custom.config</code>?</li>
+<li>Descubra os inputs/outputs esperados pelo módulo <code>seqkit/stats</code>.</li>
+<li>Instale o módulo no pipeline demo.</li>
+<li>Importe o módulo no workflow (<code>workflows/demo.nf</code>).</li>
+<li>Chame o módulo passando a saída do <code>SEQTK_TRIM</code>.</li>
+<li>Execute o pipeline e confirme que o TSV com estatísticas foi gerado.</li>
 </ol>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Trabalhe na cópia local do pipeline (via link simbólico <code>pipelines/nf-core/demo/</code>). O <code>nextflow run pipelines/nf-core/demo</code> executa a versão modificada.</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="callout callout-style-simple callout-tip callout-titled">
@@ -928,21 +940,27 @@ SAMPLE UM,/tmp/reads.txt</code></pre>
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p><strong>a)</strong> Pelo CLI:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nf-core</span> modules info samtools/faidx</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<p>ou pelo site: <a href="https://nf-co.re/modules/samtools/faidx">nf-co.re/modules/samtools/faidx</a>. Ambos mostram inputs/outputs esperados.</p>
-<p><strong>b)</strong> Dentro da raiz do pipeline:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nf-core</span> modules install samtools/faidx</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Isso cria <code>modules/nf-core/samtools/faidx/</code> e registra em <code>modules.json</code>.</p>
-<p><strong>c)</strong> No arquivo de workflow:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>include <span class="op">{</span> SAMTOOLS_FAIDX <span class="op">}</span> from <span class="st">'../modules/nf-core/samtools/faidx/main'</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>d)</strong> No <code>custom.config</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>process <span class="op">{</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    withName<span class="op">:</span> <span class="st">'SAMTOOLS_FAIDX'</span> <span class="op">{</span></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>        ext<span class="op">.</span>args <span class="op">=</span> <span class="st">'--fai-idx-name custom.fai'</span></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Sem editar o módulo. Mesmo padrão para qualquer ferramenta nf-core.</p>
+<p><strong>a)</strong> Consultar o módulo:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nf-core</span> modules info seqkit/stats</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>O input é <code>tuple val(meta), path(reads)</code> — mesmo formato que o <code>SEQTK_TRIM</code> emite. O output principal é <code>tuple val(meta), path("*.tsv")</code>.</p>
+<p><strong>b)</strong> Instalar (a partir da raiz do pipeline demo):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> pipelines/nf-core/demo</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="ex">nf-core</span> modules install seqkit/stats</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Cria <code>modules/nf-core/seqkit/stats/</code> e registra em <code>modules.json</code>.</p>
+<p><strong>c)</strong> Em <code>workflows/demo.nf</code>, adicionar o <code>include</code> junto com os outros:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>include <span class="op">{</span> SEQKIT_STATS <span class="op">}</span> from <span class="st">'../modules/nf-core/seqkit/stats/main'</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>d)</strong> Dentro do bloco <code>if (!params.skip_trim) { ... }</code>, chamar o novo módulo com a saída do trim:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode groovy code-with-copy"><code class="sourceCode groovy"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(!</span>params<span class="op">.</span>skip_trim<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SEQTK_TRIM</span><span class="op">(</span>ch_samplesheet<span class="op">)</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">SEQKIT_STATS</span><span class="op">(</span>SEQTK_TRIM<span class="op">.</span>out<span class="op">.</span>reads<span class="op">)</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Como as assinaturas batem (<code>tuple val(meta), path(reads)</code> dos dois lados), o encadeamento é direto — sem operadores no meio.</p>
+<p><strong>e)</strong> Executar:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run pipelines/nf-core/demo <span class="at">-profile</span> docker,test <span class="at">--outdir</span> demo-seqkit</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Verificar o resultado:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> demo-seqkit/seqkit_stats/<span class="pp">*</span>.tsv</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Deve mostrar uma linha por arquivo FASTQ com número de reads, comprimento mínimo/máximo/médio e GC%.</p>
+<p><strong>Ponto-chave</strong>: instalamos e integramos um módulo mantido pela comunidade em ~5 linhas de código, sem escrever nenhum processo do zero. Esse é o padrão de crescimento de qualquer pipeline nf-core.</p>
 </div>
 </div>
 </div>
